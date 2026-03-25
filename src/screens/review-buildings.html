@@ -1,0 +1,173 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 3 — REVIEW BUILDINGS (Step 1 of 4)
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenReviewBuildings">
+
+  <header class="content-header">
+    <h1 class="page-title">Review upload</h1>
+    <div class="header-actions">
+      <button class="header-icon-group" title="Notifications">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-count">0</span>
+      </button>
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+
+    <!-- Fieldset card -->
+    <div class="review-fieldset">
+
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <div class="step-indicator-step step-indicator-step--active">1</div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--inactive">2</div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--inactive">3</div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--inactive">4</div>
+      </div>
+
+      <!-- Heading -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <h2 class="review-heading">Review your buildings</h2>
+        <p class="review-subtext">Below is a list of buildings relevant to addresses found in your uploaded files that need to be reviewed. This step is important for permissions, filtering and reporting.</p>
+      </div>
+
+      <!-- Inline warning alert -->
+      <div class="inline-alert">
+        <div class="inline-alert-tag inline-alert-tag--warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="inline-alert-body inline-alert-body--warning">
+          <div class="inline-alert-text">
+            <ul style="padding-left:18px;line-height:20px;">
+              <li>1 existing building is missing optional but important data.</li>
+              <li>1 new building has been suggested to link to an unknown address found in your uploaded files.</li>
+            </ul>
+          </div>
+          <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="review-toolbar">
+        <div class="review-toolbar-left">
+          <div class="review-toolbar-search">
+            <input type="text" placeholder="">
+            <div class="review-toolbar-search-addon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          </div>
+          <button class="review-toolbar-icon-btn">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filter</span>
+          </button>
+          <div class="review-toolbar-div"></div>
+        </div>
+        <div class="review-toolbar-right">
+          <div class="review-toolbar-div"></div>
+          <button class="review-toolbar-icon-btn">
+            <span style="display:flex;gap:3px;align-items:center;line-height:16px;">
+              <i class="fa-solid fa-sort"></i>
+              <i class="fa-solid fa-caret-down" style="font-size:11px;"></i>
+            </span>
+            <span>Sort</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="review-grid">
+
+        <!-- Header row -->
+        <div class="review-grid-header-row">
+          <div class="review-grid-header-cell review-grid-header-cell--building">Building <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--address">Address <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--status">Status <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
+        </div>
+
+        <!-- Row 1: Camden Elementary School (existing) -->
+        <div class="review-grid-row review-grid-row--white">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell review-grid-cell--building">
+            <i class="fa-regular fa-building"></i>
+            <span class="review-grid-link">Camden Elementary School</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--address">
+            <span class="review-grid-text">11 Children's Way, Rockport, ME</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" onclick="openReviewSlideout('existing')" title="Review">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Row 2: Camden Middle School (new) -->
+        <div class="review-grid-row review-grid-row--striped">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell review-grid-cell--building">
+            <i class="fa-regular fa-building"></i>
+            <span class="review-grid-link">Camden Middle School</span>
+            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--address">
+            <span class="review-grid-text">34 Knowlton St, Camden, ME</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" onclick="openReviewSlideout('new')" title="Review">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </button>
+            <button class="review-icon-btn" onclick="toggleRowMenu(event, 'rowMenu1')" title="More options">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div class="review-row-menu" id="rowMenu1">
+              <button class="review-row-menu-item" onclick="openMapAddressModal()">
+                <i class="fa-regular fa-building"></i>
+                Map address to existing building
+              </button>
+              <button class="review-row-menu-item" onclick="openIgnoreAddressModal()">
+                <i class="fa-solid fa-circle-xmark"></i>
+                Ignore address
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /review-grid -->
+
+      <!-- Pagination -->
+      <div class="review-pagination">
+        <span class="review-pagination-count">Showing 1–2 of 2 records.</span>
+        <div class="review-pagination-controls">
+          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+          <span class="review-pagination-page-label">Page</span>
+          <input class="review-pagination-input" type="text" value="1">
+          <span class="review-pagination-page-label">of 1</span>
+          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /review-fieldset -->
+
+    <!-- Footer: Exit + Next -->
+    <div class="review-footer-actions">
+      <button class="btn-secondary" onclick="exitReview()">Exit</button>
+      <button class="btn-cta" onclick="goToReviewProviders()">Next</button>
+    </div>
+
+  </div><!-- /page-content -->
+
+</div><!-- /screenReviewBuildings -->

@@ -1,0 +1,108 @@
+<!-- ══════════════════════════════════════════════════
+     REVIEW FIELDS — SHARED FIELD SELECT DROPDOWN
+══════════════════════════════════════════════════ -->
+<div id="fieldSelectDropdown">
+  <!-- Active options -->
+  <button class="review-field-dropdown-item">Bill end date</button>
+  <button class="review-field-dropdown-item">Meter consumption</button>
+  <button class="review-field-dropdown-item">Consumption total</button>
+  <button class="review-field-dropdown-item">Late fee charge</button>
+  <button class="review-field-dropdown-item">Tax charge</button>
+  <!-- Divider -->
+  <div class="review-field-dropdown-divider"></div>
+  <!-- Add custom option (text updated dynamically) -->
+  <button class="review-field-dropdown-item" id="fieldDropdownAddCustomBtn"
+    onclick="openAddCustomFieldSlideout(this.dataset.fieldName)"
+    data-field-name="Power factor">
+    <i class="fa-solid fa-plus"></i>
+    <span id="fieldDropdownAddCustomText">Add custom Power factor field</span>
+  </button>
+  <!-- Divider -->
+  <div class="review-field-dropdown-divider"></div>
+  <!-- Already matched (inactive) -->
+  <button class="review-field-dropdown-item review-field-dropdown-item--inactive">Bill cycle (matched)</button>
+  <button class="review-field-dropdown-item review-field-dropdown-item--inactive">Bill start date (matched)</button>
+  <button class="review-field-dropdown-item review-field-dropdown-item--inactive">Demand (Meter #A-00192945) (matched)</button>
+  <button class="review-field-dropdown-item review-field-dropdown-item--inactive">Demand (Meter #A-00192840) (matched)</button>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     ADD CUSTOM FIELD SLIDEOUT
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="customFieldSlideoutOverlay" onclick="closeAddCustomFieldSlideout()"></div>
+
+<div class="review-slideout-panel" id="addCustomFieldSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Add custom field</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Tabs -->
+    <div class="slideout-tabs">
+      <button class="slideout-tab slideout-tab--active">Details</button>
+      <button class="slideout-tab">Conditions</button>
+    </div>
+
+    <!-- Name -->
+    <div class="review-form-field">
+      <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" id="customFieldNameInput" value="Power factor">
+    </div>
+
+    <!-- Tooltip -->
+    <div class="review-form-field">
+      <div class="review-form-label"><span class="review-form-label-dotted">Tooltip</span></div>
+      <input class="review-form-input" type="text" placeholder="Enter tooltip">
+    </div>
+
+    <!-- Type -->
+    <div class="review-form-field">
+      <div class="review-form-label"><span class="review-form-label-dotted">Type</span> <span class="review-form-label-required">*</span></div>
+      <select class="review-form-select">
+        <option value="number" selected>Number</option>
+        <option value="text">Text</option>
+        <option value="date">Date</option>
+        <option value="currency">Currency</option>
+      </select>
+    </div>
+
+    <!-- Checkboxes -->
+    <div class="review-checkbox-row">
+      <input type="checkbox" id="cfDisallowNeg">
+      <label for="cfDisallowNeg">Disallow negative values</label>
+    </div>
+    <div class="review-checkbox-row">
+      <input type="checkbox" id="cfRequired">
+      <label for="cfRequired"><span class="review-form-label-dotted">Required</span></label>
+    </div>
+    <div class="review-checkbox-row">
+      <input type="checkbox" id="cfHideFilters">
+      <label for="cfHideFilters">Hide from filters</label>
+    </div>
+    <div class="review-checkbox-row">
+      <input type="checkbox" id="cfHideNotif">
+      <label for="cfHideNotif">Hide from notifications</label>
+    </div>
+
+    <!-- Intelligent Suggestions instructions -->
+    <div class="review-form-field">
+      <div class="review-form-label">Intelligent Suggestions instructions</div>
+      <input class="review-form-input" type="text">
+    </div>
+
+    <!-- Grid Settings -->
+    <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
+      <div class="review-fields-section-heading">Grid Settings</div>
+      <div class="review-checkbox-row">
+        <input type="checkbox" id="cfGridHideNotif">
+        <label for="cfGridHideNotif">Hide from notifications</label>
+      </div>
+    </div>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="closeAddCustomFieldSlideout()">Save</button>
+    <button class="btn-tertiary" onclick="closeAddCustomFieldSlideout()">Cancel</button>
+  </div>
+</div>

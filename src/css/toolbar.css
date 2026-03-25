@@ -1,0 +1,115 @@
+/* ═══════════════════════════════════════════════════
+   TOOLBAR
+═══════════════════════════════════════════════════ */
+.toolbar {
+  background: var(--toolbar-bg);
+  height: 56px;
+  min-height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 0;
+  position: relative;
+}
+
+.toolbar-search {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-s);
+  height: 32px;
+  padding: 0 8px;
+  gap: 6px;
+  width: 260px;
+}
+
+.toolbar-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: var(--font-s);
+  color: var(--text-color);
+  background: transparent;
+}
+
+.toolbar-search input::placeholder { color: var(--text-secondary); }
+.toolbar-search i { color: var(--text-secondary); font-size: 13px; }
+
+.toolbar-div {
+  width: 1px;
+  height: 24px;
+  background: var(--toolbar-divider);
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-s);
+  font-weight: 400;
+  color: var(--text-color);
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.toolbar-btn:hover { background: rgba(0,0,0,0.06); }
+.toolbar-btn i { font-size: 13px; color: var(--text-icon); }
+
+/* Wrapper so popovers can be positioned relative to their trigger */
+.toolbar-btn-wrap {
+  position: relative;
+}
+
+.toolbar-spacer { flex: 1; }
+
+/* ═══════════════════════════════════════════════════
+   VIEW TOGGLE BUTTONS (Providers / Bills)
+═══════════════════════════════════════════════════ */
+.toolbar-view-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 40px;
+  min-width: 44px;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+
+.toolbar-view-btn i {
+  font-size: 16px;
+  color: var(--text-icon);
+}
+
+.toolbar-view-btn span {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.toolbar-view-btn:hover { background: rgba(0,0,0,0.06); }
+
+.toolbar-view-btn--active {
+  background: #b4d6df;
+}
+
+.toolbar-view-btn--active:hover { background: #a2ccd9; }

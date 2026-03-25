@@ -1,0 +1,65 @@
+<!-- ══════════════════════════════════════════════════
+     CUSTOMIZE BILL EXPORT SLIDEOUT
+══════════════════════════════════════════════════ -->
+<div class="slideout-overlay" id="slideoutOverlay" onclick="closeSlideout()"></div>
+
+<div class="slideout-panel" id="slideoutPanel">
+  <div class="slideout-header">
+    <div class="slideout-title">Customize bill export</div>
+  </div>
+
+  <div class="slideout-body">
+
+    <!-- Buildings -->
+    <div class="slideout-field">
+      <span class="slideout-field-label">Buildings</span>
+      <button class="slideout-select-btn">
+        <span>Select item(s)</span>
+        <i class="fa-solid fa-caret-down"></i>
+      </button>
+    </div>
+
+    <!-- Providers -->
+    <div class="slideout-field">
+      <span class="slideout-field-label">Providers</span>
+      <button class="slideout-select-btn">
+        <span>Select item(s)</span>
+        <i class="fa-solid fa-caret-down"></i>
+      </button>
+    </div>
+
+    <!-- Account -->
+    <div class="slideout-field">
+      <span class="slideout-field-label">Account</span>
+      <button class="slideout-select-btn">
+        <span>Select item(s)</span>
+        <i class="fa-solid fa-caret-down"></i>
+      </button>
+    </div>
+
+    <!-- Bill start date -->
+    <div class="slideout-field">
+      <span class="slideout-field-label">Bill start date</span>
+      <div class="slideout-date-wrap">
+        <div class="slideout-date-range">
+          <input type="text" placeholder="m/d/yyyy">
+          <span class="date-sep">to</span>
+          <input type="text" placeholder="m/d/yyyy">
+        </div>
+        <div class="quick-links">
+          <button class="quick-link" onclick="setDateRange('all')">All time</button>
+          <button class="quick-link" onclick="setDateRange('year')">Past year</button>
+          <button class="quick-link" onclick="setDateRange('month')">Past month</button>
+          <button class="quick-link" onclick="setDateRange('week')">Past week</button>
+          <button class="quick-link" onclick="setDateRange('today')">Today</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="slideout-footer">
+    <button class="btn-export-primary" onclick="closeSlideout()">Export 120 bills</button>
+    <button class="btn-export-cancel" onclick="closeSlideout()">Cancel</button>
+  </div>
+</div>

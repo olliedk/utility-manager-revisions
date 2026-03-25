@@ -1,0 +1,32 @@
+<!-- ══════════════════════════════════════════════════
+     MAP NAME TO EXISTING PROVIDER MODAL
+══════════════════════════════════════════════════ -->
+<div class="review-modal-overlay" id="mapNameModalOverlay" onclick="handleModalOverlayClick(event, 'mapNameModalOverlay')">
+  <div class="review-modal">
+    <div class="review-modal-header">
+      <span class="review-modal-title">Map name to existing provider</span>
+      <button class="review-modal-close" onclick="closeMapNameModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="review-modal-body">
+      <p class="review-modal-desc">This will add an Intelligent Suggestion for Maritime Energy to be mapped to the selected provider.</p>
+      <div class="review-modal-radio-list">
+        <label class="review-modal-radio-item">
+          <input type="radio" name="map-provider" value="maritime-energy">
+          <span>Maritime (Energy bills)</span>
+        </label>
+        <label class="review-modal-radio-item review-modal-radio-item--disabled">
+          <input type="radio" name="map-provider" value="maritime-gas" disabled>
+          <span>Maritime (Gas bills)</span>
+        </label>
+        <label class="review-modal-radio-item review-modal-radio-item--disabled">
+          <input type="radio" name="map-provider" value="maine-water" disabled>
+          <span>Maine Water</span>
+        </label>
+      </div>
+    </div>
+    <div class="review-modal-footer">
+      <button class="btn-cta" onclick="closeMapNameModal()">Map name</button>
+      <button class="btn-tertiary" onclick="closeMapNameModal()">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<!-- ══════════════════════════════════════════════════
+     IGNORE PROVIDER NAME MODAL
+══════════════════════════════════════════════════ -->
+<div class="review-modal-overlay" id="ignoreProviderModalOverlay" onclick="handleModalOverlayClick(event, 'ignoreProviderModalOverlay')">
+  <div class="review-modal">
+    <div class="review-modal-header">
+      <span class="review-modal-title">Ignore provider name</span>
+      <button class="review-modal-close" onclick="closeIgnoreProviderModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="review-modal-body">
+      <p class="review-modal-desc">Maritime Energy will be ignored in this upload and future uploads. Also, it will not be added as a provider.</p>
+    </div>
+    <div class="review-modal-footer">
+      <button class="btn-cta" onclick="closeIgnoreProviderModal()">Ignore</button>
+      <button class="btn-tertiary" onclick="closeIgnoreProviderModal()">Cancel</button>
+    </div>
+  </div>
+</div>

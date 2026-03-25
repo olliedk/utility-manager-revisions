@@ -1,0 +1,82 @@
+/* ── Figma design tokens ──────────────────────────── */
+:root {
+  /* Sidebar */
+  --sidenav-bg:               #f9f9fa;
+  --sidenav-header-bg:        #f9f9fa;
+  --sidenav-footer-bg:        #f9f9fa;
+  --sidenav-link-text:        #38383d;
+  --sidenav-link-icon:        #616161;
+  --sidenav-active-bg:        #87c8d9;
+  --sidenav-active-text:      #38383d;
+  --sidenav-active-icon:      #38383d;
+  --collapse-btn-bg:          #dddddd;
+  --collapse-btn-icon:        #616161;
+
+  /* Content header */
+  --header-bg:                #ffffff;
+  --header-border:            #ededed;
+
+  /* CTA buttons */
+  --cta-primary-bg:           #0d7f9b;
+  --cta-primary-text:         #ffffff;
+  --cta-tertiary-bg:          #ffffff;
+  --cta-tertiary-text:        #616161;
+  --cta-tertiary-border:      #616161;
+
+  /* Toolbar */
+  --toolbar-bg:               #f5f5f5;
+  --toolbar-divider:          #dddddd;
+
+  /* Text */
+  --text-color:               #38383d;
+  --text-secondary:           #767676;
+  --text-icon:                #616161;
+  --hyperlink:                #0a5f76;
+  --hyperlink-inactive:       #616161;
+
+  /* Input */
+  --input-bg:                 #ffffff;
+  --input-border:             #8d9496;
+  --input-inactive-bg:        #dddddd;
+  --input-inactive-border:    #616161;
+  --input-addon-bg:           #dddddd;
+
+  /* Upload zone */
+  --upload-bg:                #e7f4f7;
+  --upload-border:            #87c8d9;
+
+  /* Multi-select badge ("Monthly") */
+  --tag-bg:                   #f9f9fa;
+  --tag-text:                 #38383d;
+  --tag-border:               #767676;
+
+  /* Icon button secondary */
+  --iconbtn-bg:               #ffffff;
+  --iconbtn-border:           #8d9496;
+  --iconbtn-icon:             #616161;
+
+  /* Shadows */
+  --shadow-cta:               2px 5px 5px rgba(97,97,97,0.15);
+  --shadow-dropdown:          1px 2px 5px rgba(97,97,97,0.35);
+  --shadow-card:              0 1px 3px rgba(0,0,0,0.08);
+
+  /* Border radius */
+  --radius-s:                 4px;
+  --radius-m:                 8px;
+  --radius-pill:              100px;
+
+  /* Dividers / borders */
+  --divider:                  #ededed;
+  --border-light:             #e2e8f0;
+
+  /* Font sizes (from Figma tokens) */
+  --font-xs:                  12px;
+  --font-s:                   14px;
+  --font-body:                15px;
+  --font-m:                   16px;
+  --font-l:                   20px;
+  --font-xl:                  24px;
+
+  /* Page */
+  --page-bg:                  #f5f5f5;
+}

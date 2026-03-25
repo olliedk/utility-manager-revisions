@@ -1,0 +1,83 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 2 — BULK UPLOAD BILLS
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenBulkUpload">
+
+  <header class="content-header tall">
+    <div class="content-header-row">
+      <h1 class="page-title">Bulk upload bills</h1>
+      <div class="header-actions">
+        <button class="header-icon-group" title="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-count">0</span>
+        </button>
+        <div class="avatar" title="User profile">
+          <img
+            src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4"
+            alt="User avatar"
+          >
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <a href="#" onclick="goToUtilities(); return false;">Utilities</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Bulk upload bills</span>
+    </nav>
+  </header>
+
+  <div class="upload-outer">
+
+    <div style="width:560px;margin-bottom:4px;">
+      <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to index
+      </a>
+    </div>
+
+    <div class="upload-inner">
+
+      <div class="upload-zone" id="uploadZone"
+           onclick="simulateUpload()"
+           ondragover="event.preventDefault(); this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="event.preventDefault(); this.classList.remove('drag-over'); simulateUpload()">
+        <i class="fa-solid fa-cloud-arrow-up upload-zone-icon"></i>
+        <div class="upload-zone-body">
+          <div class="upload-zone-title">Upload files</div>
+          <div class="upload-zone-sub">
+            Drag and drop your files here or <a onclick="event.stopPropagation(); simulateUpload()">click to browse</a>.<br>
+            Supported files: pdf, csv
+          </div>
+        </div>
+      </div>
+
+      <div class="file-list" id="fileList" style="display:none;">
+        <div class="file-row" id="fileRow1">
+          <div class="file-display">
+            <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
+            <span class="file-display-name">Maritime_Energy_Invoice_123456.csv</span>
+          </div>
+          <button class="file-remove" onclick="removeFile(1)" title="Remove file">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="file-row" id="fileRow2">
+          <div class="file-display">
+            <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
+            <span class="file-display-name">Maritime_Gas_Invoice_123456.csv</span>
+          </div>
+          <button class="file-remove" onclick="removeFile(2)" title="Remove file">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="button-group" id="uploadActions" style="display:none;">
+        <button class="btn-cta" onclick="submitBills()">Submit</button>
+        <button class="btn-tertiary" onclick="goToUtilities()">Back</button>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /screenBulkUpload -->

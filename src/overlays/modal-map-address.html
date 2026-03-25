@@ -1,0 +1,36 @@
+<!-- ══════════════════════════════════════════════════
+     MAP ADDRESS TO EXISTING BUILDING MODAL
+══════════════════════════════════════════════════ -->
+<div class="review-modal-overlay" id="mapAddressModalOverlay" onclick="handleModalOverlayClick(event, 'mapAddressModalOverlay')">
+  <div class="review-modal">
+    <div class="review-modal-header">
+      <span class="review-modal-title">Map address to existing building</span>
+      <button class="review-modal-close" onclick="closeMapAddressModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="review-modal-body">
+      <p class="review-modal-desc">34 Knowlton St, Camden, ME will be added to the selected building.</p>
+      <div class="review-modal-radio-list">
+        <label class="review-modal-radio-item">
+          <input type="radio" name="map-building" value="elementary">
+          <span>Camden Elementary School</span>
+        </label>
+        <label class="review-modal-radio-item">
+          <input type="radio" name="map-building" value="middle">
+          <span>Camden-Rockport Middle School</span>
+        </label>
+        <label class="review-modal-radio-item">
+          <input type="radio" name="map-building" value="high">
+          <span>Camden Regional High School</span>
+        </label>
+        <label class="review-modal-radio-item">
+          <input type="radio" name="map-building" value="admin">
+          <span>Administrative Building</span>
+        </label>
+      </div>
+    </div>
+    <div class="review-modal-footer">
+      <button class="btn-cta" onclick="closeMapAddressModal()">Map address</button>
+      <button class="btn-tertiary" onclick="closeMapAddressModal()">Cancel</button>
+    </div>
+  </div>
+</div>

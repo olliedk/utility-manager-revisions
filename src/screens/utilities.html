@@ -1,0 +1,408 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 1 — UTILITIES
+════════════════════════════════════════════════ -->
+<div class="screen active" id="screenUtilities">
+
+  <!-- Content header -->
+  <header class="content-header">
+    <h1 class="page-title">Utilities</h1>
+    <div class="header-actions">
+      <!-- Actions dropdown -->
+      <div class="dropdown-wrap">
+        <button class="btn-cta" id="actionsBtn" onclick="toggleDropdown()">
+          Actions
+          <i class="fa-solid fa-caret-down caret"></i>
+        </button>
+        <div class="dropdown-menu" id="actionsDropdown">
+          <div class="dropdown-item" onclick="handleDropdownItem('add-provider')">Add new provider</div>
+          <div class="dropdown-item" onclick="handleDropdownItem('enter-bill')">Enter single bill</div>
+          <div class="dropdown-item" onclick="handleDropdownItem('bulk-upload')">Bulk upload bills</div>
+          <div class="dropdown-item" onclick="handleDropdownItem('review-bills')">Review bills</div>
+        </div>
+      </div>
+      <!-- Bell -->
+      <button class="header-icon-group" title="Notifications">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-count">0</span>
+      </button>
+      <!-- Avatar + data selector popover -->
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarBtn" title="Prototype data settings" onclick="toggleDataPopover(event)" style="cursor:pointer;">
+          <img
+            src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4"
+            alt="User avatar"
+          >
+        </div>
+        <div class="data-popover" id="dataPopover">
+          <div class="data-popover-header">
+            <span class="data-popover-title">Prototype data</span>
+            <button class="filter-close-btn" onclick="closeDataPopover()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="data-popover-section">
+            <span class="data-popover-label">Providers</span>
+            <div class="data-radio-group">
+              <label class="data-radio-option">
+                <input type="radio" name="providerCount" value="0" onchange="setDataCount('providers',0)"> <span>0</span>
+              </label>
+              <label class="data-radio-option">
+                <input type="radio" name="providerCount" value="5" onchange="setDataCount('providers',5)" checked> <span>5</span>
+              </label>
+              <label class="data-radio-option">
+                <input type="radio" name="providerCount" value="20" onchange="setDataCount('providers',20)"> <span>20</span>
+              </label>
+            </div>
+          </div>
+          <div class="data-popover-section">
+            <span class="data-popover-label">Bills</span>
+            <div class="data-radio-group">
+              <label class="data-radio-option">
+                <input type="radio" name="billCount" value="0" onchange="setDataCount('bills',0)"> <span>0</span>
+              </label>
+              <label class="data-radio-option">
+                <input type="radio" name="billCount" value="10" onchange="setDataCount('bills',10)" checked> <span>10</span>
+              </label>
+              <label class="data-radio-option">
+                <input type="radio" name="billCount" value="50" onchange="setDataCount('bills',50)"> <span>50</span>
+              </label>
+              <label class="data-radio-option">
+                <input type="radio" name="billCount" value="200" onchange="setDataCount('bills',200)"> <span>200</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Alert banner (shown after submit; transitions from info → warning) -->
+  <div class="alert-banner" id="uploadAlert">
+    <i class="fa-solid fa-circle-info alert-banner-icon" id="uploadAlertIcon"></i>
+    <span class="alert-banner-text" id="uploadAlertText">2 bills are currently being uploaded to Utilities. You will receive an email when processing is complete.</span>
+    <button class="alert-banner-action" id="uploadAlertCompleteBtn" onclick="completeProcessing()" title="Simulate processing complete">Complete processing</button>
+    <button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+
+    <!-- Search -->
+    <div class="toolbar-search">
+      <input type="text" placeholder="">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <div class="toolbar-div"></div>
+    <button class="toolbar-btn"><i class="fa-regular fa-bookmark"></i> Saved</button>
+
+    <!-- Filter button + popover -->
+    <div class="toolbar-btn-wrap">
+      <button class="toolbar-btn" id="filterBtn" onclick="toggleFilter(event)">
+        <i class="fa-solid fa-filter"></i> Filter
+      </button>
+      <div class="filter-popover" id="filterPopover">
+        <div class="filter-popover-header">
+          <span class="filter-popover-title">Filters</span>
+          <button class="filter-close-btn" onclick="closeFilter()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Status checkboxes -->
+        <div class="filter-section">
+          <span class="filter-section-label">Status</span>
+          <div class="filter-checkbox-grid">
+            <label class="filter-checkbox-row">
+              <input type="checkbox"> Deleted
+            </label>
+            <label class="filter-checkbox-row">
+              <input type="checkbox"> Missing bills
+            </label>
+            <label class="filter-checkbox-row">
+              <input type="checkbox"> Retired
+            </label>
+            <label class="filter-checkbox-row">
+              <input type="checkbox"> Up-to-date
+            </label>
+          </div>
+        </div>
+
+        <!-- Building dropdown -->
+        <div class="filter-section" style="padding-top:0;">
+          <span class="filter-section-label">Building</span>
+          <select class="filter-select">
+            <option value="">Not filtered</option>
+            <option>Lincoln Elementary</option>
+            <option>Washington Middle School</option>
+            <option>Jefferson High School</option>
+            <option>District Admin Building</option>
+            <option>Facilities Maintenance Depot</option>
+          </select>
+        </div>
+
+        <div class="filter-footer">
+          <button class="filter-save-btn" onclick="closeFilter()">Save filter</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="toolbar-btn"><i class="fa-solid fa-xmark"></i> Clear</button>
+
+    <div class="toolbar-div"></div>
+    <button class="toolbar-view-btn toolbar-view-btn--active" id="viewProvidersBtn" onclick="switchView('providers')" title="Providers view">
+      <i class="fa-solid fa-grip"></i>
+      <span>Providers</span>
+    </button>
+    <button class="toolbar-view-btn" id="viewBillsBtn" onclick="switchView('bills')" title="Bills view">
+      <i class="fa-solid fa-table"></i>
+      <span>Bills</span>
+    </button>
+
+    <div class="toolbar-spacer"></div>
+
+    <!-- Export button + dropdown -->
+    <div class="toolbar-btn-wrap">
+      <button class="toolbar-btn" id="exportBtn" onclick="toggleExport(event)">
+        <i class="fa-solid fa-arrow-up-from-bracket"></i> Export
+      </button>
+      <div class="export-dropdown" id="exportDropdown">
+        <div class="export-section-header">Raw Data</div>
+        <div class="export-item" onclick="closeExport()">
+          <i class="fa-solid fa-table"></i> CSV
+        </div>
+        <div class="export-divider"></div>
+        <div class="export-section-header">Current Grid View</div>
+        <div class="export-item" onclick="closeExport()">
+          <i class="fa-solid fa-table"></i> CSV
+        </div>
+        <div class="export-item" onclick="closeExport()">
+          <i class="fa-regular fa-file-pdf"></i> PDF
+        </div>
+        <div class="export-divider"></div>
+        <div class="export-section-header">Bills</div>
+        <div class="export-item" onclick="openSlideout()">
+          <i class="fa-solid fa-table"></i> Customize bill export
+        </div>
+      </div>
+    </div>
+
+    <button class="toolbar-btn"><i class="fa-solid fa-sliders"></i> Settings</button>
+  </div>
+
+  <!-- Page content -->
+  <div class="page-content">
+
+    <!-- Empty state (shown when providers=0 and bills=0) -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-state-inner">
+        <div class="empty-state-text">
+          <div class="empty-state-heading">Nothing to see here</div>
+          <p class="empty-state-body">Add bills to start tracking spend and reporting on utility costs and usage.</p>
+        </div>
+        <div class="button-group">
+          <div class="dropdown-wrap">
+            <button class="btn-cta" onclick="toggleEmptyStateDropdown()">
+              Actions
+              <i class="fa-solid fa-caret-down caret"></i>
+            </button>
+            <div class="dropdown-menu" id="emptyStateActionsDropdown">
+              <div class="dropdown-item" onclick="handleDropdownItem('add-provider')">Add new provider</div>
+              <div class="dropdown-item" onclick="handleDropdownItem('enter-bill')">Enter single bill</div>
+              <div class="dropdown-item" onclick="handleDropdownItem('bulk-upload')">Bulk upload bills</div>
+              <div class="dropdown-item" onclick="handleDropdownItem('review-bills')">Review bills</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Provider cards grid (rendered dynamically) -->
+    <div class="provider-grid" id="providerGridContainer">
+
+    </div><!-- /provider-grid -->
+
+    <!-- Bills table view (hidden by default) -->
+    <div class="bills-table-wrap" id="billsTableWrap" style="display:none;">
+      <table class="bills-table">
+        <thead>
+          <tr>
+            <th style="width:120px;">Bill <i class="fa-solid fa-sort"></i></th>
+            <th style="width:120px;">Status <i class="fa-solid fa-sort"></i></th>
+            <th style="width:175px;">Provider <i class="fa-solid fa-sort"></i></th>
+            <th style="width:220px;">Account <i class="fa-solid fa-sort"></i></th>
+            <th style="width:155px;">Bill start date <i class="fa-solid fa-sort"></i></th>
+            <th style="width:155px;">Bill end date <i class="fa-solid fa-sort"></i></th>
+            <th style="width:150px;">Total bill amount <i class="fa-solid fa-sort"></i></th>
+            <th class="bills-actions-col"></th>
+          </tr>
+        </thead>
+        <tbody id="billsTbody">
+          <tr style="display:none;">
+            <td><span class="bill-link">Feb 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">SW Water Authority</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Sun, Feb 1, 2026</td>
+            <td>Sat, Feb 28, 2026</td>
+            <td>$1,312.40</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Feb 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">Clark Regional Wastewater District</span></td>
+            <td><span class="bill-link">East Annex (#123-55872011)</span></td>
+            <td>Sun, Feb 1, 2026</td>
+            <td>Sat, Feb 28, 2026</td>
+            <td>$743.20</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Feb 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">Apex Waste Solutions</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Mon, Feb 3, 2026</td>
+            <td>Mon, Mar 2, 2026</td>
+            <td>$1,880.16</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Jan 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">SW Water Authority</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Wed, Jan 1, 2026</td>
+            <td>Fri, Jan 31, 2026</td>
+            <td>$1,189.55</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Jan 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">Clark Regional Wastewater District</span></td>
+            <td><span class="bill-link">East Annex (#123-55872011)</span></td>
+            <td>Wed, Jan 1, 2026</td>
+            <td>Fri, Jan 31, 2026</td>
+            <td>$698.80</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Jan 2026</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">Apex Waste Solutions</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Fri, Jan 3, 2026</td>
+            <td>Mon, Feb 2, 2026</td>
+            <td>$1,920.44</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Dec 2025</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">SW Water Authority</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Mon, Dec 1, 2025</td>
+            <td>Wed, Dec 31, 2025</td>
+            <td>$1,098.75</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Dec 2025</span></td>
+            <td><span class="bill-status-badge bill-status-entered">Entered</span></td>
+            <td><span class="bill-link">Clark Regional Wastewater District</span></td>
+            <td><span class="bill-link">East Annex (#123-55872011)</span></td>
+            <td>Mon, Dec 1, 2025</td>
+            <td>Wed, Dec 31, 2025</td>
+            <td>$724.30</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="bill-link">Dec 2025</span></td>
+            <td><span class="bill-status-badge bill-status-missing">Missing</span></td>
+            <td><span class="bill-link">Apex Waste Solutions</span></td>
+            <td><span class="bill-link">Main Building (#123-44102934)</span></td>
+            <td>Mon, Dec 1, 2025</td>
+            <td>Wed, Dec 31, 2025</td>
+            <td>—</td>
+            <td class="bills-actions-col">
+              <div class="bills-row-actions">
+                <button class="bills-row-btn" title="Review"><i class="fa-regular fa-pen-to-square"></i></button>
+                <button class="bills-row-btn" title="More options"><i class="fa-solid fa-ellipsis"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- /bills-table-wrap -->
+
+    <!-- Pagination row -->
+    <div class="pagination-row" id="paginationRow">
+      <span id="utilsRecordCount">Showing 1–5 of 5 records.</span>
+      <div class="records-per-page" id="recordsPerPage">
+        <span>Records per page:</span>
+        <div class="page-size-wrap">
+          <button class="page-size-trigger" id="pageSizeTrigger" onclick="togglePageSizeMenu(event)">
+            <span id="pageSizeLabel">20</span>
+            <i class="fa-solid fa-caret-up"></i>
+          </button>
+          <div class="page-size-menu" id="pageSizeMenu">
+            <div class="page-size-item selected" onclick="setPageSize(20)">20 per page</div>
+            <div class="page-size-item" onclick="setPageSize(50)">50 per page</div>
+            <div class="page-size-item" onclick="setPageSize(100)">100 per page</div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination-controls">
+        <button class="page-nav-btn" id="pagePrevBtn" onclick="prevPage()" title="Previous page"><i class="fa-solid fa-chevron-left"></i></button>
+        <span>Page</span>
+        <input class="page-input" id="pageInput" type="text" value="1"
+          onkeydown="if(event.key==='Enter') goToPage(parseInt(this.value))">
+        <span id="pageTotalSpan">of 1</span>
+        <button class="page-nav-btn" id="pageNextBtn" onclick="nextPage()" title="Next page"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+  </div><!-- /page-content -->
+</div><!-- /screenUtilities -->

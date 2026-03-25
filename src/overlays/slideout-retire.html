@@ -1,0 +1,18 @@
+<!-- ══════════════════════════════════════════════════
+     RETIRE PROVIDER SLIDEOUT
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="retireSlideoutOverlay" onclick="closeRetireSlideout()"></div>
+
+<div class="review-slideout-panel" id="retireSlideoutPanel">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Retire provider</div>
+  </div>
+  <div class="review-slideout-body">
+    <p class="retire-description">This will stop the tracking of missing bills and hide the provider in the list by default. All accounts and bills associated with this provider will also be retired.</p>
+    <div id="retireProviderDetails" style="display:flex;flex-direction:column;gap:16px;width:100%;"></div>
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="closeRetireSlideout()">Retire</button>
+    <button class="btn-tertiary" onclick="closeRetireSlideout()">Cancel</button>
+  </div>
+</div>

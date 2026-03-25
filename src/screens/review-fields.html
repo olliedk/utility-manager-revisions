@@ -1,0 +1,155 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 5 — REVIEW FIELDS SUMMARY (Step 3 of 4)
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenReviewFields">
+
+  <header class="content-header">
+    <h1 class="page-title">Review upload</h1>
+    <div class="header-actions">
+      <button class="header-icon-group" title="Notifications">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-count">0</span>
+      </button>
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+
+    <div class="review-fieldset">
+
+      <!-- Step indicator: 1✓ 2✓ 3 active 4 inactive -->
+      <div class="step-indicator">
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--active">3</div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--inactive">4</div>
+      </div>
+
+      <!-- Heading -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <h2 class="review-heading">Review data fields</h2>
+        <p class="review-subtext">Below is a summary of the data fields that we will track in FMX across bills for each provider. Clicking into a provider will allow you to review how we've mapped FMX fields to data from your bills and help ensure accuracy when you come to create reports. Custom fields can be created for additional data you want to record from your bills.</p>
+      </div>
+
+      <!-- Warning alert -->
+      <div class="inline-alert">
+        <div class="inline-alert-tag inline-alert-tag--warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="inline-alert-body inline-alert-body--warning">
+          <div class="inline-alert-text">
+            <ul style="padding-left:18px;margin:0;line-height:20px;">
+              <li>21 new data fields have been identified from your uploaded files.</li>
+              <li>2 new data fields could not be matched to an FMX field.</li>
+            </ul>
+          </div>
+          <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="review-toolbar">
+        <div class="review-toolbar-left">
+          <div class="review-toolbar-search">
+            <input type="text" placeholder="">
+            <div class="review-toolbar-search-addon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          </div>
+          <button class="review-toolbar-icon-btn">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filter</span>
+          </button>
+          <div class="review-toolbar-div"></div>
+        </div>
+        <div class="review-toolbar-right">
+          <div class="review-toolbar-div"></div>
+          <button class="review-toolbar-icon-btn">
+            <span style="display:flex;gap:3px;align-items:center;line-height:16px;">
+              <i class="fa-solid fa-sort"></i>
+              <i class="fa-solid fa-caret-down" style="font-size:11px;"></i>
+            </span>
+            <span>Sort</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="review-grid">
+
+        <!-- Header row -->
+        <div class="review-grid-header-row">
+          <div class="review-grid-header-cell review-grid-header-cell--provider">Provider <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--fields">Data fields <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--status">Status <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
+        </div>
+
+        <!-- Row 1: Maritime Energy (Electric) — Pending review -->
+        <div class="review-grid-row review-grid-row--white">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell review-grid-cell--provider">
+            <span class="review-grid-link" onclick="goToReviewFieldsDetail(0)">Maritime Energy (Electric)</span>
+            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--fields">12</div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" onclick="goToReviewFieldsDetail(0)" title="Review">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Row 2: Maritime Energy (Natural Gas) — Missing data -->
+        <div class="review-grid-row review-grid-row--striped">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell review-grid-cell--provider">
+            <span class="review-grid-link" onclick="goToReviewFieldsDetail(1)">Maritime Energy (Natural Gas)</span>
+            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--fields">9</div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--missing-data">Missing data</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" onclick="goToReviewFieldsDetail(1)" title="Review">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /review-grid -->
+
+      <!-- Pagination -->
+      <div class="review-pagination">
+        <span class="review-pagination-count">Showing 1–2 of 2 records.</span>
+        <div class="review-pagination-controls">
+          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+          <span class="review-pagination-page-label">Page</span>
+          <input class="review-pagination-input" type="text" value="1">
+          <span class="review-pagination-page-label">of 1</span>
+          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /review-fieldset -->
+
+    <!-- Footer: Back + Exit + Next -->
+    <div class="review-footer-actions">
+      <button class="btn-tertiary" onclick="goBackToReviewProviders()">Back</button>
+      <button class="btn-secondary" onclick="exitReview()">Exit</button>
+      <button class="btn-cta">Next</button>
+    </div>
+
+  </div><!-- /page-content -->
+
+</div><!-- /screenReviewFields -->

@@ -1,0 +1,178 @@
+<!-- ══════════════════════════════════════════════════
+     REVIEW PROVIDERS SLIDEOUTS
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="providerSlideoutOverlay" onclick="closeProviderSlideout()"></div>
+
+<!-- Pending review slideout (Row 1 — Maritime Energy) -->
+<div class="review-slideout-panel" id="providerPendingSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Review provider</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Info alert -->
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">
+          A provider name from your bills was matched to a new provider. Review the details below and save to confirm.
+        </div>
+        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div class="review-form-field">
+      <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" value="Maritime Energy">
+    </div>
+
+    <!-- Utility type (multi-select) -->
+    <div class="review-form-field">
+      <div class="review-form-label">Utility type <span class="review-form-label-required">*</span></div>
+      <div class="review-multiselect" id="pendingUtilitySelect">
+        <div class="review-multiselect-control" onclick="toggleMultiselect(event, 'pendingUtilitySelect')">
+          <div class="review-multiselect-tags" id="pendingUtilitySelectTags">
+            <span class="review-multiselect-tag">
+              <span class="review-multiselect-tag-text">Electric</span>
+              <button class="review-multiselect-tag-remove" onclick="removeMultiselectTag(event,'pendingUtilitySelect','Electric')"><i class="fa-solid fa-xmark"></i></button>
+            </span>
+          </div>
+          <i class="fa-solid fa-caret-down review-multiselect-caret"></i>
+        </div>
+        <div class="review-multiselect-dropdown" id="pendingUtilitySelectDropdown">
+          <label class="review-multiselect-option"><input type="checkbox" value="Electric" checked onchange="onMultiselectChange('pendingUtilitySelect')"> Electric</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Natural Gas" onchange="onMultiselectChange('pendingUtilitySelect')"> Natural Gas</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Water" onchange="onMultiselectChange('pendingUtilitySelect')"> Water</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Sewage" onchange="onMultiselectChange('pendingUtilitySelect')"> Sewage</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Other" onchange="onMultiselectChange('pendingUtilitySelect')"> Other</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing frequency -->
+    <div class="review-form-field">
+      <div class="review-form-label">Billing frequency <span class="review-form-label-required">*</span></div>
+      <select class="review-form-select">
+        <option value="monthly" selected>Monthly</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <!-- Split bills by sub-account -->
+    <div class="review-checkbox-row" style="padding-left:0">
+      <input type="checkbox" id="pendingSplitSubAccount">
+      <label for="pendingSplitSubAccount" style="text-decoration:underline dotted;text-underline-offset:2px;">Split bills by sub-account</label>
+    </div>
+
+    <!-- Dynamic tracking sections injected here -->
+    <div class="review-tracking-sections" id="pendingTrackingSections"></div>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="saveProvider('pending')">Save</button>
+    <button class="btn-secondary" onclick="saveAndNextProvider()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeProviderSlideout()">Cancel</button>
+  </div>
+</div>
+
+<!-- Missing data slideout (Row 2 — Maritime Energy / Natural Gas) -->
+<div class="review-slideout-panel" id="providerMissingSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Review provider</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Info alert -->
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">
+          A provider name from your bills was matched to a new provider. Review the details below and save to confirm.
+        </div>
+        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Error alert -->
+    <div class="inline-alert" id="providerErrorAlert">
+      <div class="inline-alert-tag inline-alert-tag--error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--error">
+        <div class="inline-alert-text">
+          The following required data is missing:
+          <ul style="padding-left:18px;margin-top:4px;line-height:20px;">
+            <li>Billing frequency</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div class="review-form-field">
+      <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" value="Maritime Energy">
+    </div>
+
+    <!-- Utility type (multi-select) -->
+    <div class="review-form-field">
+      <div class="review-form-label">Utility type <span class="review-form-label-required">*</span></div>
+      <div class="review-multiselect" id="missingUtilitySelect">
+        <div class="review-multiselect-control" onclick="toggleMultiselect(event, 'missingUtilitySelect')">
+          <div class="review-multiselect-tags" id="missingUtilitySelectTags">
+            <span class="review-multiselect-tag">
+              <span class="review-multiselect-tag-text">Natural Gas</span>
+              <button class="review-multiselect-tag-remove" onclick="removeMultiselectTag(event,'missingUtilitySelect','Natural Gas')"><i class="fa-solid fa-xmark"></i></button>
+            </span>
+          </div>
+          <i class="fa-solid fa-caret-down review-multiselect-caret"></i>
+        </div>
+        <div class="review-multiselect-dropdown" id="missingUtilitySelectDropdown">
+          <label class="review-multiselect-option"><input type="checkbox" value="Electric" onchange="onMultiselectChange('missingUtilitySelect')"> Electric</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Natural Gas" checked onchange="onMultiselectChange('missingUtilitySelect')"> Natural Gas</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Water" onchange="onMultiselectChange('missingUtilitySelect')"> Water</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Sewage" onchange="onMultiselectChange('missingUtilitySelect')"> Sewage</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Other" onchange="onMultiselectChange('missingUtilitySelect')"> Other</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing frequency (error state) -->
+    <div class="review-form-field">
+      <div class="review-form-label">Billing frequency <span class="review-form-label-required">*</span></div>
+      <select class="review-form-select review-form-select--error" id="billingFreqSelect" onchange="onBillingFreqChange(this)">
+        <option value="" disabled selected>Select interval</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="review-form-error-msg" id="billingFreqError">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Select a billing frequency
+      </div>
+    </div>
+
+    <!-- Split bills by sub-account -->
+    <div class="review-checkbox-row" style="padding-left:0">
+      <input type="checkbox" id="missingSplitSubAccount">
+      <label for="missingSplitSubAccount" style="text-decoration:underline dotted;text-underline-offset:2px;">Split bills by sub-account</label>
+    </div>
+
+    <!-- Dynamic tracking sections injected here -->
+    <div class="review-tracking-sections" id="missingTrackingSections"></div>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="saveProvider('missing')">Save</button>
+    <button class="btn-secondary" onclick="saveAndNextProvider()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeProviderSlideout()">Cancel</button>
+  </div>
+</div>
