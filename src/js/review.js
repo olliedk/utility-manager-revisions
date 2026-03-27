@@ -154,22 +154,35 @@ function closeAddCustomFieldSlideout() {
 }
 
 /* ── Review Providers slideouts ──────────────────── */
-function openProviderSlideout(type) {
+var _currentProviderRow = 0;
+var _providerRowTypes   = {}; // populated by renderReviewProvidersGrid()
+
+function openProviderSlideout(type, rowNum) {
+  _currentProviderRow = rowNum || 1;
   document.getElementById('providerSlideoutOverlay').classList.add('open');
   if (type === 'pending') {
     document.getElementById('providerPendingSlideout').classList.add('open');
     var c = document.getElementById('pendingTrackingSections');
     if (c && !c.children.length) initTrackingSections('pending');
-    // Show "Save & Next" only if the missing row is still unreviewed
-    var row2Badge = document.getElementById('providerRow2Badge');
-    var missingStillUnreviewed = row2Badge && !row2Badge.classList.contains('review-badge--reviewed');
-    document.getElementById('providerPendingSaveNext').style.display = missingStillUnreviewed ? '' : 'none';
+    var nextRow = _nextUnreviewedProviderRow(_currentProviderRow);
+    document.getElementById('providerPendingSaveNext').style.display = nextRow ? '' : 'none';
   } else {
     document.getElementById('providerMissingSlideout').classList.add('open');
     var c = document.getElementById('missingTrackingSections');
     if (c && !c.children.length) initTrackingSections('missing');
-    // Missing is always the last row — no "Save & Next"
+    var nextRow = _nextUnreviewedProviderRow(_currentProviderRow);
+    document.getElementById('providerMissingSaveNext') &&
+      (document.getElementById('providerMissingSaveNext').style.display = nextRow ? '' : 'none');
   }
+}
+
+function _nextUnreviewedProviderRow(afterRow) {
+  var total = Object.keys(_providerRowTypes).length;
+  for (var n = afterRow + 1; n <= total; n++) {
+    var badge = document.getElementById('providerRow' + n + 'Badge');
+    if (badge && !badge.classList.contains('review-badge--reviewed')) return n;
+  }
+  return null;
 }
 
 function closeProviderSlideout() {
@@ -180,26 +193,23 @@ function closeProviderSlideout() {
 
 function saveProvider(type) {
   if (type === 'missing' && !_validateMissingProvider()) return;
-  updateProviderRowUtilityTypes(type);
-  _markProviderReviewed(type);
+  updateProviderRowUtilityTypes(_currentProviderRow);
+  _markProviderReviewed(_currentProviderRow);
   closeProviderSlideout();
 }
 
 function saveAndNextProvider() {
-  var pendingOpen = document.getElementById('providerPendingSlideout').classList.contains('open');
-  var type = pendingOpen ? 'pending' : 'missing';
+  var type = _providerRowTypes[_currentProviderRow] || 'pending';
   if (type === 'missing' && !_validateMissingProvider()) return;
-  updateProviderRowUtilityTypes(type);
-  _markProviderReviewed(type);
+  updateProviderRowUtilityTypes(_currentProviderRow);
+  _markProviderReviewed(_currentProviderRow);
   closeProviderSlideout();
-  if (pendingOpen) {
-    openProviderSlideout('missing');
-  }
+  var nextRow = _nextUnreviewedProviderRow(_currentProviderRow);
+  if (nextRow) openProviderSlideout(_providerRowTypes[nextRow] || 'pending', nextRow);
 }
 
-function _markProviderReviewed(type) {
-  var badgeId = type === 'pending' ? 'providerRow1Badge' : 'providerRow2Badge';
-  var badge = document.getElementById(badgeId);
+function _markProviderReviewed(rowNum) {
+  var badge = document.getElementById('providerRow' + rowNum + 'Badge');
   if (badge) {
     badge.className = 'review-badge review-badge--reviewed';
     badge.textContent = 'Reviewed';
@@ -220,10 +230,11 @@ function _validateMissingProvider() {
   return true;
 }
 
-function updateProviderRowUtilityTypes(slideoutId) {
-  var cellId = slideoutId === 'pending' ? 'providerRow1UtilityCell' : 'providerRow2UtilityCell';
-  var cell = document.getElementById(cellId);
+function updateProviderRowUtilityTypes(rowNum) {
+  var cell = document.getElementById('providerRow' + rowNum + 'UtilityCell');
   if (!cell) return;
+  var type = _providerRowTypes[rowNum] || 'pending';
+  var slideoutId = type;
   var dropdown = document.getElementById(slideoutId + 'UtilitySelectDropdown');
   var selected = [];
   dropdown.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
@@ -432,7 +443,7 @@ function closeIgnoreProviderModal() {
 
 /* ── Review Accounts slideouts ──────────────────── */
 var _currentAccountRow = 0;
-var _accountRowTypes = {1:'pending',2:'pending',3:'pending',4:'pending',5:'pending',6:'pending',7:'pending',8:'missing',9:'missing',10:'pending'};
+var _accountRowTypes = {}; // populated by renderReviewAccountsGrid()
 
 function openAccountSlideout(type, rowNum) {
   _currentAccountRow = rowNum;
@@ -448,7 +459,8 @@ function openAccountSlideout(type, rowNum) {
 }
 
 function _nextUnreviewedAccountRow(afterRow) {
-  for (var n = afterRow + 1; n <= 10; n++) {
+  var total = Object.keys(_accountRowTypes).length;
+  for (var n = afterRow + 1; n <= total; n++) {
     var badge = document.getElementById('accountRow' + n + 'Badge');
     if (badge && !badge.classList.contains('review-badge--reviewed')) return n;
   }
@@ -500,13 +512,7 @@ function saveAndNextAccount() {
 
 /* ── Review Sub-accounts ─────────────────────────── */
 var _currentSubAccountRow = 0;
-var _subAccountData = {
-  1: { num: 'CE-000456-01', building: 'camden-elem' },
-  2: { num: 'CE-000456-02', building: 'camden-mid' },
-  3: { num: 'CE-000456-03', building: 'rockport-high' },
-  4: { num: 'CE-000456-04', building: 'admin' },
-  5: { num: 'CE-000456-05', building: 'gym' }
-};
+var _subAccountData = {}; // populated by renderReviewSubAccountsGrid()
 
 function _nextUnreviewedSubAccountRow(afterRow) {
   var total = Object.keys(_subAccountData).length;
@@ -557,10 +563,23 @@ function saveAndNextSubAccount() {
 }
 
 function saveReviewSubAccounts() {
-  var badge = document.getElementById('accountRow11Badge');
-  if (badge) {
-    badge.className = 'review-badge review-badge--reviewed';
-    badge.textContent = 'Reviewed';
+  // Find the row number of the active consolidated account
+  var scenarioNum = protoState.currentScenario || 1;
+  var ci = protoState.activeConsolidatedAccount || 0;
+  var allRows = getScenarioAccountRows(scenarioNum);
+  var rowNum = null;
+  for (var i = 0; i < allRows.length; i++) {
+    if (allRows[i].consolidated && allRows[i].consolidatedIndex === ci) {
+      rowNum = allRows[i].rowNum;
+      break;
+    }
+  }
+  if (rowNum) {
+    var badge = document.getElementById('accountRow' + rowNum + 'Badge');
+    if (badge) {
+      badge.className = 'review-badge review-badge--reviewed';
+      badge.textContent = 'Reviewed';
+    }
   }
   goBackToReviewAccounts();
 }

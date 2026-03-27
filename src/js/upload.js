@@ -1,5 +1,6 @@
 /* ── Submit bills ────────────────────────────────── */
 function submitBills() {
+  if (!protoState.currentScenario) protoState.currentScenario = 1;
   goToUtilities();
   document.getElementById('uploadAlert').classList.add('visible');
 }
@@ -45,6 +46,8 @@ function removeFile(num) {
 }
 
 function resetUploadState() {
+  protoState.currentScenario = null;
+  renderScenarioSelector();
   filesAdded = false;
   document.getElementById('fileList').innerHTML = `
     <div class="file-row" id="fileRow1">

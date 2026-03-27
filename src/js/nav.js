@@ -45,6 +45,7 @@ function goToReviewProviders() {
   });
   document.getElementById('screenReviewBuildings').classList.remove('active');
   document.getElementById('screenReviewProviders').classList.add('active');
+  renderReviewProvidersGrid();
 }
 
 function goBackToReviewBuildings() {
@@ -56,6 +57,7 @@ function goBackToReviewBuildings() {
 function goToReviewFields() {
   document.getElementById('screenReviewProviders').classList.remove('active');
   document.getElementById('screenReviewFields').classList.add('active');
+  renderReviewFieldsGrid();
 }
 
 function goBackToReviewProviders() {
@@ -67,6 +69,8 @@ function goBackToReviewProviders() {
 function goToReviewAccounts() {
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewAccounts').classList.add('active');
+  protoState.reviewAccountsPage = 1;
+  renderReviewAccountsGrid();
 }
 
 function goBackToReviewFields() {
@@ -75,9 +79,12 @@ function goBackToReviewFields() {
 }
 
 /* ── Review Sub-accounts screen ─────────────────── */
-function goToReviewSubAccounts() {
+function goToReviewSubAccounts(consolidatedIndex) {
+  var ci = (typeof consolidatedIndex === 'number') ? consolidatedIndex : 0;
+  protoState.activeConsolidatedAccount = ci;
   document.getElementById('screenReviewAccounts').classList.remove('active');
   document.getElementById('screenReviewSubAccounts').classList.add('active');
+  renderReviewSubAccountsGrid(ci);
 }
 
 function goBackToReviewAccounts() {
@@ -103,14 +110,13 @@ function goToBulkUploadFromComplete() {
 }
 
 /* ── Review Fields Detail screen ────────────────── */
-var _reviewFieldsProviders = [
-  'Maritime Energy (Electric)',
-  'Maritime Energy (Natural Gas)'
-];
+var _reviewFieldsProviders = []; // populated by renderReviewFieldsGrid() via setReviewFieldsProviders()
 
 function goToReviewFieldsDetail(providerIndex) {
-  document.querySelectorAll('.review-fields-detail-provider').forEach(function(el, i) {
-    el.style.display = (i === providerIndex) ? 'flex' : 'none';
+  var panels = document.querySelectorAll('.review-fields-detail-provider');
+  var panelIndex = panels.length > 0 ? providerIndex % panels.length : 0;
+  panels.forEach(function(el, i) {
+    el.style.display = (i === panelIndex) ? 'flex' : 'none';
   });
   var name = _reviewFieldsProviders[providerIndex] || 'Provider';
   var title = name + ' data fields';

@@ -94,6 +94,8 @@
 <script src="src/js/interactions.js"></script>
 <script src="src/js/upload.js"></script>
 <script src="src/js/review.js"></script>
+<script src="src/js/scenarios.js"></script>
+<script src="src/js/review-render.js"></script>
 <script src="src/js/proto-data-selector.js"></script>
 
 <script>
@@ -139,6 +141,7 @@
     document.getElementById('main').innerHTML = screenHtml;
     document.getElementById('overlays').innerHTML = overlayHtml;
     renderUtilities();
+    renderScenarioSelector();
   }).catch(function(err) {
     console.error('Fragment load error:', err);
   });

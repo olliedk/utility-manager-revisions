@@ -28,6 +28,14 @@
   <div class="upload-outer">
     <div class="upload-fieldset">
 
+      <!-- Scenario selector -->
+      <div class="scenario-selector" id="scenarioSelector">
+        <div class="scenario-selector-label">Select a testing scenario</div>
+        <div class="scenario-card-row" id="scenarioCardRow"><!-- rendered by renderScenarioSelector() --></div>
+      </div>
+
+      <div class="upload-divider"></div>
+
       <!-- Upload zone -->
       <div class="upload-zone" id="uploadZone"
            onclick="simulateUpload()"
