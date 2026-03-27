@@ -175,105 +175,52 @@
 
 .file-remove:hover { background: #fff0f0; color: #ce4b12; }
 
-/* ── Scenario selector ────────────────────────────── */
-.scenario-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.scenario-selector-label {
-  font-size: var(--font-body);
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.scenario-card-row {
-  display: flex;
-  gap: 12px;
-}
-
-.scenario-card {
-  flex: 1;
-  border: 2px solid var(--divider);
-  border-radius: var(--radius-m);
-  padding: 16px;
-  cursor: pointer;
-  transition: border-color 0.12s, background 0.12s;
+/* ── Upload zone wrapper (for dropdown positioning) ── */
+.upload-zone-wrap {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  max-width: 560px;
 }
 
-.scenario-card:hover {
-  border-color: #87c8d9;
-  background: #f7fbfc;
-}
-
-.scenario-card--selected {
-  border-color: var(--cta-primary-bg);
-  background: #eef7fa;
-}
-
-.scenario-card-check {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  color: var(--cta-primary-bg);
-  font-size: 18px;
+/* ── Scenario dropdown ────────────────────────────── */
+.scenario-dropdown {
   display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-m);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  z-index: 200;
+  overflow: hidden;
 }
 
-.scenario-card--selected .scenario-card-check { display: block; }
+.scenario-dropdown.open { display: block; }
 
-.scenario-card-number {
-  font-size: var(--font-s);
-  font-weight: 600;
-  color: var(--cta-primary-bg);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 16px;
+.scenario-dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--divider);
+  transition: background 0.1s;
 }
 
-.scenario-card-title {
+.scenario-dropdown-item:last-child { border-bottom: none; }
+
+.scenario-dropdown-item:hover { background: #f4f9fb; }
+
+.scenario-dropdown-title {
   font-size: var(--font-body);
   font-weight: 600;
   color: var(--text-color);
   line-height: 20px;
-  padding-right: 24px;
 }
 
-.scenario-card-desc {
+.scenario-dropdown-meta {
   font-size: var(--font-s);
   color: var(--text-secondary);
   line-height: 18px;
-}
-
-.scenario-card-stats {
-  list-style: none;
-  padding: 0;
-  margin: 4px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.scenario-card-stats li {
-  font-size: var(--font-s);
-  color: var(--text-secondary);
-  line-height: 18px;
-}
-
-.scenario-card-stats li::before {
-  content: "— ";
-  color: var(--cta-primary-bg);
-}
-
-.upload-divider {
-  height: 1px;
-  background: var(--divider);
-  margin: 0 -24px;
+  margin-top: 2px;
 }
 
 /* ── Footer actions (left-aligned) ───────────────── */
