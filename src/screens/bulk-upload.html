@@ -1,41 +1,34 @@
 <!-- ════════════════════════════════════════════════
-     SCREEN 2 — BULK UPLOAD BILLS
+     SCREEN 2 — BULK UPLOAD FILES
 ════════════════════════════════════════════════ -->
 <div class="screen" id="screenBulkUpload">
 
   <header class="content-header tall">
     <div class="content-header-row">
-      <h1 class="page-title">Bulk upload bills</h1>
+      <h1 class="page-title">Bulk upload files</h1>
       <div class="header-actions">
         <button class="header-icon-group" title="Notifications">
           <i class="fa-regular fa-bell"></i>
           <span class="notif-count">0</span>
         </button>
-        <div class="avatar" title="User profile">
-          <img
-            src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4"
-            alt="User avatar"
-          >
+        <div class="avatar-wrap">
+          <div class="avatar" title="User profile">
+            <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+          </div>
         </div>
       </div>
     </div>
     <nav class="breadcrumbs">
       <a href="#" onclick="goToUtilities(); return false;">Utilities</a>
       <i class="fa-solid fa-chevron-right"></i>
-      <span>Bulk upload bills</span>
+      <span>Bulk upload files</span>
     </nav>
   </header>
 
   <div class="upload-outer">
+    <div class="upload-fieldset">
 
-    <div style="width:560px;margin-bottom:4px;">
-      <a href="index.html" class="back-link">
-        <i class="fa-solid fa-arrow-left"></i> Back to index
-      </a>
-    </div>
-
-    <div class="upload-inner">
-
+      <!-- Upload zone -->
       <div class="upload-zone" id="uploadZone"
            onclick="simulateUpload()"
            ondragover="event.preventDefault(); this.classList.add('drag-over')"
@@ -51,11 +44,37 @@
         </div>
       </div>
 
+      <!-- Instructions — shown by default, hidden once files are added -->
+      <div class="upload-steps" id="uploadSteps">
+        <div class="upload-step">
+          <div class="upload-step-num">1</div>
+          <div class="upload-step-body">
+            <div class="upload-step-title">Upload your files</div>
+            <div class="upload-step-desc">Drop your utility bills here in pdf or csv format.</div>
+          </div>
+        </div>
+        <div class="upload-step">
+          <div class="upload-step-num">2</div>
+          <div class="upload-step-body">
+            <div class="upload-step-title">Wait for processing</div>
+            <div class="upload-step-desc">We will automatically review and add your bills to FMX and let you know when we're done.</div>
+          </div>
+        </div>
+        <div class="upload-step">
+          <div class="upload-step-num">3</div>
+          <div class="upload-step-body">
+            <div class="upload-step-title">Review the details</div>
+            <div class="upload-step-desc">If we are missing providers or accounts we will add them to FMX using data from your bills and let you know so you can review.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- File list — hidden by default, shown once files are added -->
       <div class="file-list" id="fileList" style="display:none;">
         <div class="file-row" id="fileRow1">
           <div class="file-display">
             <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
-            <span class="file-display-name">Maritime_Energy_Invoice_123456.csv</span>
+            <span class="file-display-name">Maritime_Energy_2025_Invoice_Energy.csv</span>
           </div>
           <button class="file-remove" onclick="removeFile(1)" title="Remove file">
             <i class="fa-solid fa-xmark"></i>
@@ -64,7 +83,7 @@
         <div class="file-row" id="fileRow2">
           <div class="file-display">
             <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
-            <span class="file-display-name">Maritime_Gas_Invoice_123456.csv</span>
+            <span class="file-display-name">Maritime_Energy_2025_Invoice_Gas.csv</span>
           </div>
           <button class="file-remove" onclick="removeFile(2)" title="Remove file">
             <i class="fa-solid fa-xmark"></i>
@@ -72,12 +91,16 @@
         </div>
       </div>
 
-      <div class="button-group" id="uploadActions" style="display:none;">
-        <button class="btn-cta" onclick="submitBills()">Submit</button>
-        <button class="btn-tertiary" onclick="goToUtilities()">Back</button>
-      </div>
+    </div><!-- /upload-fieldset -->
 
+    <!-- Actions — outside fieldset, left-aligned -->
+    <div class="upload-footer">
+      <div id="uploadActions" style="display:none;">
+        <button class="btn-cta" onclick="submitBills()">Submit</button>
+      </div>
+      <button class="btn-tertiary" onclick="goToUtilities()">Back</button>
     </div>
-  </div>
+
+  </div><!-- /upload-outer -->
 
 </div><!-- /screenBulkUpload -->

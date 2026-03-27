@@ -22,20 +22,26 @@ function exitReview() {
   document.getElementById('screenReviewProviders').classList.remove('active');
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.remove('active');
+  document.getElementById('screenReviewAccounts').classList.remove('active');
+  document.getElementById('screenReviewComplete').classList.remove('active');
   document.getElementById('screenUtilities').classList.add('active');
-  // Ensure the warning banner is visible with the review link
+  // Restore review-required banner
   var banner = document.getElementById('uploadAlert');
-  var icon   = document.getElementById('uploadAlertIcon');
-  var text   = document.getElementById('uploadAlertText');
-  var btn    = document.getElementById('uploadAlertCompleteBtn');
-  banner.classList.add('visible', 'alert-banner--warning');
-  icon.className = 'fa-solid fa-triangle-exclamation alert-banner-icon';
-  text.innerHTML = '1 building, 2 providers, and 2 accounts require review before 24 new bills can be added. <a href="#" onclick="goToReviewBuildings(); return false;" style="color:var(--hyperlink);font-weight:600;">Start the review here.</a>';
-  btn.style.display = 'none';
+  banner.classList.add('visible', 'alert-banner--review');
+  document.getElementById('uploadAlertTitle').textContent = 'Action required';
+  document.getElementById('uploadAlertSub').textContent = '1 building, 2 providers, and 2 accounts require review before 24 new bills can be added.';
+  document.getElementById('uploadAlertEnd').innerHTML = '<button class="alert-banner-review-btn" onclick="goToReviewBuildings()">Review</button>';
 }
 
 /* ── Review Providers screen ─────────────────────── */
 function goToReviewProviders() {
+  [1, 2].forEach(function(n) {
+    var badge = document.getElementById('buildingRow' + n + 'Badge');
+    if (badge) {
+      badge.className = 'review-badge review-badge--reviewed';
+      badge.textContent = 'Reviewed';
+    }
+  });
   document.getElementById('screenReviewBuildings').classList.remove('active');
   document.getElementById('screenReviewProviders').classList.add('active');
 }
@@ -56,6 +62,34 @@ function goBackToReviewProviders() {
   document.getElementById('screenReviewProviders').classList.add('active');
 }
 
+/* ── Review Accounts screen ──────────────────────── */
+function goToReviewAccounts() {
+  document.getElementById('screenReviewFields').classList.remove('active');
+  document.getElementById('screenReviewAccounts').classList.add('active');
+}
+
+function goBackToReviewFields() {
+  document.getElementById('screenReviewAccounts').classList.remove('active');
+  document.getElementById('screenReviewFields').classList.add('active');
+}
+
+/* ── Review Complete screen ──────────────────────── */
+function goToReviewComplete() {
+  document.getElementById('screenReviewAccounts').classList.remove('active');
+  document.getElementById('screenReviewComplete').classList.add('active');
+}
+
+function doneReviewComplete() {
+  document.getElementById('screenReviewComplete').classList.remove('active');
+  document.getElementById('screenUtilities').classList.add('active');
+}
+
+function goToBulkUploadFromComplete() {
+  document.getElementById('screenReviewComplete').classList.remove('active');
+  document.getElementById('screenBulkUpload').classList.add('active');
+  resetUploadState();
+}
+
 /* ── Review Fields Detail screen ────────────────── */
 var _reviewFieldsProviders = [
   'Maritime Energy (Electric)',
@@ -71,6 +105,9 @@ function goToReviewFieldsDetail(providerIndex) {
   document.getElementById('reviewFieldsDetailTitle').textContent = title;
   document.getElementById('reviewFieldsDetailBreadcrumb').textContent = title;
   document.getElementById('screenReviewFieldsDetail').dataset.providerIndex = providerIndex;
+  var total = document.querySelectorAll('.review-fields-detail-provider').length;
+  var saveNext = document.getElementById('fieldsDetailSaveNext');
+  if (saveNext) saveNext.style.display = (providerIndex + 1 < total) ? '' : 'none';
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.add('active');
 }
@@ -83,6 +120,7 @@ function goBackToReviewFieldsSummary() {
 function saveAndNextProviderFields() {
   var screen = document.getElementById('screenReviewFieldsDetail');
   var current = parseInt(screen.dataset.providerIndex || '0', 10);
+  _markFieldsRowReviewed(current);
   var total = document.querySelectorAll('.review-fields-detail-provider').length;
   if (current + 1 < total) {
     goToReviewFieldsDetail(current + 1);

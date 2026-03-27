@@ -87,7 +87,8 @@
 
   </div>
   <div class="review-slideout-footer">
-    <button class="btn-cta" onclick="closeReviewSlideout()">Save</button>
+    <button class="btn-cta" onclick="saveBuildingReview('existing')">Save</button>
+    <button class="btn-secondary" id="buildingExistingSaveNext" onclick="saveAndNextBuilding()">Save &amp; Next</button>
     <button class="btn-tertiary" onclick="closeReviewSlideout()">Cancel</button>
   </div>
 </div>
@@ -190,7 +191,8 @@
 
   </div>
   <div class="review-slideout-footer">
-    <button class="btn-cta" onclick="closeReviewSlideout()">Save</button>
+    <button class="btn-cta" onclick="saveBuildingReview('new')">Save</button>
+    <button class="btn-secondary" id="buildingNewSaveNext" style="display:none;" onclick="saveAndNextBuilding()">Save &amp; Next</button>
     <button class="btn-tertiary" onclick="closeReviewSlideout()">Cancel</button>
   </div>
 </div>

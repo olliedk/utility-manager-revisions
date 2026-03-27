@@ -76,15 +76,14 @@
 .dropdown-item:hover { background: #f5f5f5; }
 
 /* ═══════════════════════════════════════════════════
-   ALERT BANNER (info + warning variants)
+   ALERT BANNER (upload success → review required)
 ═══════════════════════════════════════════════════ */
 .alert-banner {
   display: none;
   align-items: center;
-  gap: 12px;
-  background: #e1f4f8;
-  border-left: 4px solid #0d7f9b;
-  padding: 10px 16px 10px 20px;
+  gap: 24px;
+  background: #ccedd1;
+  padding: 8px 32px;
   font-size: var(--font-body);
   color: var(--text-color);
   flex-shrink: 0;
@@ -92,38 +91,63 @@
 
 .alert-banner.visible { display: flex; }
 
-.alert-banner--warning {
-  background: #fef3e2;
-  border-left-color: #c47f17;
+/* Review-required state (blue) */
+.alert-banner--review { background: #f0f5f7; }
+
+/* Stacked text body */
+.alert-banner-body { flex: 1; display: flex; flex-direction: column; padding: 4px 0; }
+
+.alert-banner-title {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--text-color);
+  line-height: 20px;
 }
 
-.alert-banner-icon {
-  color: #0d7f9b;
-  font-size: 16px;
+.alert-banner-sub {
+  font-size: var(--font-body);
+  color: var(--text-color);
+  line-height: 20px;
+}
+
+/* Right-side actions */
+.alert-banner-end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   flex-shrink: 0;
 }
 
-.alert-banner--warning .alert-banner-icon {
-  color: #c47f17;
-}
-
-.alert-banner-text { flex: 1; line-height: 1.55; }
-
-.alert-banner-action {
+/* "Review" button (blue banner) */
+.alert-banner-review-btn {
   background: none;
-  border: 1px solid #0d7f9b;
+  border: 1px solid #074555;
   border-radius: var(--radius-s);
-  color: #0d7f9b;
+  color: #074555;
   cursor: pointer;
   font-family: inherit;
-  font-size: var(--font-s);
+  font-size: var(--font-xs);
   font-weight: 600;
-  padding: 4px 12px;
+  padding: 8px 12px;
+  line-height: 16px;
   flex-shrink: 0;
-  transition: background 0.12s;
 }
+.alert-banner-review-btn:hover { background: rgba(7,69,85,0.06); }
 
-.alert-banner-action:hover { background: rgba(13,127,155,0.08); }
+/* "Complete processing" prototype button (green banner) */
+.alert-banner-action {
+  background: none;
+  border: 1px solid #2d7a3a;
+  border-radius: var(--radius-s);
+  color: #2d7a3a;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  padding: 4px 8px;
+  flex-shrink: 0;
+}
+.alert-banner-action:hover { background: rgba(45,122,58,0.08); }
 
 .alert-banner-dismiss {
   background: none;
@@ -134,7 +158,6 @@
   padding: 2px 4px;
   flex-shrink: 0;
 }
-
 .alert-banner-dismiss:hover { color: var(--text-color); }
 
 /* ═══════════════════════════════════════════════════

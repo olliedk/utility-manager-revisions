@@ -1,0 +1,99 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 7 — REVIEW COMPLETE (Upload success)
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenReviewComplete">
+
+  <header class="content-header">
+    <h1 class="page-title">Review upload</h1>
+    <div class="header-actions">
+      <button class="header-icon-group" title="Notifications">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-count">0</span>
+      </button>
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+
+    <div class="review-fieldset">
+
+      <!-- Step indicator: all 4 completed -->
+      <div class="step-indicator">
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+        <div class="step-indicator-line"></div>
+        <div class="step-indicator-step step-indicator-step--completed"><i class="fa-solid fa-check" style="font-size:12px;"></i></div>
+      </div>
+
+      <!-- Success message -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <h2 class="review-heading">All providers and accounts have been successfully set up!</h2>
+        <p class="review-subtext">There are a few next steps you can take to make the most of utilities.</p>
+      </div>
+
+      <!-- Divider -->
+      <div class="review-form-divider"></div>
+
+      <!-- Next steps -->
+      <div class="review-complete-steps">
+
+        <!-- Step 1: Review bills -->
+        <div class="review-complete-step">
+          <div class="review-complete-step-icon">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <div class="review-complete-step-body">
+            <div class="review-complete-step-title">Review your bills</div>
+            <p class="review-subtext">Your individual bills have been automatically processed and populated based on the configuration at provider and account level, but it's important to check that all bill info has been added correctly.</p>
+          </div>
+          <button class="btn-secondary">Review bills</button>
+        </div>
+
+        <div class="review-form-divider"></div>
+
+        <!-- Step 2: Analyze data -->
+        <div class="review-complete-step">
+          <div class="review-complete-step-icon">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <div class="review-complete-step-body">
+            <div class="review-complete-step-title">Analyze your data</div>
+            <p class="review-subtext">Use our Reporting product to set up dashboards to track the efficiency and cost of your utilities.</p>
+          </div>
+          <button class="btn-secondary">View Reporting</button>
+        </div>
+
+        <div class="review-form-divider"></div>
+
+        <!-- Step 3: Add more bills -->
+        <div class="review-complete-step">
+          <div class="review-complete-step-icon">
+            <i class="fa-solid fa-file-import"></i>
+          </div>
+          <div class="review-complete-step-body">
+            <div class="review-complete-step-title">Add more bills</div>
+            <p class="review-subtext">Bills from providers and accounts already in FMX can be added quickly and efficiently.</p>
+          </div>
+          <button class="btn-secondary" onclick="goToBulkUploadFromComplete()">Upload bills</button>
+        </div>
+
+      </div><!-- /review-complete-steps -->
+
+    </div><!-- /review-fieldset -->
+
+    <!-- Footer -->
+    <div class="review-footer-actions">
+      <button class="btn-cta" onclick="doneReviewComplete()">Done</button>
+    </div>
+
+  </div><!-- /page-content -->
+
+</div><!-- /screenReviewComplete -->

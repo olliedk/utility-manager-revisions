@@ -1,0 +1,249 @@
+<!-- ══════════════════════════════════════════════════
+     REVIEW ACCOUNTS SLIDEOUTS
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="accountSlideoutOverlay" onclick="closeAccountSlideout()"></div>
+
+<!-- ── Pending review slideout ──────────────────── -->
+<div class="review-slideout-panel" id="accountPendingSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Review account</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Info alert -->
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">
+          This new account has been suggested to link to an unknown account found in your uploaded files. You can also <a class="review-form-link" href="#">map the account from your files to an existing one in FMX</a> instead.
+        </div>
+        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Account # -->
+    <div class="review-form-field">
+      <div class="review-form-label">Account # <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" value="614-44102934">
+    </div>
+
+    <!-- Account nickname -->
+    <div class="review-form-field">
+      <div class="review-form-label">Account nickname</div>
+      <input class="review-form-input" type="text" value="Main Building">
+    </div>
+
+    <!-- Bill tracking start -->
+    <div class="review-form-field">
+      <div class="review-form-label">Bill tracking start <span class="review-form-label-required">*</span></div>
+      <div class="review-form-input-wrap">
+        <input type="text" value="January 2025">
+        <div class="review-form-input-addon"><i class="fa-regular fa-calendar-days"></i></div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- Meters section -->
+    <h2 class="review-track-heading">Meters</h2>
+
+    <div id="pendingMetersContainer" class="review-meter-list">
+
+      <!-- Meter 1 -->
+      <div class="review-meter-entry">
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
+            <input class="review-form-input" type="text" value="A-00192945">
+          </div>
+          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="review-form-field">
+          <div class="review-form-label">Meter name</div>
+          <input class="review-form-input" type="text" value="">
+        </div>
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
+            <select class="review-form-select">
+              <option value="main" selected>Main building</option>
+              <option value="east">East Annex</option>
+              <option value="west">West Annex</option>
+            </select>
+          </div>
+          <div class="review-form-field">
+            <div class="review-form-label">Location</div>
+            <select class="review-form-select">
+              <option value=""></option>
+              <option value="first">First floor</option>
+              <option value="second">Second floor</option>
+            </select>
+          </div>
+          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Meter 2 -->
+      <div class="review-meter-entry">
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
+            <input class="review-form-input" type="text" value="A-00192840">
+          </div>
+          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="review-form-field">
+          <div class="review-form-label">Meter name</div>
+          <input class="review-form-input" type="text" value="">
+        </div>
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
+            <select class="review-form-select">
+              <option value="main" selected>Main building</option>
+              <option value="east">East Annex</option>
+              <option value="west">West Annex</option>
+            </select>
+          </div>
+          <div class="review-form-field">
+            <div class="review-form-label">Location</div>
+            <select class="review-form-select">
+              <option value=""></option>
+              <option value="first">First floor</option>
+              <option value="second">Second floor</option>
+            </select>
+          </div>
+          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /pendingMetersContainer -->
+
+    <!-- Add meter -->
+    <button class="btn-secondary" onclick="addMeterEntry('pendingMetersContainer')">Add meter</button>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="saveAccount('pending')">Save</button>
+    <button class="btn-secondary" id="accountPendingSaveNext" onclick="saveAndNextAccount()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeAccountSlideout()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Missing data slideout ─────────────────────── -->
+<div class="review-slideout-panel" id="accountMissingSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Review account</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Info alert -->
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">
+          This new account has been suggested to link to an unknown account found in your uploaded files. You can also <a class="review-form-link" href="#">map the account from your files to an existing one in FMX</a> instead.
+        </div>
+        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Error alert -->
+    <div class="inline-alert" id="accountMissingErrorAlert">
+      <div class="inline-alert-tag inline-alert-tag--error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--error">
+        <div class="inline-alert-text">
+          The following required data is missing:
+          <ul style="padding-left:18px;margin-top:4px;line-height:20px;">
+            <li>Bill tracking start</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account # -->
+    <div class="review-form-field">
+      <div class="review-form-label">Account # <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" value="614-99200033">
+    </div>
+
+    <!-- Account nickname -->
+    <div class="review-form-field">
+      <div class="review-form-label">Account nickname</div>
+      <input class="review-form-input" type="text" value="Library">
+    </div>
+
+    <!-- Bill tracking start (error state) -->
+    <div class="review-form-field" id="missingBillTrackingField">
+      <div class="review-form-label review-form-label--error">Bill tracking start <span class="review-form-label-required">*</span></div>
+      <div class="review-form-input-wrap review-form-input-wrap--error">
+        <input type="text" id="missingBillTrackingInput" placeholder="" oninput="onBillTrackingStartChange(this)">
+        <div class="review-form-input-addon review-form-input-addon--error"><i class="fa-regular fa-calendar-days"></i></div>
+      </div>
+      <div class="review-form-error-msg" id="missingBillTrackingError">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Enter a bill tracking start
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- Meters section -->
+    <h2 class="review-track-heading">Meters</h2>
+
+    <div id="missingMetersContainer" class="review-meter-list">
+
+      <!-- Meter 1 -->
+      <div class="review-meter-entry">
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
+            <input class="review-form-input" type="text" value="A-00174319">
+          </div>
+          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="review-form-field">
+          <div class="review-form-label">Meter name</div>
+          <input class="review-form-input" type="text" value="">
+        </div>
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
+            <select class="review-form-select">
+              <option value="main" selected>Main building</option>
+              <option value="east">East Annex</option>
+              <option value="west">West Annex</option>
+            </select>
+          </div>
+          <div class="review-form-field">
+            <div class="review-form-label">Location</div>
+            <select class="review-form-select">
+              <option value=""></option>
+              <option value="first">First floor</option>
+              <option value="second">Second floor</option>
+            </select>
+          </div>
+          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /missingMetersContainer -->
+
+    <!-- Add meter -->
+    <button class="btn-secondary" onclick="addMeterEntry('missingMetersContainer')">Add meter</button>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="saveAccount('missing')">Save</button>
+    <button class="btn-secondary" id="accountMissingSaveNext" onclick="saveAndNextAccount()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeAccountSlideout()">Cancel</button>
+  </div>
+</div>

@@ -97,13 +97,13 @@
           <div class="review-grid-accent"></div>
           <div class="review-grid-cell review-grid-cell--building">
             <i class="fa-regular fa-building"></i>
-            <span class="review-grid-link">Camden Elementary School</span>
+            <span class="review-grid-link" onclick="openReviewSlideout('existing')">Camden Elementary School</span>
           </div>
           <div class="review-grid-cell review-grid-cell--address">
             <span class="review-grid-text">11 Children's Way, Rockport, ME</span>
           </div>
           <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending">Pending review</span>
+            <span class="review-badge review-badge--pending" id="buildingRow1Badge">Pending review</span>
           </div>
           <div class="review-grid-cell review-grid-cell--actions">
             <button class="review-icon-btn" onclick="openReviewSlideout('existing')" title="Review">
@@ -117,14 +117,14 @@
           <div class="review-grid-accent"></div>
           <div class="review-grid-cell review-grid-cell--building">
             <i class="fa-regular fa-building"></i>
-            <span class="review-grid-link">Camden Middle School</span>
+            <span class="review-grid-link" onclick="openReviewSlideout('new')">Camden Middle School</span>
             <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
           </div>
           <div class="review-grid-cell review-grid-cell--address">
             <span class="review-grid-text">34 Knowlton St, Camden, ME</span>
           </div>
           <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending">Pending review</span>
+            <span class="review-badge review-badge--pending" id="buildingRow2Badge">Pending review</span>
           </div>
           <div class="review-grid-cell review-grid-cell--actions">
             <button class="review-icon-btn" onclick="openReviewSlideout('new')" title="Review">

@@ -74,14 +74,16 @@
     </div>
   </header>
 
-  <!-- Alert banner (shown after submit; transitions from info → warning) -->
+  <!-- Alert banner (green upload state → blue review state) -->
   <div class="alert-banner" id="uploadAlert">
-    <i class="fa-solid fa-circle-info alert-banner-icon" id="uploadAlertIcon"></i>
-    <span class="alert-banner-text" id="uploadAlertText">2 bills are currently being uploaded to Utilities. You will receive an email when processing is complete.</span>
-    <button class="alert-banner-action" id="uploadAlertCompleteBtn" onclick="completeProcessing()" title="Simulate processing complete">Complete processing</button>
-    <button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+    <div class="alert-banner-body">
+      <div class="alert-banner-title" id="uploadAlertTitle">2 files have been successfully uploaded</div>
+      <div class="alert-banner-sub" id="uploadAlertSub">They are being processed and you will receive an email when processing is complete.</div>
+    </div>
+    <div class="alert-banner-end" id="uploadAlertEnd">
+      <button class="alert-banner-action" onclick="completeProcessing()" title="Simulate processing complete">Complete processing</button>
+      <button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+    </div>
   </div>
 
   <!-- Toolbar -->

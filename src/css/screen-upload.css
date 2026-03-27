@@ -2,26 +2,35 @@
    BULK UPLOAD SCREEN
 ═══════════════════════════════════════════════════ */
 .upload-outer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px 32px 32px;
   flex: 1;
   overflow-y: auto;
-}
-
-.upload-inner {
-  width: 560px;
+  padding: 24px 32px 32px;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+}
+
+/* Fieldset card wrapping all content */
+.upload-fieldset {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: var(--radius-m);
+  padding: 16px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Upload drop zone ─────────────────────────────── */
+.upload-zone,
+.upload-steps,
+.file-list {
+  max-width: 560px;
 }
 
 .upload-zone {
-  width: 100%;
-  background: var(--upload-bg);
-  border: 1px dashed var(--upload-border);
+  background: #f9f9fa;
+  border: 1px dashed #dddddd;
   border-radius: var(--radius-m);
   padding: 24px 40px;
   display: flex;
@@ -30,12 +39,10 @@
   gap: 16px;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
-.upload-zone:hover { background: #d4ecf2; border-color: var(--cta-primary-bg); }
-.upload-zone.drag-over { background: #c5e6ef; border-color: var(--cta-primary-bg); }
+.upload-zone:hover    { background: #f0f0f0; border-color: #8d9496; }
+.upload-zone.drag-over { background: #e8e8e8; border-color: #616161; }
 
 .upload-zone-icon { font-size: 40px; color: var(--text-secondary); line-height: 1; }
 
@@ -52,13 +59,58 @@
   font-size: var(--font-body);
   color: var(--text-color);
   line-height: 20px;
-  text-align: center;
 }
 
 .upload-zone-sub a { color: var(--hyperlink); text-decoration: underline; cursor: pointer; }
 
+/* ── How it works steps ──────────────────────────── */
+.upload-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.upload-step:first-child { padding-top: 0; }
+.upload-step:last-child  { border-bottom: none; padding-bottom: 0; }
+
+.upload-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e7f4f7;
+  color: #074555;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.upload-step-body { display: flex; flex-direction: column; gap: 2px; }
+
+.upload-step-title {
+  font-size: var(--font-body);
+  color: var(--text-color);
+  line-height: 20px;
+}
+
+.upload-step-desc {
+  font-size: var(--font-s);
+  color: var(--text-secondary);
+  line-height: 18px;
+}
+
+/* ── File list ────────────────────────────────────── */
 .file-list {
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -122,3 +174,11 @@
 }
 
 .file-remove:hover { background: #fff0f0; color: #ce4b12; }
+
+/* ── Footer actions (left-aligned) ───────────────── */
+.upload-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}

@@ -75,7 +75,7 @@
   </div>
   <div class="review-slideout-footer">
     <button class="btn-cta" onclick="saveProvider('pending')">Save</button>
-    <button class="btn-secondary" onclick="saveAndNextProvider()">Save &amp; Next</button>
+    <button class="btn-secondary" id="providerPendingSaveNext" onclick="saveAndNextProvider()">Save &amp; Next</button>
     <button class="btn-tertiary" onclick="closeProviderSlideout()">Cancel</button>
   </div>
 </div>
@@ -172,7 +172,7 @@
   </div>
   <div class="review-slideout-footer">
     <button class="btn-cta" onclick="saveProvider('missing')">Save</button>
-    <button class="btn-secondary" onclick="saveAndNextProvider()">Save &amp; Next</button>
+    <button class="btn-secondary" id="providerMissingSaveNext" style="display:none;" onclick="saveAndNextProvider()">Save &amp; Next</button>
     <button class="btn-tertiary" onclick="closeProviderSlideout()">Cancel</button>
   </div>
 </div>

@@ -100,7 +100,7 @@
           </div>
           <div class="review-grid-cell review-grid-cell--fields">12</div>
           <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending">Pending review</span>
+            <span class="review-badge review-badge--pending" id="fieldsRow1Badge">Pending review</span>
           </div>
           <div class="review-grid-cell review-grid-cell--actions">
             <button class="review-icon-btn" onclick="goToReviewFieldsDetail(0)" title="Review">
@@ -118,7 +118,7 @@
           </div>
           <div class="review-grid-cell review-grid-cell--fields">9</div>
           <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--missing-data">Missing data</span>
+            <span class="review-badge review-badge--missing-data" id="fieldsRow2Badge">Missing data</span>
           </div>
           <div class="review-grid-cell review-grid-cell--actions">
             <button class="review-icon-btn" onclick="goToReviewFieldsDetail(1)" title="Review">
@@ -147,7 +147,7 @@
     <div class="review-footer-actions">
       <button class="btn-tertiary" onclick="goBackToReviewProviders()">Back</button>
       <button class="btn-secondary" onclick="exitReview()">Exit</button>
-      <button class="btn-cta">Next</button>
+      <button class="btn-cta" onclick="goToReviewAccounts()">Next</button>
     </div>
 
   </div><!-- /page-content -->

@@ -45,8 +45,13 @@ function openReviewSlideout(type) {
   document.getElementById('reviewSlideoutOverlay').classList.add('open');
   if (type === 'existing') {
     document.getElementById('reviewExistingSlideout').classList.add('open');
+    // Show "Save & Next" only if row 2 is not yet reviewed
+    var row2 = document.getElementById('buildingRow2Badge');
+    var hasNext = row2 && !row2.classList.contains('review-badge--reviewed');
+    document.getElementById('buildingExistingSaveNext').style.display = hasNext ? '' : 'none';
   } else {
     document.getElementById('reviewNewSlideout').classList.add('open');
+    // Row 2 is always last — "Save & Next" stays hidden
   }
 }
 
@@ -54,6 +59,36 @@ function closeReviewSlideout() {
   document.getElementById('reviewSlideoutOverlay').classList.remove('open');
   document.getElementById('reviewExistingSlideout').classList.remove('open');
   document.getElementById('reviewNewSlideout').classList.remove('open');
+}
+
+function saveBuildingReview(type) {
+  var rowNum = type === 'existing' ? 1 : 2;
+  var badge = document.getElementById('buildingRow' + rowNum + 'Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  closeReviewSlideout();
+}
+
+function saveAndNextBuilding() {
+  saveBuildingReview('existing');
+  openReviewSlideout('new');
+}
+
+/* ── Review Fields detail ─────────────────────────── */
+function saveFieldsDetail() {
+  var idx = parseInt(document.getElementById('screenReviewFieldsDetail').dataset.providerIndex || '0', 10);
+  _markFieldsRowReviewed(idx);
+  goBackToReviewFieldsSummary();
+}
+
+function _markFieldsRowReviewed(idx) {
+  var badge = document.getElementById('fieldsRow' + (idx + 1) + 'Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
 }
 
 /* ── Review Fields toggles ────────────────────────── */
@@ -125,10 +160,15 @@ function openProviderSlideout(type) {
     document.getElementById('providerPendingSlideout').classList.add('open');
     var c = document.getElementById('pendingTrackingSections');
     if (c && !c.children.length) initTrackingSections('pending');
+    // Show "Save & Next" only if the missing row is still unreviewed
+    var row2Badge = document.getElementById('providerRow2Badge');
+    var missingStillUnreviewed = row2Badge && !row2Badge.classList.contains('review-badge--reviewed');
+    document.getElementById('providerPendingSaveNext').style.display = missingStillUnreviewed ? '' : 'none';
   } else {
     document.getElementById('providerMissingSlideout').classList.add('open');
     var c = document.getElementById('missingTrackingSections');
     if (c && !c.children.length) initTrackingSections('missing');
+    // Missing is always the last row — no "Save & Next"
   }
 }
 
@@ -138,19 +178,46 @@ function closeProviderSlideout() {
   document.getElementById('providerMissingSlideout').classList.remove('open');
 }
 
-function saveProvider(slideoutId) {
-  updateProviderRowUtilityTypes(slideoutId);
+function saveProvider(type) {
+  if (type === 'missing' && !_validateMissingProvider()) return;
+  updateProviderRowUtilityTypes(type);
+  _markProviderReviewed(type);
   closeProviderSlideout();
 }
 
 function saveAndNextProvider() {
   var pendingOpen = document.getElementById('providerPendingSlideout').classList.contains('open');
-  updateProviderRowUtilityTypes(pendingOpen ? 'pending' : 'missing');
+  var type = pendingOpen ? 'pending' : 'missing';
+  if (type === 'missing' && !_validateMissingProvider()) return;
+  updateProviderRowUtilityTypes(type);
+  _markProviderReviewed(type);
   closeProviderSlideout();
   if (pendingOpen) {
     openProviderSlideout('missing');
   }
-  // If on missing (last provider), just close — nothing left to review
+}
+
+function _markProviderReviewed(type) {
+  var badgeId = type === 'pending' ? 'providerRow1Badge' : 'providerRow2Badge';
+  var badge = document.getElementById(badgeId);
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  // Enable Next only once no Missing data badges remain
+  var stillMissing = document.querySelectorAll('#screenReviewProviders .review-badge--missing-data').length;
+  document.getElementById('reviewProvidersNextBtn').disabled = stillMissing > 0;
+}
+
+function _validateMissingProvider() {
+  var select = document.getElementById('billingFreqSelect');
+  if (!select.value) {
+    select.classList.add('review-form-select--error');
+    document.getElementById('billingFreqError').style.display = '';
+    document.getElementById('providerErrorAlert').style.display = '';
+    return false;
+  }
+  return true;
 }
 
 function updateProviderRowUtilityTypes(slideoutId) {
@@ -329,18 +396,9 @@ function onTrackToggle(checkbox, subId) {
 /* ── Billing frequency change (missing data slideout) */
 function onBillingFreqChange(select) {
   if (!select.value) return;
-  // Remove error state from select
   select.classList.remove('review-form-select--error');
-  // Hide field error message
   document.getElementById('billingFreqError').style.display = 'none';
-  // Hide error alert at top of slideout
   document.getElementById('providerErrorAlert').style.display = 'none';
-  // Update table row badge to Reviewed
-  var badge = document.getElementById('providerRow2Badge');
-  badge.className = 'review-badge review-badge--reviewed';
-  badge.textContent = 'Reviewed';
-  // Enable Next button
-  document.getElementById('reviewProvidersNextBtn').disabled = false;
 }
 
 /* ── Review Providers row dropdown menus ─────────── */
@@ -370,6 +428,129 @@ function openIgnoreProviderModal() {
 
 function closeIgnoreProviderModal() {
   document.getElementById('ignoreProviderModalOverlay').classList.remove('open');
+}
+
+/* ── Review Accounts slideouts ──────────────────── */
+var _currentAccountRow = 0;
+var _accountRowTypes = {1:'pending',2:'pending',3:'pending',4:'pending',5:'pending',6:'pending',7:'pending',8:'missing',9:'missing',10:'pending'};
+
+function openAccountSlideout(type, rowNum) {
+  _currentAccountRow = rowNum;
+  document.getElementById('accountSlideoutOverlay').classList.add('open');
+  var saveNextId = type === 'pending' ? 'accountPendingSaveNext' : 'accountMissingSaveNext';
+  if (type === 'pending') {
+    document.getElementById('accountPendingSlideout').classList.add('open');
+  } else {
+    document.getElementById('accountMissingSlideout').classList.add('open');
+  }
+  var nextRow = _nextUnreviewedAccountRow(rowNum);
+  document.getElementById(saveNextId).style.display = nextRow ? '' : 'none';
+}
+
+function _nextUnreviewedAccountRow(afterRow) {
+  for (var n = afterRow + 1; n <= 10; n++) {
+    var badge = document.getElementById('accountRow' + n + 'Badge');
+    if (badge && !badge.classList.contains('review-badge--reviewed')) return n;
+  }
+  return null;
+}
+
+function closeAccountSlideout() {
+  document.getElementById('accountSlideoutOverlay').classList.remove('open');
+  document.getElementById('accountPendingSlideout').classList.remove('open');
+  document.getElementById('accountMissingSlideout').classList.remove('open');
+}
+
+function _markAccountRowReviewed(rowNum) {
+  var badge = document.getElementById('accountRow' + rowNum + 'Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  var stillMissing = document.querySelectorAll('#screenReviewAccounts .review-badge--missing-data').length;
+  var finishBtn = document.getElementById('reviewAccountsFinishBtn');
+  if (finishBtn) finishBtn.disabled = stillMissing > 0;
+}
+
+function _validateMissingAccount() {
+  var input = document.getElementById('missingBillTrackingInput');
+  if (!input || !input.value.trim()) {
+    input.closest('.review-form-input-wrap').classList.add('review-form-input-wrap--error');
+    document.getElementById('missingBillTrackingError').style.display = 'flex';
+    document.getElementById('accountMissingErrorAlert').style.display = 'flex';
+    return false;
+  }
+  return true;
+}
+
+function saveAccount(type) {
+  if (type === 'missing' && !_validateMissingAccount()) return;
+  _markAccountRowReviewed(_currentAccountRow);
+  closeAccountSlideout();
+}
+
+function saveAndNextAccount() {
+  var type = _accountRowTypes[_currentAccountRow] || 'pending';
+  if (type === 'missing' && !_validateMissingAccount()) return;
+  _markAccountRowReviewed(_currentAccountRow);
+  closeAccountSlideout();
+  var nextRow = _nextUnreviewedAccountRow(_currentAccountRow);
+  if (nextRow) openAccountSlideout(_accountRowTypes[nextRow], nextRow);
+}
+
+function onBillTrackingStartChange(input) {
+  if (!input.value.trim()) return;
+  input.closest('.review-form-input-wrap').classList.remove('review-form-input-wrap--error');
+  var addon = input.closest('.review-form-input-wrap').querySelector('.review-form-input-addon');
+  if (addon) addon.classList.remove('review-form-input-addon--error');
+  document.getElementById('missingBillTrackingError').style.display = 'none';
+  document.getElementById('accountMissingErrorAlert').style.display = 'none';
+  var label = document.getElementById('missingBillTrackingField').querySelector('.review-form-label');
+  if (label) label.classList.remove('review-form-label--error');
+}
+
+function removeMeterEntry(btn) {
+  var entry = btn.closest('.review-meter-entry');
+  if (entry) entry.remove();
+}
+
+function addMeterEntry(containerId) {
+  var container = document.getElementById(containerId);
+  var entry = document.createElement('div');
+  entry.className = 'review-meter-entry';
+  entry.innerHTML =
+    '<div class="review-form-row">' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>' +
+        '<input class="review-form-input" type="text" value="">' +
+      '</div>' +
+      '<button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>' +
+    '</div>' +
+    '<div class="review-form-field">' +
+      '<div class="review-form-label">Meter name</div>' +
+      '<input class="review-form-input" type="text" value="">' +
+    '</div>' +
+    '<div class="review-form-row">' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Building <span class="review-form-label-required">*</span></div>' +
+        '<select class="review-form-select">' +
+          '<option value="">Select building</option>' +
+          '<option value="main">Main building</option>' +
+          '<option value="east">East Annex</option>' +
+          '<option value="west">West Annex</option>' +
+        '</select>' +
+      '</div>' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Location</div>' +
+        '<select class="review-form-select">' +
+          '<option value=""></option>' +
+          '<option value="first">First floor</option>' +
+          '<option value="second">Second floor</option>' +
+        '</select>' +
+      '</div>' +
+      '<button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>' +
+    '</div>';
+  container.appendChild(entry);
 }
 
 /* ── Review Fields Detail — ignore/include row toggle ── */

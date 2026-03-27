@@ -98,14 +98,14 @@
         <div class="review-grid-row review-grid-row--white">
           <div class="review-grid-accent"></div>
           <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link">Maritime Energy</span>
+            <span class="review-grid-link" onclick="openProviderSlideout('pending')">Maritime Energy</span>
             <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
           </div>
           <div class="review-grid-cell review-grid-cell--utility" id="providerRow1UtilityCell">
             <span class="review-utility-type-entry"><i class="fa-solid fa-bolt"></i><span>Electric</span></span>
           </div>
           <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending">Pending review</span>
+            <span class="review-badge review-badge--pending" id="providerRow1Badge">Pending review</span>
           </div>
           <div class="review-grid-cell review-grid-cell--actions">
             <button class="review-icon-btn" onclick="openProviderSlideout('pending')" title="Review">
@@ -131,7 +131,7 @@
         <div class="review-grid-row review-grid-row--striped">
           <div class="review-grid-accent"></div>
           <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link">Maritime Energy</span>
+            <span class="review-grid-link" onclick="openProviderSlideout('missing')">Maritime Energy</span>
             <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
           </div>
           <div class="review-grid-cell review-grid-cell--utility" id="providerRow2UtilityCell">
