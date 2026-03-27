@@ -1,0 +1,104 @@
+<!-- ══════════════════════════════════════════════════
+     REVIEW SUB-ACCOUNT SLIDEOUT
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="subAccountSlideoutOverlay" onclick="closeSubAccountSlideout()"></div>
+
+<div class="review-slideout-panel" id="subAccountSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title" id="subAccountSlideoutTitle">Review sub-account</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <!-- Account # -->
+    <div class="review-form-field">
+      <div class="review-form-label">Account # <span class="review-form-label-required">*</span></div>
+      <input class="review-form-input" type="text" id="subAccountNumberInput" value="CE-000456-01">
+    </div>
+
+    <!-- Building -->
+    <div class="review-form-field">
+      <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
+      <select class="review-form-select" id="subAccountBuildingSelect">
+        <option value="camden-elem" selected>Camden Elementary School</option>
+        <option value="camden-mid">Camden Middle School</option>
+        <option value="rockport-high">Rockport High School</option>
+        <option value="admin">District Admin Building</option>
+        <option value="gym">Gymnasium</option>
+      </select>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- Meters section -->
+    <h2 class="review-track-heading">Meters</h2>
+
+    <div id="subAccountMetersContainer" class="review-meter-list">
+
+      <!-- Meter 1 -->
+      <div class="review-meter-entry">
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
+            <input class="review-form-input" type="text" value="A-00192945">
+          </div>
+          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="review-form-field">
+          <div class="review-form-label">Meter name</div>
+          <input class="review-form-input" type="text" value="">
+        </div>
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Location</div>
+            <select class="review-form-select">
+              <option value=""></option>
+              <option value="first">First floor</option>
+              <option value="second">Second floor</option>
+            </select>
+          </div>
+          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Meter 2 -->
+      <div class="review-meter-entry">
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
+            <input class="review-form-input" type="text" value="A-00192840">
+          </div>
+          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="review-form-field">
+          <div class="review-form-label">Meter name</div>
+          <input class="review-form-input" type="text" value="">
+        </div>
+        <div class="review-form-row">
+          <div class="review-form-field">
+            <div class="review-form-label">Location</div>
+            <select class="review-form-select">
+              <option value=""></option>
+              <option value="first">First floor</option>
+              <option value="second">Second floor</option>
+            </select>
+          </div>
+          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /subAccountMetersContainer -->
+
+    <!-- Add meter button -->
+    <button class="review-add-btn" onclick="addMeterEntry('subAccountMetersContainer')">
+      <i class="fa-solid fa-plus"></i> Add meter
+    </button>
+
+  </div><!-- /review-slideout-body -->
+
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="saveSubAccount()">Save</button>
+    <button class="btn-secondary" id="subAccountSaveNext" onclick="saveAndNextSubAccount()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeSubAccountSlideout()">Cancel</button>
+  </div>
+</div>

@@ -1,0 +1,181 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN 7 — REVIEW SUB-ACCOUNTS
+     (Consolidated account detail — step 4 of 4)
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenReviewSubAccounts">
+
+  <header class="content-header tall">
+    <div class="content-header-row">
+      <h1 class="page-title">Account #CE-000456-00</h1>
+      <div class="header-actions">
+        <button class="header-icon-group" title="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-count">0</span>
+        </button>
+        <div class="avatar-wrap">
+          <div class="avatar">
+            <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <a onclick="goBackToReviewAccounts()">Review accounts</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Account #CE-000456-00</span>
+    </nav>
+  </header>
+
+  <div class="page-content">
+
+    <!-- Info alert -->
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">
+          This new account has been suggested to link to an unknown account found in your uploaded files. You can also <a class="review-form-link" href="#">map the account from your files to an existing one in FMX</a> instead.
+        </div>
+        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Account fieldset -->
+    <div class="review-fieldset" style="margin-top:16px;">
+      <h2 class="review-track-heading">Account</h2>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+
+        <!-- Account # -->
+        <div class="review-form-field">
+          <div class="review-form-label">Account # <span class="review-form-label-required">*</span></div>
+          <input class="review-form-input" type="text" value="CE-000456-00">
+        </div>
+
+        <!-- Account nickname -->
+        <div class="review-form-field">
+          <div class="review-form-label">Account nickname</div>
+          <input class="review-form-input" type="text" value="School District Consolidated">
+        </div>
+
+        <!-- Bill tracking start -->
+        <div class="review-form-field">
+          <div class="review-form-label">Bill tracking start <span class="review-form-label-required">*</span></div>
+          <div class="review-form-input-wrap">
+            <input type="text" value="January 2025">
+            <div class="review-form-input-addon"><i class="fa-regular fa-calendar-days"></i></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sub-accounts fieldset -->
+    <div class="review-fieldset">
+      <h2 class="review-track-heading">Sub-accounts <span style="font-size:var(--font-body);font-weight:400;color:var(--text-secondary);">(5)</span></h2>
+
+      <!-- Sub-accounts grid -->
+      <div class="review-grid" style="margin-top:16px;">
+
+        <!-- Header row -->
+        <div class="review-grid-header-row">
+          <div class="review-grid-header-cell" style="width:180px;flex-shrink:0;">Account number</div>
+          <div class="review-grid-header-cell" style="flex:1;">Building</div>
+          <div class="review-grid-header-cell" style="width:80px;flex-shrink:0;">Meters</div>
+          <div class="review-grid-header-cell review-grid-header-cell--status">Status</div>
+          <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
+        </div>
+
+        <!-- Sub-account row 1 -->
+        <div class="review-grid-row review-grid-row--white">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell" style="width:180px;flex-shrink:0;">
+            <span class="review-grid-link" onclick="openSubAccountSlideout(1)">CE-000456-01</span>
+          </div>
+          <div class="review-grid-cell" style="flex:1;"><span class="review-grid-text">Camden Elementary School</span></div>
+          <div class="review-grid-cell" style="width:80px;flex-shrink:0;"><span class="review-grid-text">2</span></div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending" id="subAccountRow1Badge">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" title="Review" onclick="openSubAccountSlideout(1)"><i class="fa-solid fa-clipboard-check"></i></button>
+          </div>
+        </div>
+
+        <!-- Sub-account row 2 -->
+        <div class="review-grid-row review-grid-row--striped">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell" style="width:180px;flex-shrink:0;">
+            <span class="review-grid-link" onclick="openSubAccountSlideout(2)">CE-000456-02</span>
+          </div>
+          <div class="review-grid-cell" style="flex:1;"><span class="review-grid-text">Camden Middle School</span></div>
+          <div class="review-grid-cell" style="width:80px;flex-shrink:0;"><span class="review-grid-text">1</span></div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending" id="subAccountRow2Badge">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" title="Review" onclick="openSubAccountSlideout(2)"><i class="fa-solid fa-clipboard-check"></i></button>
+          </div>
+        </div>
+
+        <!-- Sub-account row 3 -->
+        <div class="review-grid-row review-grid-row--white">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell" style="width:180px;flex-shrink:0;">
+            <span class="review-grid-link" onclick="openSubAccountSlideout(3)">CE-000456-03</span>
+          </div>
+          <div class="review-grid-cell" style="flex:1;"><span class="review-grid-text">Rockport High School</span></div>
+          <div class="review-grid-cell" style="width:80px;flex-shrink:0;"><span class="review-grid-text">3</span></div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending" id="subAccountRow3Badge">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" title="Review" onclick="openSubAccountSlideout(3)"><i class="fa-solid fa-clipboard-check"></i></button>
+          </div>
+        </div>
+
+        <!-- Sub-account row 4 -->
+        <div class="review-grid-row review-grid-row--striped">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell" style="width:180px;flex-shrink:0;">
+            <span class="review-grid-link" onclick="openSubAccountSlideout(4)">CE-000456-04</span>
+          </div>
+          <div class="review-grid-cell" style="flex:1;"><span class="review-grid-text">District Admin Building</span></div>
+          <div class="review-grid-cell" style="width:80px;flex-shrink:0;"><span class="review-grid-text">1</span></div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending" id="subAccountRow4Badge">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" title="Review" onclick="openSubAccountSlideout(4)"><i class="fa-solid fa-clipboard-check"></i></button>
+          </div>
+        </div>
+
+        <!-- Sub-account row 5 -->
+        <div class="review-grid-row review-grid-row--white">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell" style="width:180px;flex-shrink:0;">
+            <span class="review-grid-link" onclick="openSubAccountSlideout(5)">CE-000456-05</span>
+          </div>
+          <div class="review-grid-cell" style="flex:1;"><span class="review-grid-text">Gymnasium</span></div>
+          <div class="review-grid-cell" style="width:80px;flex-shrink:0;"><span class="review-grid-text">2</span></div>
+          <div class="review-grid-cell review-grid-cell--status">
+            <span class="review-badge review-badge--pending" id="subAccountRow5Badge">Pending review</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--actions">
+            <button class="review-icon-btn" title="Review" onclick="openSubAccountSlideout(5)"><i class="fa-solid fa-clipboard-check"></i></button>
+          </div>
+        </div>
+
+      </div><!-- /review-grid -->
+    </div><!-- /sub-accounts fieldset -->
+
+    <!-- Footer -->
+    <div class="review-footer-actions review-footer-actions--left">
+      <button class="btn-cta" onclick="saveReviewSubAccounts()">Save</button>
+      <button class="btn-tertiary" onclick="goBackToReviewAccounts()">Back</button>
+    </div>
+
+  </div><!-- /page-content -->
+
+</div><!-- /screenReviewSubAccounts -->

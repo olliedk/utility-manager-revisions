@@ -498,6 +498,73 @@ function saveAndNextAccount() {
   if (nextRow) openAccountSlideout(_accountRowTypes[nextRow], nextRow);
 }
 
+/* ── Review Sub-accounts ─────────────────────────── */
+var _currentSubAccountRow = 0;
+var _subAccountData = {
+  1: { num: 'CE-000456-01', building: 'camden-elem' },
+  2: { num: 'CE-000456-02', building: 'camden-mid' },
+  3: { num: 'CE-000456-03', building: 'rockport-high' },
+  4: { num: 'CE-000456-04', building: 'admin' },
+  5: { num: 'CE-000456-05', building: 'gym' }
+};
+
+function _nextUnreviewedSubAccountRow(afterRow) {
+  var total = Object.keys(_subAccountData).length;
+  for (var n = afterRow + 1; n <= total; n++) {
+    var badge = document.getElementById('subAccountRow' + n + 'Badge');
+    if (badge && !badge.classList.contains('review-badge--reviewed')) return n;
+  }
+  return null;
+}
+
+function openSubAccountSlideout(rowNum) {
+  _currentSubAccountRow = rowNum;
+  var data = _subAccountData[rowNum] || {};
+  var numInput = document.getElementById('subAccountNumberInput');
+  var buildingSelect = document.getElementById('subAccountBuildingSelect');
+  if (numInput && data.num) numInput.value = data.num;
+  if (buildingSelect && data.building) buildingSelect.value = data.building;
+  document.getElementById('subAccountSlideoutTitle').textContent = 'Review sub-account';
+  var nextRow = _nextUnreviewedSubAccountRow(rowNum);
+  document.getElementById('subAccountSaveNext').style.display = nextRow ? '' : 'none';
+  document.getElementById('subAccountSlideoutOverlay').classList.add('open');
+  document.getElementById('subAccountSlideout').classList.add('open');
+}
+
+function closeSubAccountSlideout() {
+  document.getElementById('subAccountSlideoutOverlay').classList.remove('open');
+  document.getElementById('subAccountSlideout').classList.remove('open');
+}
+
+function saveSubAccount() {
+  var badge = document.getElementById('subAccountRow' + _currentSubAccountRow + 'Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  closeSubAccountSlideout();
+}
+
+function saveAndNextSubAccount() {
+  var badge = document.getElementById('subAccountRow' + _currentSubAccountRow + 'Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  closeSubAccountSlideout();
+  var nextRow = _nextUnreviewedSubAccountRow(_currentSubAccountRow);
+  if (nextRow) openSubAccountSlideout(nextRow);
+}
+
+function saveReviewSubAccounts() {
+  var badge = document.getElementById('accountRow11Badge');
+  if (badge) {
+    badge.className = 'review-badge review-badge--reviewed';
+    badge.textContent = 'Reviewed';
+  }
+  goBackToReviewAccounts();
+}
+
 function onBillTrackingStartChange(input) {
   if (!input.value.trim()) return;
   input.closest('.review-form-input-wrap').classList.remove('review-form-input-wrap--error');

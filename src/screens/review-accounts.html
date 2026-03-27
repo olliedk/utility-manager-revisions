@@ -235,11 +235,25 @@
           <div class="review-grid-cell review-grid-cell--actions"><button class="review-icon-btn" title="Review" onclick="openAccountSlideout('pending',10)"><i class="fa-solid fa-clipboard-check"></i></button></div>
         </div>
 
+        <!-- Row 11: CE-000456-00 | School District Consolidated | Consolidated Edison | Pending review -->
+        <div class="review-grid-row review-grid-row--striped">
+          <div class="review-grid-accent"></div>
+          <div class="review-grid-cell review-grid-cell--checkbox"><input type="checkbox" style="width:15px;height:15px;accent-color:var(--cta-primary-bg);cursor:pointer;"></div>
+          <div class="review-grid-cell review-grid-cell--acct-num">
+            <span class="review-grid-link" onclick="goToReviewSubAccounts()">CE-000456-00</span>
+            <span class="review-badge review-badge--new">New</span>
+          </div>
+          <div class="review-grid-cell review-grid-cell--nickname"><span class="review-grid-text">School District Consolidated</span></div>
+          <div class="review-grid-cell review-grid-cell--provider"><span class="review-utility-type-entry"><i class="fa-solid fa-bolt"></i><span>Consolidated Edison</span></span></div>
+          <div class="review-grid-cell review-grid-cell--status"><span class="review-badge review-badge--pending" id="accountRow11Badge">Pending review</span></div>
+          <div class="review-grid-cell review-grid-cell--actions"><button class="review-icon-btn" title="Review" onclick="goToReviewSubAccounts()"><i class="fa-solid fa-clipboard-check"></i></button></div>
+        </div>
+
       </div><!-- /review-grid -->
 
       <!-- Pagination -->
       <div class="review-pagination">
-        <span class="review-pagination-count">Showing 1–10 of 20 records.</span>
+        <span class="review-pagination-count">Showing 1–11 of 21 records.</span>
         <div class="review-pagination-controls">
           <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
           <span class="review-pagination-page-label">Page</span>

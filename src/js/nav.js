@@ -23,6 +23,7 @@ function exitReview() {
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.remove('active');
   document.getElementById('screenReviewAccounts').classList.remove('active');
+  document.getElementById('screenReviewSubAccounts').classList.remove('active');
   document.getElementById('screenReviewComplete').classList.remove('active');
   document.getElementById('screenUtilities').classList.add('active');
   // Restore review-required banner
@@ -71,6 +72,17 @@ function goToReviewAccounts() {
 function goBackToReviewFields() {
   document.getElementById('screenReviewAccounts').classList.remove('active');
   document.getElementById('screenReviewFields').classList.add('active');
+}
+
+/* ── Review Sub-accounts screen ─────────────────── */
+function goToReviewSubAccounts() {
+  document.getElementById('screenReviewAccounts').classList.remove('active');
+  document.getElementById('screenReviewSubAccounts').classList.add('active');
+}
+
+function goBackToReviewAccounts() {
+  document.getElementById('screenReviewSubAccounts').classList.remove('active');
+  document.getElementById('screenReviewAccounts').classList.add('active');
 }
 
 /* ── Review Complete screen ──────────────────────── */

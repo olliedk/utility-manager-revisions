@@ -54,6 +54,27 @@
 }
 
 /* ═══════════════════════════════════════════════════
+   REVIEW SUB-ACCOUNTS — HEADER NAV
+═══════════════════════════════════════════════════ */
+.review-back-btn {
+  width: 32px; height: 32px; border-radius: var(--radius-s);
+  border: 1px solid var(--border-light); background: var(--header-bg);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary); font-size: 13px; flex-shrink: 0;
+}
+.review-back-btn:hover { background: #f0f0f0; }
+
+.review-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--font-s); color: var(--text-secondary);
+  margin-top: 2px;
+}
+.review-breadcrumb-link {
+  color: var(--hyperlink); cursor: pointer;
+}
+.review-breadcrumb-link:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════
    REVIEW FLOW — PAGE CONTENT & FIELDSET
 ═══════════════════════════════════════════════════ */
 .review-fieldset {
