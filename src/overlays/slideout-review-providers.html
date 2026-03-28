@@ -26,7 +26,7 @@
     <!-- Name -->
     <div class="review-form-field">
       <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
-      <input class="review-form-input" type="text" value="Maritime Energy">
+      <input class="review-form-input" type="text" id="pendingProviderNameInput" value="">
     </div>
 
     <!-- Utility type (multi-select) -->
@@ -46,7 +46,7 @@
           <label class="review-multiselect-option"><input type="checkbox" value="Electric" checked onchange="onMultiselectChange('pendingUtilitySelect')"> Electric</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Natural Gas" onchange="onMultiselectChange('pendingUtilitySelect')"> Natural Gas</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Water" onchange="onMultiselectChange('pendingUtilitySelect')"> Water</label>
-          <label class="review-multiselect-option"><input type="checkbox" value="Sewage" onchange="onMultiselectChange('pendingUtilitySelect')"> Sewage</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Sewer" onchange="onMultiselectChange('pendingUtilitySelect')"> Sewer</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Other" onchange="onMultiselectChange('pendingUtilitySelect')"> Other</label>
         </div>
       </div>
@@ -118,7 +118,7 @@
     <!-- Name -->
     <div class="review-form-field">
       <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
-      <input class="review-form-input" type="text" value="Maritime Energy">
+      <input class="review-form-input" type="text" id="missingProviderNameInput" value="">
     </div>
 
     <!-- Utility type (multi-select) -->
@@ -138,7 +138,7 @@
           <label class="review-multiselect-option"><input type="checkbox" value="Electric" onchange="onMultiselectChange('missingUtilitySelect')"> Electric</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Natural Gas" checked onchange="onMultiselectChange('missingUtilitySelect')"> Natural Gas</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Water" onchange="onMultiselectChange('missingUtilitySelect')"> Water</label>
-          <label class="review-multiselect-option"><input type="checkbox" value="Sewage" onchange="onMultiselectChange('missingUtilitySelect')"> Sewage</label>
+          <label class="review-multiselect-option"><input type="checkbox" value="Sewer" onchange="onMultiselectChange('missingUtilitySelect')"> Sewer</label>
           <label class="review-multiselect-option"><input type="checkbox" value="Other" onchange="onMultiselectChange('missingUtilitySelect')"> Other</label>
         </div>
       </div>

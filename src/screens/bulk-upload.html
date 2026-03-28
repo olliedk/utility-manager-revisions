@@ -28,18 +28,36 @@
   <div class="upload-outer">
     <div class="upload-fieldset">
 
-      <!-- Upload zone -->
-      <div class="upload-zone" id="uploadZone"
-           onclick="simulateUpload()"
-           ondragover="event.preventDefault(); this.classList.add('drag-over')"
-           ondragleave="this.classList.remove('drag-over')"
-           ondrop="event.preventDefault(); this.classList.remove('drag-over'); simulateUpload()">
-        <i class="fa-solid fa-cloud-arrow-up upload-zone-icon"></i>
-        <div class="upload-zone-body">
-          <div class="upload-zone-title">Upload files</div>
-          <div class="upload-zone-sub">
-            Drag and drop your files here or <a onclick="event.stopPropagation(); simulateUpload()">click to browse</a>.<br>
-            Supported files: pdf, csv
+      <!-- Upload zone + scenario dropdown -->
+      <div class="upload-zone-wrap">
+        <div class="upload-zone" id="uploadZone"
+             onclick="toggleScenarioDropdown(event)"
+             ondragover="event.preventDefault(); this.classList.add('drag-over')"
+             ondragleave="this.classList.remove('drag-over')"
+             ondrop="event.preventDefault(); this.classList.remove('drag-over'); toggleScenarioDropdown(event)">
+          <i class="fa-solid fa-cloud-arrow-up upload-zone-icon"></i>
+          <div class="upload-zone-body">
+            <div class="upload-zone-title">Upload files</div>
+            <div class="upload-zone-sub">
+              Drag and drop your files here or <a onclick="event.stopPropagation(); toggleScenarioDropdown(event)">click to browse</a>.<br>
+              Supported files: pdf, csv
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario dropdown -->
+        <div class="scenario-dropdown" id="scenarioDropdown" onclick="event.stopPropagation()">
+          <div class="scenario-dropdown-item" onclick="pickScenario(1)">
+            <div class="scenario-dropdown-title">Scenario 1 — Simple Bills</div>
+            <div class="scenario-dropdown-meta">4 providers · 1 utility each · 40 accounts</div>
+          </div>
+          <div class="scenario-dropdown-item" onclick="pickScenario(2)">
+            <div class="scenario-dropdown-title">Scenario 2 — Multi-Utility Bills</div>
+            <div class="scenario-dropdown-meta">2 providers · 2 utilities each · 20 accounts</div>
+          </div>
+          <div class="scenario-dropdown-item" onclick="pickScenario(3)">
+            <div class="scenario-dropdown-title">Scenario 3 — Consolidated Bills</div>
+            <div class="scenario-dropdown-meta">4 providers · Electric &amp; Gas consolidated · 22 accounts</div>
           </div>
         </div>
       </div>
@@ -69,27 +87,8 @@
         </div>
       </div>
 
-      <!-- File list — hidden by default, shown once files are added -->
-      <div class="file-list" id="fileList" style="display:none;">
-        <div class="file-row" id="fileRow1">
-          <div class="file-display">
-            <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
-            <span class="file-display-name">Maritime_Energy_2025_Invoice_Energy.csv</span>
-          </div>
-          <button class="file-remove" onclick="removeFile(1)" title="Remove file">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="file-row" id="fileRow2">
-          <div class="file-display">
-            <div class="file-display-icon"><i class="fa-regular fa-file"></i></div>
-            <span class="file-display-name">Maritime_Energy_2025_Invoice_Gas.csv</span>
-          </div>
-          <button class="file-remove" onclick="removeFile(2)" title="Remove file">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      </div>
+      <!-- File list — hidden by default, shown once scenario is picked -->
+      <div class="file-list" id="fileList" style="display:none;"></div>
 
     </div><!-- /upload-fieldset -->
 

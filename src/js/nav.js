@@ -45,6 +45,7 @@ function goToReviewProviders() {
   });
   document.getElementById('screenReviewBuildings').classList.remove('active');
   document.getElementById('screenReviewProviders').classList.add('active');
+  renderReviewProvidersGrid();
 }
 
 function goBackToReviewBuildings() {
@@ -56,6 +57,7 @@ function goBackToReviewBuildings() {
 function goToReviewFields() {
   document.getElementById('screenReviewProviders').classList.remove('active');
   document.getElementById('screenReviewFields').classList.add('active');
+  renderReviewFieldsGrid();
 }
 
 function goBackToReviewProviders() {
@@ -67,6 +69,8 @@ function goBackToReviewProviders() {
 function goToReviewAccounts() {
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewAccounts').classList.add('active');
+  protoState.reviewAccountsPage = 1;
+  renderReviewAccountsGrid();
 }
 
 function goBackToReviewFields() {
@@ -75,9 +79,12 @@ function goBackToReviewFields() {
 }
 
 /* ── Review Sub-accounts screen ─────────────────── */
-function goToReviewSubAccounts() {
+function goToReviewSubAccounts(consolidatedIndex) {
+  var ci = (typeof consolidatedIndex === 'number') ? consolidatedIndex : 0;
+  protoState.activeConsolidatedAccount = ci;
   document.getElementById('screenReviewAccounts').classList.remove('active');
   document.getElementById('screenReviewSubAccounts').classList.add('active');
+  renderReviewSubAccountsGrid(ci);
 }
 
 function goBackToReviewAccounts() {
@@ -103,13 +110,11 @@ function goToBulkUploadFromComplete() {
 }
 
 /* ── Review Fields Detail screen ────────────────── */
-var _reviewFieldsProviders = [
-  'Maritime Energy (Electric)',
-  'Maritime Energy (Natural Gas)'
-];
+var _reviewFieldsProviders = []; // populated by renderReviewFieldsGrid() via setReviewFieldsProviders()
 
 function goToReviewFieldsDetail(providerIndex) {
-  document.querySelectorAll('.review-fields-detail-provider').forEach(function(el, i) {
+  var panels = document.querySelectorAll('.review-fields-detail-provider');
+  panels.forEach(function(el, i) {
     el.style.display = (i === providerIndex) ? 'flex' : 'none';
   });
   var name = _reviewFieldsProviders[providerIndex] || 'Provider';
@@ -117,9 +122,8 @@ function goToReviewFieldsDetail(providerIndex) {
   document.getElementById('reviewFieldsDetailTitle').textContent = title;
   document.getElementById('reviewFieldsDetailBreadcrumb').textContent = title;
   document.getElementById('screenReviewFieldsDetail').dataset.providerIndex = providerIndex;
-  var total = document.querySelectorAll('.review-fields-detail-provider').length;
   var saveNext = document.getElementById('fieldsDetailSaveNext');
-  if (saveNext) saveNext.style.display = (providerIndex + 1 < total) ? '' : 'none';
+  if (saveNext) saveNext.style.display = (providerIndex + 1 < _reviewFieldsProviders.length) ? '' : 'none';
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.add('active');
 }
@@ -133,8 +137,7 @@ function saveAndNextProviderFields() {
   var screen = document.getElementById('screenReviewFieldsDetail');
   var current = parseInt(screen.dataset.providerIndex || '0', 10);
   _markFieldsRowReviewed(current);
-  var total = document.querySelectorAll('.review-fields-detail-provider').length;
-  if (current + 1 < total) {
+  if (current + 1 < _reviewFieldsProviders.length) {
     goToReviewFieldsDetail(current + 1);
   } else {
     goBackToReviewFieldsSummary();

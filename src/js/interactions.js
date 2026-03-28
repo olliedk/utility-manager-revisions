@@ -16,6 +16,7 @@ function closeAll() {
   closeCardMenus();
   closeDataPopover();
   closePageSizeMenu();
+  closeAccountsPageSizeMenu();
 }
 
 /* ── Actions dropdown (header) ───────────────────── */

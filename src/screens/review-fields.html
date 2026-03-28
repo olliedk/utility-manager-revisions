@@ -91,47 +91,13 @@
           <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
         </div>
 
-        <!-- Row 1: Maritime Energy (Electric) — Pending review -->
-        <div class="review-grid-row review-grid-row--white">
-          <div class="review-grid-accent"></div>
-          <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link" onclick="goToReviewFieldsDetail(0)">Maritime Energy (Electric)</span>
-            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--fields">12</div>
-          <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending" id="fieldsRow1Badge">Pending review</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--actions">
-            <button class="review-icon-btn" onclick="goToReviewFieldsDetail(0)" title="Review">
-              <i class="fa-solid fa-clipboard-check"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Row 2: Maritime Energy (Natural Gas) — Missing data -->
-        <div class="review-grid-row review-grid-row--striped">
-          <div class="review-grid-accent"></div>
-          <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link" onclick="goToReviewFieldsDetail(1)">Maritime Energy (Natural Gas)</span>
-            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--fields">9</div>
-          <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--missing-data" id="fieldsRow2Badge">Missing data</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--actions">
-            <button class="review-icon-btn" onclick="goToReviewFieldsDetail(1)" title="Review">
-              <i class="fa-solid fa-clipboard-check"></i>
-            </button>
-          </div>
-        </div>
+        <div id="reviewFieldsGridBody"></div>
 
       </div><!-- /review-grid -->
 
       <!-- Pagination -->
       <div class="review-pagination">
-        <span class="review-pagination-count">Showing 1–2 of 2 records.</span>
+        <span class="review-pagination-count" id="reviewFieldsPaginationCount">Showing 1–2 of 2 records.</span>
         <div class="review-pagination-controls">
           <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
           <span class="review-pagination-page-label">Page</span>

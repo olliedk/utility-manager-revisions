@@ -94,77 +94,13 @@
           <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
         </div>
 
-        <!-- Row 1: Maritime Energy — Energy / Pending review -->
-        <div class="review-grid-row review-grid-row--white">
-          <div class="review-grid-accent"></div>
-          <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link" onclick="openProviderSlideout('pending')">Maritime Energy</span>
-            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--utility" id="providerRow1UtilityCell">
-            <span class="review-utility-type-entry"><i class="fa-solid fa-bolt"></i><span>Electric</span></span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--pending" id="providerRow1Badge">Pending review</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--actions">
-            <button class="review-icon-btn" onclick="openProviderSlideout('pending')" title="Review">
-              <i class="fa-solid fa-clipboard-check"></i>
-            </button>
-            <button class="review-icon-btn" onclick="toggleProviderRowMenu(event, 'rowMenuP1')" title="More options">
-              <i class="fa-solid fa-ellipsis"></i>
-            </button>
-            <div class="review-row-menu" id="rowMenuP1" style="width:252px;">
-              <button class="review-row-menu-item" onclick="openMapNameModal()">
-                <i class="fa-regular fa-building"></i>
-                Map name to existing provider
-              </button>
-              <button class="review-row-menu-item" onclick="openIgnoreProviderModal()">
-                <i class="fa-solid fa-circle-xmark"></i>
-                Ignore provider name
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 2: Maritime Energy — Natural Gas / Missing data -->
-        <div class="review-grid-row review-grid-row--striped">
-          <div class="review-grid-accent"></div>
-          <div class="review-grid-cell review-grid-cell--provider">
-            <span class="review-grid-link" onclick="openProviderSlideout('missing')">Maritime Energy</span>
-            <span class="review-badge review-badge--new" style="margin-left:4px;">New</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--utility" id="providerRow2UtilityCell">
-            <span class="review-utility-type-entry"><i class="fa-solid fa-fire-flame-simple"></i><span>Natural Gas</span></span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--status">
-            <span class="review-badge review-badge--missing-data" id="providerRow2Badge">Missing data</span>
-          </div>
-          <div class="review-grid-cell review-grid-cell--actions">
-            <button class="review-icon-btn" onclick="openProviderSlideout('missing')" title="Review">
-              <i class="fa-solid fa-clipboard-check"></i>
-            </button>
-            <button class="review-icon-btn" onclick="toggleProviderRowMenu(event, 'rowMenuP2')" title="More options">
-              <i class="fa-solid fa-ellipsis"></i>
-            </button>
-            <div class="review-row-menu" id="rowMenuP2" style="width:252px;">
-              <button class="review-row-menu-item" onclick="openMapNameModal()">
-                <i class="fa-regular fa-building"></i>
-                Map name to existing provider
-              </button>
-              <button class="review-row-menu-item" onclick="openIgnoreProviderModal()">
-                <i class="fa-solid fa-circle-xmark"></i>
-                Ignore provider name
-              </button>
-            </div>
-          </div>
-        </div>
+        <div id="reviewProvidersGridBody"></div>
 
       </div><!-- /review-grid -->
 
       <!-- Pagination -->
       <div class="review-pagination">
-        <span class="review-pagination-count">Showing 1–2 of 2 records.</span>
+        <span class="review-pagination-count" id="reviewProvidersPaginationCount">Showing 1–2 of 2 records.</span>
         <div class="review-pagination-controls">
           <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
           <span class="review-pagination-page-label">Page</span>
