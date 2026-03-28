@@ -156,20 +156,44 @@ function closeAddCustomFieldSlideout() {
 /* ── Review Providers slideouts ──────────────────── */
 var _currentProviderRow = 0;
 var _providerRowTypes   = {}; // populated by renderReviewProvidersGrid()
+var _providerRowData    = {}; // populated by renderReviewProvidersGrid()
 
 function openProviderSlideout(type, rowNum) {
   _currentProviderRow = rowNum || 1;
+  var row = _providerRowData[_currentProviderRow] || {};
+
+  // Populate name
+  var nameInput = document.getElementById(type === 'pending' ? 'pendingProviderNameInput' : 'missingProviderNameInput');
+  if (nameInput) nameInput.value = row.name || '';
+
+  // Populate utility type multi-select from row data
+  var selectId = type === 'pending' ? 'pendingUtilitySelect' : 'missingUtilitySelect';
+  var dropdown = document.getElementById(selectId + 'Dropdown');
+  var utilityTypes = (row.utilities || []).map(function(u) { return u.type; });
+  dropdown.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+    cb.checked = utilityTypes.indexOf(cb.value) !== -1;
+  });
+  onMultiselectChange(selectId);
+
+  // Set split sub-account checkbox based on whether provider is consolidated
+  var splitCheckboxId = type === 'pending' ? 'pendingSplitSubAccount' : 'missingSplitSubAccount';
+  var splitCheckbox = document.getElementById(splitCheckboxId);
+  if (splitCheckbox) splitCheckbox.checked = !!row.consolidated;
+
+  // Reset and reinitialize tracking sections to match current utility types
+  var trackingContainer = document.getElementById(type + 'TrackingSections');
+  if (trackingContainer) {
+    trackingContainer.innerHTML = '';
+    initTrackingSections(type);
+  }
+
   document.getElementById('providerSlideoutOverlay').classList.add('open');
   if (type === 'pending') {
     document.getElementById('providerPendingSlideout').classList.add('open');
-    var c = document.getElementById('pendingTrackingSections');
-    if (c && !c.children.length) initTrackingSections('pending');
     var nextRow = _nextUnreviewedProviderRow(_currentProviderRow);
     document.getElementById('providerPendingSaveNext').style.display = nextRow ? '' : 'none';
   } else {
     document.getElementById('providerMissingSlideout').classList.add('open');
-    var c = document.getElementById('missingTrackingSections');
-    if (c && !c.children.length) initTrackingSections('missing');
     var nextRow = _nextUnreviewedProviderRow(_currentProviderRow);
     document.getElementById('providerMissingSaveNext') &&
       (document.getElementById('providerMissingSaveNext').style.display = nextRow ? '' : 'none');
@@ -252,7 +276,7 @@ function getUtilityTypeIcon(type) {
     'Electric':    'fa-solid fa-bolt',
     'Natural Gas': 'fa-solid fa-fire-flame-simple',
     'Water':       'fa-solid fa-water',
-    'Sewage':      'fa-solid fa-faucet',
+    'Sewer':       'fa-solid fa-faucet',
     'Other':       'fa-solid fa-circle-dot'
   }[type] || 'fa-solid fa-circle-dot';
 }
@@ -392,11 +416,11 @@ function buildTrackingSectionHTML(slideoutId, type) {
 }
 
 function getDefaultConsumptionUnit(type) {
-  return { 'Electric': 'kWh', 'Natural Gas': 'CCF', 'Water': 'Gallons', 'Sewage': 'Gallons', 'Other': '' }[type] || '';
+  return { 'Electric': 'kWh', 'Natural Gas': 'CCF', 'Water': 'Gallons', 'Sewer': 'Gallons', 'Other': '' }[type] || '';
 }
 
 function getDefaultDemandUnit(type) {
-  return { 'Electric': 'kW', 'Natural Gas': '', 'Water': '', 'Sewage': '', 'Other': '' }[type] || '';
+  return { 'Electric': 'kW', 'Natural Gas': '', 'Water': '', 'Sewer': '', 'Other': '' }[type] || '';
 }
 
 function onTrackToggle(checkbox, subId) {
@@ -444,9 +468,20 @@ function closeIgnoreProviderModal() {
 /* ── Review Accounts slideouts ──────────────────── */
 var _currentAccountRow = 0;
 var _accountRowTypes = {}; // populated by renderReviewAccountsGrid()
+var _accountRowData  = {}; // populated by renderReviewAccountsGrid()
 
 function openAccountSlideout(type, rowNum) {
   _currentAccountRow = rowNum;
+  var row = _accountRowData[rowNum] || {};
+
+  // Populate account # and nickname
+  var numInputId  = type === 'pending' ? 'pendingAccountNumInput'      : 'missingAccountNumInput';
+  var nickInputId = type === 'pending' ? 'pendingAccountNicknameInput' : 'missingAccountNicknameInput';
+  var numInput  = document.getElementById(numInputId);
+  var nickInput = document.getElementById(nickInputId);
+  if (numInput)  numInput.value  = row.accountNum || '';
+  if (nickInput) nickInput.value = row.nickname   || '';
+
   document.getElementById('accountSlideoutOverlay').classList.add('open');
   var saveNextId = type === 'pending' ? 'accountPendingSaveNext' : 'accountMissingSaveNext';
   if (type === 'pending') {

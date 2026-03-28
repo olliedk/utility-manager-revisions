@@ -14,14 +14,16 @@ function renderReviewProvidersGrid() {
   var rows = getScenarioProviderRows(scenarioNum);
   var html = '';
 
-  // Reset global row types map used by slideout interactions
+  // Reset global row maps used by slideout interactions
   _providerRowTypes = {};
+  _providerRowData  = {};
 
   rows.forEach(function(row, i) {
     var stripe = i % 2 === 0 ? 'review-grid-row--white' : 'review-grid-row--striped';
-    var badgeClass = 'review-badge--pending';
-    var badgeText  = 'Pending review';
+    var badgeClass = row.status === 'missing' ? 'review-badge--missing-data' : 'review-badge--pending';
+    var badgeText  = row.status === 'missing' ? 'Missing data' : 'Pending review';
     _providerRowTypes[row.rowNum] = row.status;
+    _providerRowData[row.rowNum]  = row;
 
     var utilityHtml = row.utilities.map(function(u) {
       return '<span class="review-utility-type-entry"><i class="' + u.icon + '"></i><span>' + u.type + '</span></span>';
@@ -33,7 +35,6 @@ function renderReviewProvidersGrid() {
         '<div class="review-grid-cell review-grid-cell--provider">' +
           '<span class="review-grid-link" onclick="openProviderSlideout(\'' + row.status + '\',' + row.rowNum + ')">' + row.name + '</span>' +
           '<span class="review-badge review-badge--new" style="margin-left:4px;">New</span>' +
-          (row.consolidated ? '<span class="review-badge review-badge--pending" style="margin-left:4px;background:#f0f0f0;color:#555;">Consolidated</span>' : '') +
         '</div>' +
         '<div class="review-grid-cell review-grid-cell--utility" id="providerRow' + row.rowNum + 'UtilityCell">' +
           utilityHtml +
@@ -69,13 +70,20 @@ function renderReviewProvidersGrid() {
   // Update inline alert text
   var alertEl = document.querySelector('#screenReviewProviders .inline-alert .inline-alert-text ul');
   if (alertEl) {
-    alertEl.innerHTML =
-      '<li>' + rows.length + ' new provider' + (rows.length !== 1 ? 's have' : ' has') + ' been suggested based on bill data and are pending your review.</li>';
+    var pendingCount = rows.filter(function(r) { return r.status === 'pending'; }).length;
+    var missingCount = rows.filter(function(r) { return r.status === 'missing'; }).length;
+    var items = '';
+    if (pendingCount > 0) items += '<li>' + pendingCount + ' new provider' + (pendingCount !== 1 ? 's have' : ' has') + ' been suggested based on bill data and ' + (pendingCount !== 1 ? 'are' : 'is') + ' pending your review.</li>';
+    if (missingCount > 0) items += '<li>' + missingCount + ' new provider' + (missingCount !== 1 ? 's are' : ' is') + ' missing required data before ' + (missingCount !== 1 ? 'they' : 'it') + ' can be saved.</li>';
+    alertEl.innerHTML = items;
   }
 
-  // Reset Next button to disabled
+  // Enable Next button only if no missing-data rows exist
   var nextBtn = document.getElementById('reviewProvidersNextBtn');
-  if (nextBtn) nextBtn.disabled = true;
+  if (nextBtn) {
+    var stillMissing = document.querySelectorAll('#screenReviewProviders .review-badge--missing-data').length;
+    nextBtn.disabled = stillMissing > 0;
+  }
 
   // Update _reviewFieldsProviders for use in nav.js / goToReviewFieldsDetail
   var fieldRows = getScenarioFieldRows(scenarioNum);
@@ -116,24 +124,224 @@ function renderReviewFieldsGrid() {
 
   var countEl = document.getElementById('reviewFieldsPaginationCount');
   if (countEl) countEl.textContent = 'Showing 1\u2013' + rows.length + ' of ' + rows.length + ' records.';
+
+  // Keep _reviewFieldsProviders in sync so detail navigation uses the right count
+  setReviewFieldsProviders(rows.map(function(r) { return r.label; }));
+
+  // Build dynamic detail panels for the drill-down screen
+  renderReviewFieldsDetailPanels();
+}
+
+/* ── Fields detail panels ────────────────────────── */
+var _UTILITY_SECTION_DATA = {
+  'Electric':    { key: 'Elec',  title: 'Electric info',     rows: [
+    { fmx: 'Meter consumption', location: 'mapped', billLoc: 'Electricity Usage', example: '4,210 kWh' },
+    { fmx: 'Meter demand',      location: 'mapped', billLoc: 'Peak Demand',       example: '48.5 kW'   }
+  ]},
+  'Natural Gas': { key: 'Gas',   title: 'Natural Gas info',  rows: [
+    { fmx: 'Meter consumption', location: 'mapped', billLoc: 'Gas Usage',         example: '284 CCF'   }
+  ]},
+  'Water':       { key: 'Water', title: 'Water info',        rows: [
+    { fmx: 'Meter consumption', location: 'mapped', billLoc: 'Water Usage',       example: '14,820 Gal'}
+  ]},
+  'Sewer':       { key: 'Sewer', title: 'Sewer info',        rows: [
+    { fmx: 'Meter consumption', location: 'mapped', billLoc: 'Sewer Volume',      example: '14,820 Gal'}
+  ]}
+};
+
+var _PROVIDER_EXAMPLE_DATA = {
+  'SRE': { acct: 'SRE-001001', amt: '$8,432.15',    tax: '$12.40' },
+  'BPG': { acct: 'BPG-020234', amt: '$2,145.80',    tax: '$18.20' },
+  'SWA': { acct: 'SWA-050001', amt: '$1,230.40',    tax: '$9.80'  },
+  'CRW': { acct: 'CRW-080010', amt: '$890.15',      tax: '$7.50'  },
+  'ME':  { acct: 'ME-847291',  amt: '$8,432.15',    tax: '$12.40' },
+  'CMS': { acct: 'CMS-10042',  amt: '$1,230.40',    tax: '$9.80'  },
+  'CE':  { acct: 'CE-000456-00', amt: '$103,730.53', tax: '$12.40' },
+  'MG':  { acct: 'MG-001122-00', amt: '$45,221.10',  tax: '$18.20' }
+};
+
+function renderReviewFieldsDetailPanels() {
+  var container = document.getElementById('reviewFieldsDetailPanels');
+  if (!container) return;
+
+  var scenarioNum = protoState.currentScenario || 1;
+  var def = SCENARIO_DEFINITIONS[scenarioNum];
+  if (!def) return;
+
+  var html = '';
+  def.providers.forEach(function(p, pi) {
+    var ex = _PROVIDER_EXAMPLE_DATA[p.accountPrefix] || { acct: p.accountPrefix + '-000001', amt: '$1,000.00', tax: '$10.00' };
+    var unmatched = p.utilities.some(function(u) { return u.type === 'Electric' || u.type === 'Natural Gas'; });
+
+    // Panel wrapper
+    html += '<div class="review-fields-detail-provider" id="detailProvider' + pi + '">';
+
+    // Inline alert
+    html +=
+      '<div class="inline-alert">' +
+        '<div class="inline-alert-tag inline-alert-tag--warning">' +
+          '<i class="fa-solid fa-triangle-exclamation"></i>' +
+        '</div>' +
+        '<div class="inline-alert-body inline-alert-body--warning">' +
+          '<div class="inline-alert-text">' +
+            '<ul style="padding-left:18px;margin:0;line-height:20px;">' +
+              '<li>' + p.fieldCount + ' new data fields have been identified from your uploaded files.</li>' +
+              (unmatched ? '<li>1 new data field could not be matched to an FMX field.</li>' : '') +
+            '</ul>' +
+          '</div>' +
+          '<button class="inline-alert-dismiss" onclick="this.closest(\'.inline-alert\').style.display=\'none\'"><i class="fa-solid fa-xmark"></i></button>' +
+        '</div>' +
+      '</div>';
+
+    // Toolbar
+    html +=
+      '<div class="review-toolbar">' +
+        '<div class="review-toolbar-left">' +
+          '<div class="review-toolbar-search">' +
+            '<input type="text" placeholder="">' +
+            '<div class="review-toolbar-search-addon"><i class="fa-solid fa-magnifying-glass"></i></div>' +
+          '</div>' +
+          '<button class="review-toolbar-icon-btn"><i class="fa-solid fa-filter"></i><span>Filter</span></button>' +
+          '<div class="review-toolbar-div"></div>' +
+        '</div>' +
+        '<div class="review-toolbar-right">' +
+          '<button class="review-toolbar-icon-btn review-toolbar-icon-btn--inline" onclick="openAddCustomFieldSlideout(\'field\')">' +
+            '<i class="fa-solid fa-plus"></i><span>Custom field</span>' +
+          '</button>' +
+          '<div class="review-toolbar-div"></div>' +
+          '<button class="review-toolbar-icon-btn">' +
+            '<span style="display:flex;gap:3px;align-items:center;line-height:16px;">' +
+              '<i class="fa-solid fa-sort"></i>' +
+              '<i class="fa-solid fa-caret-down" style="font-size:11px;"></i>' +
+            '</span>' +
+            '<span>Sort</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+
+    // General bill info section
+    html += _buildFieldsSection(pi, 'Gen', 'General bill info', [
+      { fmx: 'Account #',                location: 'mapped',    billLoc: 'Account ID',      example: ex.acct    },
+      { fmx: 'Bill cycle',               location: 'mapped',    billLoc: 'Billing Period',   example: 'Feb 2026' },
+      { fmx: 'Bill start date',          location: 'mapped',    billLoc: 'Bill Start',       example: '02/01/2026' },
+      { fmx: 'Bill end date',            location: 'mapped',    billLoc: 'Bill End',         example: '02/28/2026' },
+      { fmx: 'Total bill amount',        location: 'mapped',    billLoc: 'Total Amount Due', example: ex.amt     },
+      { fmx: 'Total consumption charge', location: 'calc',      billLoc: '',                 example: '\u2014'   },
+      { fmx: 'Late fee charge',          location: 'mapped',    billLoc: 'Late Fee',         example: '$0.00'    },
+      { fmx: 'Tax charge',               location: 'ignoring',  billLoc: 'Tax',              example: ex.tax     },
+      { fmx: 'Other charge',             location: 'unmatched', billLoc: '',                 example: '\u2014'   }
+    ]);
+
+    // One utility section per utility type
+    p.utilities.forEach(function(u, ui) {
+      var ud = _UTILITY_SECTION_DATA[u.type];
+      if (!ud) return;
+      html += _buildFieldsSection(pi, ud.key, ud.title, ud.rows);
+    });
+
+    // Sub-account info section (consolidated providers only)
+    if (p.consolidated) {
+      var subAcctNum = p.accountPrefix + '-' + (p.subAcctBase ? p.subAcctBase : '000001') + '-01';
+      html += _buildFieldsSection(pi, 'SubAcct', 'Sub-account info', [
+        { fmx: 'Account #',                location: 'mapped',    billLoc: 'Account ID',      example: subAcctNum },
+        { fmx: 'Bill cycle',               location: 'mapped',    billLoc: 'Billing Period',   example: 'Dec 2024' },
+        { fmx: 'Bill start date',          location: 'mapped',    billLoc: 'Bill Start',       example: '12/01/2024' },
+        { fmx: 'Bill end date',            location: 'mapped',    billLoc: 'Bill End',         example: '12/31/2024' },
+        { fmx: 'Total bill amount',        location: 'mapped',    billLoc: 'Total Amount Due', example: ex.amt     },
+        { fmx: 'Total consumption charge', location: 'calc',      billLoc: '',                 example: '\u2014'   },
+        { fmx: 'Late fee charge',          location: 'mapped',    billLoc: 'Late Fee',         example: '$0.00'    },
+        { fmx: 'Tax charge',               location: 'ignoring',  billLoc: 'Tax',              example: ex.tax     },
+        { fmx: 'Other charge',             location: 'unmatched', billLoc: '',                 example: '\u2014'   }
+      ]);
+    }
+
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function _buildFieldsSection(pi, sectionKey, title, rows) {
+  var bodyId  = 'p' + pi + sectionKey + 'Body';
+  var caretId = 'p' + pi + sectionKey + 'Caret';
+
+  var html =
+    '<div class="review-fields-section">' +
+      '<div class="review-fields-section-header" onclick="toggleFieldsSection(\'' + bodyId + '\',\'' + caretId + '\')">' +
+        '<span class="review-fields-section-title">' + title + '</span>' +
+        '<button class="review-fields-collapse-btn" id="' + caretId + '" onclick="event.stopPropagation();toggleFieldsSection(\'' + bodyId + '\',\'' + caretId + '\')">' +
+          '<i class="fa-solid fa-caret-up"></i>' +
+        '</button>' +
+      '</div>' +
+      '<div class="review-fields-section-body" id="' + bodyId + '">' +
+        '<div class="review-fields-grid">' +
+          '<div class="review-fields-header-row">' +
+            '<div class="review-fields-header-cell review-fields-col--fmx">FMX data field <i class="fa-solid fa-sort"></i></div>' +
+            '<div class="review-fields-header-cell review-fields-col--bill-location">Bill data location <i class="fa-solid fa-sort"></i></div>' +
+            '<div class="review-fields-header-cell review-fields-col--example">Example data <i class="fa-solid fa-sort"></i></div>' +
+            '<div class="review-fields-header-cell review-fields-col--row-actions"></div>' +
+          '</div>';
+
+  rows.forEach(function(row, i) {
+    var stripe = i % 2 === 0 ? 'review-fields-row--white' : 'review-fields-row--striped';
+    var extraClass = row.location === 'ignoring' ? ' review-fields-row--ignored' : '';
+    var accentHtml = row.location === 'unmatched' ? '<div class="review-grid-accent"></div>' : '';
+
+    var locationHtml;
+    if (row.location === 'mapped') {
+      locationHtml = '<span class="review-fields-location-mapped">' + row.billLoc + '</span>';
+    } else if (row.location === 'calc') {
+      locationHtml = '<span class="review-fields-location-tag review-fields-location-tag--calc"><i class="fa-solid fa-calculator"></i><span>Calculation</span></span>';
+    } else if (row.location === 'ignoring') {
+      locationHtml = '<span class="review-fields-location-tag review-fields-location-tag--ignoring"><i class="fa-solid fa-eye-slash"></i><span>Ignoring</span></span>';
+    } else { // unmatched
+      locationHtml = '<span class="review-fields-location-tag review-fields-location-tag--unmatched"><i class="fa-solid fa-circle-exclamation"></i><span>Couldn\'t identify</span></span>';
+    }
+
+    var actionsHtml;
+    if (row.location === 'calc') {
+      actionsHtml = '';
+    } else if (row.location === 'ignoring') {
+      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Include" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-check"></i></button></div>';
+    } else {
+      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Edit"><i class="fa-regular fa-pen-to-square"></i></button><button class="review-fields-row-action-btn" title="Ignore" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-xmark"></i></button></div>';
+    }
+
+    var ignoredAttr = row.location === 'ignoring' ? ' data-saved-location=\'<span class="review-fields-location-mapped">' + row.billLoc + '</span>\'' : '';
+
+    html +=
+      '<div class="review-fields-row ' + stripe + extraClass + '"' + ignoredAttr + '>' +
+        accentHtml +
+        '<div class="review-fields-cell review-fields-col--fmx">' + row.fmx + '</div>' +
+        '<div class="review-fields-cell review-fields-col--bill-location">' + locationHtml + '</div>' +
+        '<div class="review-fields-cell review-fields-col--example">' + row.example + '</div>' +
+        actionsHtml +
+      '</div>';
+  });
+
+  html += '</div></div></div>';
+  return html;
 }
 
 /* ── Accounts grid ───────────────────────────────── */
-var ACCOUNTS_PAGE_SIZE = 10;
-
 function renderReviewAccountsGrid() {
   var container = document.getElementById('reviewAccountsGridBody');
   if (!container) return;
 
   var scenarioNum = protoState.currentScenario || 1;
   var allRows = getScenarioAccountRows(scenarioNum);
+  var pageSize = protoState.reviewAccountsPageSize || 20;
   var page = protoState.reviewAccountsPage || 1;
-  var start = (page - 1) * ACCOUNTS_PAGE_SIZE;
-  var pageRows = allRows.slice(start, start + ACCOUNTS_PAGE_SIZE);
+  var start = (page - 1) * pageSize;
+  var pageRows = allRows.slice(start, start + pageSize);
 
-  // Rebuild _accountRowTypes from full row list
+  // Rebuild row maps from full row list
   _accountRowTypes = {};
-  allRows.forEach(function(r) { _accountRowTypes[r.rowNum] = r.type; });
+  _accountRowData  = {};
+  allRows.forEach(function(r) {
+    _accountRowTypes[r.rowNum] = r.type;
+    _accountRowData[r.rowNum]  = r;
+  });
 
   var html = '';
   pageRows.forEach(function(row, i) {
@@ -175,12 +383,24 @@ function renderReviewAccountsGrid() {
 
   container.innerHTML = html;
 
-  // Pagination text
+  // Pagination UI
   var total = allRows.length;
+  var pageSize2 = protoState.reviewAccountsPageSize || 20;
+  var pages = total === 0 ? 1 : Math.ceil(total / pageSize2);
   var rangeStart = start + 1;
-  var rangeEnd   = Math.min(start + ACCOUNTS_PAGE_SIZE, total);
+  var rangeEnd   = Math.min(start + pageSize2, total);
   var countEl = document.getElementById('reviewAccountsPaginationCount');
   if (countEl) countEl.textContent = 'Showing ' + rangeStart + '\u2013' + rangeEnd + ' of ' + total + ' records.';
+  var prevBtn   = document.getElementById('acctPrevBtn');
+  var nextBtn   = document.getElementById('acctNextBtn');
+  var pageInput = document.getElementById('acctPageInput');
+  var pageTotal = document.getElementById('acctPageTotal');
+  if (prevBtn)   prevBtn.disabled   = page === 1;
+  if (nextBtn)   nextBtn.disabled   = page === pages;
+  if (pageInput) { pageInput.value = page; pageInput.disabled = pages === 1; }
+  if (pageTotal) pageTotal.textContent = 'of ' + pages;
+  var rpp = document.getElementById('acctRecordsPerPage');
+  if (rpp) { if (total > 20) rpp.classList.add('visible'); else rpp.classList.remove('visible'); }
 
   // Update alert text
   var alertEl = document.querySelector('#screenReviewAccounts .inline-alert .inline-alert-text ul');
@@ -197,11 +417,54 @@ function renderReviewAccountsGrid() {
   if (finishBtn) finishBtn.disabled = true;
 }
 
-function setReviewAccountsPage(page) {
+function goToAccountsPage(n) {
   var scenarioNum = protoState.currentScenario || 1;
-  var total = getScenarioAccountRows(scenarioNum).length;
-  var maxPage = Math.ceil(total / ACCOUNTS_PAGE_SIZE);
-  protoState.reviewAccountsPage = Math.max(1, Math.min(page, maxPage));
+  var total   = getScenarioAccountRows(scenarioNum).length;
+  var pageSize = protoState.reviewAccountsPageSize || 20;
+  var pages   = total === 0 ? 1 : Math.ceil(total / pageSize);
+  if (isNaN(n) || n < 1 || n > pages) {
+    var inp = document.getElementById('acctPageInput');
+    if (inp) inp.value = protoState.reviewAccountsPage;
+    return;
+  }
+  protoState.reviewAccountsPage = n;
+  renderReviewAccountsGrid();
+}
+
+function prevAccountsPage() {
+  if ((protoState.reviewAccountsPage || 1) > 1) goToAccountsPage(protoState.reviewAccountsPage - 1);
+}
+
+function nextAccountsPage() {
+  var scenarioNum = protoState.currentScenario || 1;
+  var total   = getScenarioAccountRows(scenarioNum).length;
+  var pageSize = protoState.reviewAccountsPageSize || 20;
+  var pages   = total === 0 ? 1 : Math.ceil(total / pageSize);
+  if ((protoState.reviewAccountsPage || 1) < pages) goToAccountsPage(protoState.reviewAccountsPage + 1);
+}
+
+function toggleAccountsPageSizeMenu(e) {
+  e.stopPropagation();
+  var menu   = document.getElementById('acctPageSizeMenu');
+  var isOpen = menu.classList.contains('open');
+  closeAccountsPageSizeMenu();
+  if (!isOpen) menu.classList.add('open');
+}
+
+function closeAccountsPageSizeMenu() {
+  var menu = document.getElementById('acctPageSizeMenu');
+  if (menu) menu.classList.remove('open');
+}
+
+function setAccountsPageSize(n) {
+  protoState.reviewAccountsPageSize = n;
+  var label = document.getElementById('acctPageSizeLabel');
+  if (label) label.textContent = n;
+  document.querySelectorAll('#acctPageSizeMenu .page-size-item').forEach(function(item) {
+    item.classList.toggle('selected', parseInt(item.textContent) === n);
+  });
+  closeAccountsPageSizeMenu();
+  protoState.reviewAccountsPage = 1;
   renderReviewAccountsGrid();
 }
 

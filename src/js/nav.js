@@ -114,18 +114,16 @@ var _reviewFieldsProviders = []; // populated by renderReviewFieldsGrid() via se
 
 function goToReviewFieldsDetail(providerIndex) {
   var panels = document.querySelectorAll('.review-fields-detail-provider');
-  var panelIndex = panels.length > 0 ? providerIndex % panels.length : 0;
   panels.forEach(function(el, i) {
-    el.style.display = (i === panelIndex) ? 'flex' : 'none';
+    el.style.display = (i === providerIndex) ? 'flex' : 'none';
   });
   var name = _reviewFieldsProviders[providerIndex] || 'Provider';
   var title = name + ' data fields';
   document.getElementById('reviewFieldsDetailTitle').textContent = title;
   document.getElementById('reviewFieldsDetailBreadcrumb').textContent = title;
   document.getElementById('screenReviewFieldsDetail').dataset.providerIndex = providerIndex;
-  var total = document.querySelectorAll('.review-fields-detail-provider').length;
   var saveNext = document.getElementById('fieldsDetailSaveNext');
-  if (saveNext) saveNext.style.display = (providerIndex + 1 < total) ? '' : 'none';
+  if (saveNext) saveNext.style.display = (providerIndex + 1 < _reviewFieldsProviders.length) ? '' : 'none';
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.add('active');
 }
@@ -139,8 +137,7 @@ function saveAndNextProviderFields() {
   var screen = document.getElementById('screenReviewFieldsDetail');
   var current = parseInt(screen.dataset.providerIndex || '0', 10);
   _markFieldsRowReviewed(current);
-  var total = document.querySelectorAll('.review-fields-detail-provider').length;
-  if (current + 1 < total) {
+  if (current + 1 < _reviewFieldsProviders.length) {
     goToReviewFieldsDetail(current + 1);
   } else {
     goBackToReviewFieldsSummary();

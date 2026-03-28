@@ -110,7 +110,7 @@ function getScenarioProviderRows(scenarioNum) {
       name:          p.name,
       utilities:     p.utilities,
       consolidated:  p.consolidated,
-      status:        'pending', // all pending in scenarios 1 & 2; scenario 3 doesn't use missing at provider level
+      status:        i === def.providers.length - 1 ? 'missing' : 'pending',
       providerIndex: i
     };
   });
@@ -125,22 +125,19 @@ function getScenarioProviderRows(scenarioNum) {
 function getScenarioFieldRows(scenarioNum) {
   var def = SCENARIO_DEFINITIONS[scenarioNum];
   if (!def) return [];
-  var rows = [];
-  def.providers.forEach(function(p, pi) {
-    p.utilities.forEach(function(u, ui) {
-      var label = p.name + ' (' + u.type + ')';
-      var fieldCount = ui === 0 ? p.fieldCount : Math.floor(p.fieldCount * 0.6);
-      rows.push({
-        rowNum:        rows.length + 1,
-        label:         label,
-        icon:          u.icon,
-        fieldCount:    fieldCount,
-        status:        'pending',
-        providerIndex: pi
-      });
-    });
+  return def.providers.map(function(p, pi) {
+    var totalFields = p.utilities.reduce(function(sum, u, ui) {
+      return sum + (ui === 0 ? p.fieldCount : Math.floor(p.fieldCount * 0.6));
+    }, 0);
+    return {
+      rowNum:        pi + 1,
+      label:         p.name,
+      utilities:     p.utilities,
+      fieldCount:    totalFields,
+      status:        'pending',
+      providerIndex: pi
+    };
   });
-  return rows;
 }
 
 /* ── Account row data ────────────────────────────── */

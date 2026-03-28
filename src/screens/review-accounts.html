@@ -101,13 +101,27 @@
 
       <!-- Pagination -->
       <div class="review-pagination">
-        <span class="review-pagination-count" id="reviewAccountsPaginationCount">Showing 1–10 of 10 records.</span>
+        <span class="review-pagination-count" id="reviewAccountsPaginationCount">Showing 1–20 of 20 records.</span>
+        <div class="records-per-page" id="acctRecordsPerPage">
+          <span>Records per page:</span>
+          <div class="page-size-wrap">
+            <button class="page-size-trigger" id="acctPageSizeTrigger" onclick="toggleAccountsPageSizeMenu(event)">
+              <span id="acctPageSizeLabel">20</span>
+              <i class="fa-solid fa-caret-up"></i>
+            </button>
+            <div class="page-size-menu" id="acctPageSizeMenu">
+              <div class="page-size-item selected" onclick="setAccountsPageSize(20)">20 per page</div>
+              <div class="page-size-item" onclick="setAccountsPageSize(50)">50 per page</div>
+            </div>
+          </div>
+        </div>
         <div class="review-pagination-controls">
-          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="review-pagination-page-btn" id="acctPrevBtn" onclick="prevAccountsPage()"><i class="fa-solid fa-chevron-left"></i></button>
           <span class="review-pagination-page-label">Page</span>
-          <input class="review-pagination-input" type="text" value="1">
-          <span class="review-pagination-page-label">of 2</span>
-          <button class="review-pagination-page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          <input class="review-pagination-input" id="acctPageInput" type="text" value="1"
+            onkeydown="if(event.key==='Enter') goToAccountsPage(parseInt(this.value))">
+          <span class="review-pagination-page-label" id="acctPageTotal">of 1</span>
+          <button class="review-pagination-page-btn" id="acctNextBtn" onclick="nextAccountsPage()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
 
