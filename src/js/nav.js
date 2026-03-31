@@ -29,6 +29,7 @@ function exitReview() {
   // Restore review-required banner
   var banner = document.getElementById('uploadAlert');
   banner.classList.add('visible', 'alert-banner--review');
+  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-clipboard-check alert-banner-icon';
   document.getElementById('uploadAlertTitle').textContent = 'Action required';
   document.getElementById('uploadAlertSub').textContent = '1 building, 2 providers, and 2 accounts require review before 24 new bills can be added.';
   document.getElementById('uploadAlertEnd').innerHTML = '<button class="alert-banner-review-btn" onclick="goToReviewBuildings()">Review</button>';

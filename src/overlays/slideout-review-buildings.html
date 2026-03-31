@@ -26,33 +26,14 @@
 
     <!-- Name -->
     <div class="review-form-field">
-      <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
-      <input class="review-form-input" type="text" value="Camden Elementary School">
+      <div class="review-form-label">Name</div>
+      <div class="review-form-value">Camden Elementary School</div>
     </div>
 
-    <!-- Tax rate -->
+    <!-- Address -->
     <div class="review-form-field">
-      <div class="review-form-label">Tax rate</div>
-      <div class="review-form-input-wrap">
-        <input type="text" placeholder="2.0000 (Default)">
-        <div class="review-form-input-addon"><i class="fa-solid fa-percent"></i></div>
-      </div>
-    </div>
-
-    <!-- Address (read-only) -->
-    <div class="review-form-field">
-      <div class="review-form-label"><span class="review-form-label-dotted">Address</span></div>
-      <textarea class="review-form-textarea" disabled>11 Children's Way, Rockport, ME</textarea>
-    </div>
-
-    <!-- Map -->
-    <div>
-      <p class="review-form-hint">Type in the address or click on the map to place a pin</p>
-      <a href="#" class="review-form-link">[Clear address search]</a>
-      <div class="review-form-map">
-        <img src="https://www.figma.com/api/mcp/asset/501c5895-52ce-4f06-a3ad-0a393983dc90" alt="Map showing Camden Elementary School location">
-        <button class="review-form-map-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
+      <div class="review-form-label">Address</div>
+      <div class="review-form-value">11 Children's Way, Rockport, ME</div>
     </div>
 
     <!-- Area -->
@@ -60,29 +41,8 @@
       <div class="review-form-label">Area</div>
       <div class="review-form-input-wrap">
         <input type="text">
-        <div class="review-form-input-addon"><i class="fa-solid fa-ruler"></i></div>
+        <div class="review-form-input-addon review-form-input-addon--text">sq ft</div>
       </div>
-    </div>
-
-    <!-- Phone -->
-    <div class="review-form-field">
-      <div class="review-form-label">Phone</div>
-      <input class="review-form-input" type="text">
-    </div>
-
-    <!-- Floorplans -->
-    <div class="review-form-row">
-      <div class="review-form-field">
-        <div class="review-form-label">Floorplans</div>
-        <input class="review-form-input review-form-input--disabled" type="text" disabled>
-      </div>
-      <button class="review-form-icon-btn"><i class="fa-solid fa-paperclip"></i></button>
-    </div>
-
-    <!-- State -->
-    <div class="review-form-field">
-      <div class="review-form-label">State</div>
-      <input class="review-form-input" type="text" value="ME">
     </div>
 
   </div>
@@ -96,36 +56,44 @@
 <!-- New building slideout (Row 2 — Camden Middle School) -->
 <div class="review-slideout-panel" id="reviewNewSlideout">
   <div class="review-slideout-header">
-    <div class="review-slideout-title">Review building</div>
+    <div class="review-slideout-title">Review new building</div>
   </div>
   <div class="review-slideout-body">
 
-    <!-- Info alert 1: address not matched -->
-    <div class="inline-alert">
-      <div class="inline-alert-tag inline-alert-tag--info">
-        <i class="fa-solid fa-circle-info"></i>
-      </div>
-      <div class="inline-alert-body inline-alert-body--info">
-        <div class="inline-alert-text">
-          An address from your bills couldn't be matched to an existing building so this one was created.
-          You can also <a href="#" class="review-form-link">map the bill address to an existing building</a> instead.
-        </div>
-        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
+    <!-- Alerts group (4px gap between them) -->
+    <div style="display:flex;flex-direction:column;gap:4px;">
 
-    <!-- Info alert 2: missing Area -->
-    <div class="inline-alert">
-      <div class="inline-alert-tag inline-alert-tag--info">
-        <i class="fa-solid fa-circle-info"></i>
-      </div>
-      <div class="inline-alert-body inline-alert-body--info">
-        <div class="inline-alert-text">
-          This building is missing "Area", which is valuable for reporting.
-          <a href="#" class="review-form-link">Learn more about sq ft in reporting</a>
+      <!-- Info alert 1: address not matched -->
+      <div class="inline-alert">
+        <div class="inline-alert-tag inline-alert-tag--info">
+          <i class="fa-solid fa-circle-info"></i>
         </div>
-        <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+        <div class="inline-alert-body inline-alert-body--info">
+          <div class="inline-alert-text">
+            An address from your bills couldn't be matched to an existing building so this one was created. Alternatively, you can:
+            <ul style="padding-left:18px;margin:4px 0 0;line-height:20px;">
+              <li><a href="#" class="review-form-link" onclick="openMapAddressModal('34 Knowlton St, Camden, ME');return false;">Map address to existing building</a></li>
+              <li><a href="#" class="review-form-link" onclick="openIgnoreAddressModal('34 Knowlton St, Camden, ME', 'Camden Middle School');return false;">Ignore address</a></li>
+            </ul>
+          </div>
+          <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+        </div>
       </div>
+
+      <!-- Info alert 2: missing Area -->
+      <div class="inline-alert">
+        <div class="inline-alert-tag inline-alert-tag--info">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <div class="inline-alert-body inline-alert-body--info">
+          <div class="inline-alert-text">
+            This building is missing "Area", which is valuable for reporting.
+            <a href="#" class="review-form-link">Learn more about sq ft in reporting</a>
+          </div>
+          <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
     </div>
 
     <!-- Name -->
@@ -150,13 +118,8 @@
     </div>
 
     <!-- Map -->
-    <div>
-      <p class="review-form-hint">Type in the address or click on the map to place a pin</p>
-      <a href="#" class="review-form-link">[Clear address search]</a>
-      <div class="review-form-map">
-        <img src="https://www.figma.com/api/mcp/asset/9ea869d5-11fe-48fc-a472-00ef8f95756e" alt="Map showing Camden Middle School location">
-        <button class="review-form-map-search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
+    <div class="review-form-map">
+      <img src="src/map-camden-middle.png" alt="Map showing Camden Middle School location">
     </div>
 
     <!-- Area -->

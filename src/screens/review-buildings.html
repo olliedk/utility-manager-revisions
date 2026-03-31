@@ -12,7 +12,7 @@
       </button>
       <div class="avatar-wrap">
         <div class="avatar">
-          <img src="https://www.figma.com/api/mcp/asset/234d0aed-a018-4fca-b7c1-502d32955db4" alt="User avatar">
+          <img src="src/avatar.png" alt="User avatar">
         </div>
       </div>
     </div>
@@ -40,15 +40,15 @@
         <p class="review-subtext">Below is a list of buildings relevant to addresses found in your uploaded files that need to be reviewed. This step is important for permissions, filtering and reporting.</p>
       </div>
 
-      <!-- Inline warning alert -->
+      <!-- Inline info alert -->
       <div class="inline-alert">
-        <div class="inline-alert-tag inline-alert-tag--warning">
-          <i class="fa-solid fa-triangle-exclamation"></i>
+        <div class="inline-alert-tag inline-alert-tag--info">
+          <i class="fa-solid fa-circle-info"></i>
         </div>
-        <div class="inline-alert-body inline-alert-body--warning">
+        <div class="inline-alert-body inline-alert-body--info">
           <div class="inline-alert-text">
             <ul style="padding-left:18px;line-height:20px;">
-              <li>1 existing building is missing optional but important data.</li>
+              <li>2 buildings are missing optional but important data.</li>
               <li>1 new building has been suggested to link to an unknown address found in your uploaded files.</li>
             </ul>
           </div>
@@ -87,7 +87,7 @@
         <!-- Header row -->
         <div class="review-grid-header-row">
           <div class="review-grid-header-cell review-grid-header-cell--building">Building <i class="fa-solid fa-sort"></i></div>
-          <div class="review-grid-header-cell review-grid-header-cell--address">Address <i class="fa-solid fa-sort"></i></div>
+          <div class="review-grid-header-cell review-grid-header-cell--address">Bill address <i class="fa-solid fa-sort"></i></div>
           <div class="review-grid-header-cell review-grid-header-cell--status">Status <i class="fa-solid fa-sort"></i></div>
           <div class="review-grid-header-cell review-grid-header-cell--actions"></div>
         </div>
@@ -109,6 +109,19 @@
             <button class="review-icon-btn" onclick="openReviewSlideout('existing')" title="Review">
               <i class="fa-solid fa-clipboard-check"></i>
             </button>
+            <button class="review-icon-btn" onclick="toggleRowMenu(event, 'rowMenu2')" title="More options">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div class="review-row-menu" id="rowMenu2">
+              <button class="review-row-menu-item" onclick="openMapAddressModal('11 Children\'s Way, Rockport, ME')">
+                <i class="fa-regular fa-building"></i>
+                Map address to existing building
+              </button>
+              <button class="review-row-menu-item" onclick="openIgnoreAddressModal('11 Children\'s Way, Rockport, ME', 'Camden Elementary School')">
+                <i class="fa-solid fa-circle-xmark"></i>
+                Ignore address
+              </button>
+            </div>
           </div>
         </div>
 
@@ -134,11 +147,11 @@
               <i class="fa-solid fa-ellipsis"></i>
             </button>
             <div class="review-row-menu" id="rowMenu1">
-              <button class="review-row-menu-item" onclick="openMapAddressModal()">
+              <button class="review-row-menu-item" onclick="openMapAddressModal('34 Knowlton St, Camden, ME')">
                 <i class="fa-regular fa-building"></i>
                 Map address to existing building
               </button>
-              <button class="review-row-menu-item" onclick="openIgnoreAddressModal()">
+              <button class="review-row-menu-item" onclick="openIgnoreAddressModal('34 Knowlton St, Camden, ME', 'Camden Middle School')">
                 <i class="fa-solid fa-circle-xmark"></i>
                 Ignore address
               </button>
@@ -164,8 +177,8 @@
 
     <!-- Footer: Exit + Next -->
     <div class="review-footer-actions">
-      <button class="btn-secondary" onclick="exitReview()">Exit</button>
-      <button class="btn-cta" onclick="goToReviewProviders()">Save &amp; Continue</button>
+      <button class="btn-secondary" onclick="exitReview()">Save &amp; Exit</button>
+      <button class="btn-cta" onclick="goToReviewProviders()">Continue</button>
     </div>
 
   </div><!-- /page-content -->

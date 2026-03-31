@@ -1,0 +1,27 @@
+<!-- ══════════════════════════════════════════════════
+     REVIEW FIELDS — EDIT FIELD SLIDEOUT
+══════════════════════════════════════════════════ -->
+<div class="review-slideout-overlay" id="fieldEditSlideoutOverlay" onclick="closeFieldEditSlideout()"></div>
+
+<div class="review-slideout-panel" id="fieldEditSlideout">
+  <div class="review-slideout-header">
+    <div class="review-slideout-title">Map standard field</div>
+  </div>
+  <div class="review-slideout-body">
+
+    <div class="review-slideout-section-heading" id="fieldEditSubHeader"></div>
+
+    <div class="review-form-field">
+      <label class="review-form-label">Intelligent Suggestions instructions</label>
+      <textarea class="review-form-textarea" id="fieldEditInstructions" rows="4"></textarea>
+    </div>
+
+    <button class="btn-tertiary" style="align-self:flex-start;">Locate on bill</button>
+
+  </div>
+  <div class="review-slideout-footer">
+    <button class="btn-cta" onclick="closeFieldEditSlideout()">Save</button>
+    <button class="btn-secondary" onclick="closeFieldEditSlideout()">Save &amp; Next</button>
+    <button class="btn-tertiary" onclick="closeFieldEditSlideout()">Cancel</button>
+  </div>
+</div>

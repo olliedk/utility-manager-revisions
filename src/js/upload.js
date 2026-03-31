@@ -10,9 +10,16 @@ function dismissAlert() {
 }
 
 function completeProcessing() {
+  var scenarioMessages = {
+    1: '4 files successfully processed: 2 buildings, 4 providers, and 40 accounts are awaiting review before 40 new bills can be added.',
+    2: '2 files successfully processed: 2 buildings, 2 providers, and 20 accounts are awaiting review before 20 new bills can be added.',
+    3: '4 files successfully processed: 2 buildings, 4 providers, and 4 accounts are awaiting review before 4 new bills can be added.'
+  };
+  var scenario = protoState.currentScenario || 1;
   document.getElementById('uploadAlert').classList.add('alert-banner--review');
+  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-clipboard-check alert-banner-icon';
   document.getElementById('uploadAlertTitle').textContent = 'Action required';
-  document.getElementById('uploadAlertSub').textContent = '2 files successfully processed: 2 buildings, 2 providers, and 2 accounts are awaiting review before 24 new bills can be added.';
+  document.getElementById('uploadAlertSub').textContent = scenarioMessages[scenario];
   document.getElementById('uploadAlertEnd').innerHTML = '<button class="alert-banner-review-btn" onclick="goToReviewBuildings()">Review</button>';
 }
 

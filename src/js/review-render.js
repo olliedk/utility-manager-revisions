@@ -29,8 +29,9 @@ function renderReviewProvidersGrid() {
       return '<span class="review-utility-type-entry"><i class="' + u.icon + '"></i><span>' + u.type + '</span></span>';
     }).join('');
 
+    var missingClass = row.status === 'missing' ? ' review-grid-row--missing' : '';
     html +=
-      '<div class="review-grid-row ' + stripe + '">' +
+      '<div class="review-grid-row ' + stripe + missingClass + '">' +
         '<div class="review-grid-accent"></div>' +
         '<div class="review-grid-cell review-grid-cell--provider">' +
           '<span class="review-grid-link" onclick="openProviderSlideout(\'' + row.status + '\',' + row.rowNum + ')">' + row.name + '</span>' +
@@ -67,15 +68,24 @@ function renderReviewProvidersGrid() {
   var countEl = document.getElementById('reviewProvidersPaginationCount');
   if (countEl) countEl.textContent = 'Showing 1\u2013' + rows.length + ' of ' + rows.length + ' records.';
 
-  // Update inline alert text
-  var alertEl = document.querySelector('#screenReviewProviders .inline-alert .inline-alert-text ul');
-  if (alertEl) {
-    var pendingCount = rows.filter(function(r) { return r.status === 'pending'; }).length;
-    var missingCount = rows.filter(function(r) { return r.status === 'missing'; }).length;
-    var items = '';
-    if (pendingCount > 0) items += '<li>' + pendingCount + ' new provider' + (pendingCount !== 1 ? 's have' : ' has') + ' been suggested based on bill data and ' + (pendingCount !== 1 ? 'are' : 'is') + ' pending your review.</li>';
-    if (missingCount > 0) items += '<li>' + missingCount + ' new provider' + (missingCount !== 1 ? 's are' : ' is') + ' missing required data before ' + (missingCount !== 1 ? 'they' : 'it') + ' can be saved.</li>';
-    alertEl.innerHTML = items;
+  // Update inline alerts
+  var totalCount   = rows.length;
+  var missingCount = rows.filter(function(r) { return r.status === 'missing'; }).length;
+
+  var infoTextEl = document.getElementById('providersInfoAlertText');
+  if (infoTextEl) {
+    infoTextEl.textContent = totalCount + ' new provider' + (totalCount !== 1 ? 's were' : ' was') + ' suggested based on information found in your uploaded files.';
+  }
+
+  var errorAlert  = document.getElementById('providersErrorAlert');
+  var errorTextEl = document.getElementById('providersErrorAlertText');
+  if (errorAlert && errorTextEl) {
+    if (missingCount > 0) {
+      errorTextEl.textContent = missingCount + ' provider' + (missingCount !== 1 ? 's are' : ' is') + ' missing required data that is needed to submit.';
+      errorAlert.style.display = '';
+    } else {
+      errorAlert.style.display = 'none';
+    }
   }
 
   // Enable Next button only if no missing-data rows exist
@@ -179,10 +189,10 @@ function renderReviewFieldsDetailPanels() {
     // Inline alert
     html +=
       '<div class="inline-alert">' +
-        '<div class="inline-alert-tag inline-alert-tag--warning">' +
-          '<i class="fa-solid fa-triangle-exclamation"></i>' +
+        '<div class="inline-alert-tag inline-alert-tag--info">' +
+          '<i class="fa-solid fa-circle-info"></i>' +
         '</div>' +
-        '<div class="inline-alert-body inline-alert-body--warning">' +
+        '<div class="inline-alert-body inline-alert-body--info">' +
           '<div class="inline-alert-text">' +
             '<ul style="padding-left:18px;margin:0;line-height:20px;">' +
               '<li>' + p.fieldCount + ' new data fields have been identified from your uploaded files.</li>' +
@@ -304,7 +314,9 @@ function _buildFieldsSection(pi, sectionKey, title, rows) {
     } else if (row.location === 'ignoring') {
       actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Include" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-check"></i></button></div>';
     } else {
-      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Edit"><i class="fa-regular fa-pen-to-square"></i></button><button class="review-fields-row-action-btn" title="Ignore" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-xmark"></i></button></div>';
+      var fmxEsc  = (row.fmx    || '').replace(/'/g, "\\'");
+      var locEsc  = (row.billLoc || '').replace(/'/g, "\\'");
+      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Edit" onclick="openFieldEditSlideout(\'' + fmxEsc + '\',\'' + locEsc + '\')"><i class="fa-regular fa-pen-to-square"></i></button><button class="review-fields-row-action-btn" title="Ignore" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-xmark"></i></button></div>';
     }
 
     var ignoredAttr = row.location === 'ignoring' ? ' data-saved-location=\'<span class="review-fields-location-mapped">' + row.billLoc + '</span>\'' : '';
@@ -358,8 +370,9 @@ function renderReviewAccountsGrid() {
       reviewAction = 'onclick="openAccountSlideout(\'' + row.type + '\',' + row.rowNum + ')"';
     }
 
+    var acctMissingClass = row.type === 'missing' ? ' review-grid-row--missing' : '';
     html +=
-      '<div class="review-grid-row ' + stripe + '">' +
+      '<div class="review-grid-row ' + stripe + acctMissingClass + '">' +
         '<div class="review-grid-accent"></div>' +
         '<div class="review-grid-cell review-grid-cell--checkbox">' +
           '<input type="checkbox" style="width:15px;height:15px;accent-color:var(--cta-primary-bg);cursor:pointer;">' +
@@ -412,9 +425,12 @@ function renderReviewAccountsGrid() {
       (missingCount > 0 ? '<li>' + missingCount + ' account' + (missingCount !== 1 ? 's are' : ' is') + ' missing required data before they can be saved.</li>' : '');
   }
 
-  // Reset finish button
+  // Disable finish button only if there are rows with missing data
   var finishBtn = document.getElementById('reviewAccountsFinishBtn');
-  if (finishBtn) finishBtn.disabled = true;
+  if (finishBtn) {
+    var stillMissing = document.querySelectorAll('#screenReviewAccounts .review-badge--missing-data').length;
+    finishBtn.disabled = stillMissing > 0;
+  }
 }
 
 function goToAccountsPage(n) {

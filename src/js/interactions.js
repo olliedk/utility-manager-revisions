@@ -266,6 +266,7 @@ document.addEventListener('keydown', function(e) {
   closeSlideout();
   closeReviewSlideout();
   closeProviderSlideout();
+  closeFieldEditSlideout();
   closeAddCustomFieldSlideout();
   closeFieldDropdown();
   closeMapAddressModal();
