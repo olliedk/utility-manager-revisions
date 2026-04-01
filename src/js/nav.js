@@ -100,8 +100,22 @@ function goToReviewComplete() {
 }
 
 function doneReviewComplete() {
+  var scenarioCounts = {
+    1: { providers: 4,  bills: 40 },
+    2: { providers: 2,  bills: 20 },
+    3: { providers: 4,  bills: 4  }
+  };
+  var counts = scenarioCounts[protoState.currentScenario] || scenarioCounts[1];
+  protoState.providerCount = counts.providers;
+  protoState.billCount     = counts.bills;
+  protoState.providersPage = 1;
+  protoState.billsPage     = 1;
+
+  protoState.firstUploadDone = true;
   document.getElementById('screenReviewComplete').classList.remove('active');
   document.getElementById('screenUtilities').classList.add('active');
+  document.getElementById('uploadAlert').classList.remove('visible', 'alert-banner--review');
+  renderUtilities();
 }
 
 function goToBulkUploadFromComplete() {
