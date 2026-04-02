@@ -170,7 +170,10 @@ function closeFieldDropdown() {
 /* ── Add custom field slideout ────────────────────── */
 function openAddCustomFieldSlideout(fieldName) {
   closeFieldDropdown();
-  document.getElementById('customFieldNameInput').value = fieldName;
+  document.getElementById('customFieldNameInput').value = '';
+  var typeSelect = document.getElementById('addCustomFieldSlideout').querySelector('select');
+  if (typeSelect) typeSelect.value = '';
+  document.getElementById('customFieldTypeOptions').style.display = 'none';
   document.getElementById('customFieldSlideoutOverlay').classList.add('open');
   document.getElementById('addCustomFieldSlideout').classList.add('open');
 }
@@ -392,6 +395,50 @@ function buildTrackingSectionHTML(slideoutId, type) {
   var cu = getDefaultConsumptionUnit(type);
   var du = getDefaultDemandUnit(type);
 
+  var demandChecked = (type !== 'Natural Gas');
+  var demandSubDisplay = demandChecked ? 'flex' : 'none';
+
+  // EUI block — label and field vary by type
+  var euiBlock = '';
+  {
+    var euiLabel = (type === 'Water') ? 'Track water use intensity (WUI)' : 'Track energy use intensity (EUI)';
+    var euiFieldLabel = (type === 'Water') ? 'Gallon conversion factor' : 'kBTU conversion factor';
+    var euiValue = (type === 'Water') ? '1' : '3412.12';
+    euiBlock =
+      '<div class="review-toggle-item">' +
+        '<label class="review-toggle">' +
+          '<input type="checkbox" checked onchange="onTrackToggle(this, \'' + p + '-eui-sub\')">' +
+          '<span class="review-toggle-slider"></span>' +
+        '</label>' +
+        '<span class="review-toggle-item-label">' + euiLabel + '</span>' +
+      '</div>' +
+      '<div id="' + p + '-eui-sub" class="review-tracking-sub-group">' +
+        '<div class="review-form-field">' +
+          '<div class="review-form-label">' + euiFieldLabel + '</div>' +
+          '<input class="review-form-input" type="text" value="' + euiValue + '">' +
+        '</div>' +
+      '</div>';
+  }
+
+  // WUI block — only for Sewer (in addition to EUI)
+  var wuiBlock = '';
+  if (type === 'Sewer') {
+    wuiBlock =
+      '<div class="review-toggle-item">' +
+        '<label class="review-toggle">' +
+          '<input type="checkbox" checked onchange="onTrackToggle(this, \'' + p + '-wui-sub\')">' +
+          '<span class="review-toggle-slider"></span>' +
+        '</label>' +
+        '<span class="review-toggle-item-label">Track water use intensity (WUI)</span>' +
+      '</div>' +
+      '<div id="' + p + '-wui-sub" class="review-tracking-sub-group">' +
+        '<div class="review-form-field">' +
+          '<div class="review-form-label">Gallon conversion factor</div>' +
+          '<input class="review-form-input" type="text" value="1">' +
+        '</div>' +
+      '</div>';
+  }
+
   return '' +
     '<div class="review-form-divider"></div>' +
     '<h2 class="review-track-heading">' + type + ' data tracking</h2>' +
@@ -415,30 +462,18 @@ function buildTrackingSectionHTML(slideoutId, type) {
       '</div>' +
     '</div>' +
 
-    // Track EUI
-    '<div class="review-toggle-item">' +
-      '<label class="review-toggle">' +
-        '<input type="checkbox" checked onchange="onTrackToggle(this, \'' + p + '-eui-sub\')">' +
-        '<span class="review-toggle-slider"></span>' +
-      '</label>' +
-      '<span class="review-toggle-item-label">Track energy use intensity (EUI)</span>' +
-    '</div>' +
-    '<div id="' + p + '-eui-sub" class="review-tracking-sub-group">' +
-      '<div class="review-form-field">' +
-        '<div class="review-form-label">kBTU conversion factor</div>' +
-        '<input class="review-form-input" type="text" value="3412.12">' +
-      '</div>' +
-    '</div>' +
+    euiBlock +
+    wuiBlock +
 
     // Track demand
     '<div class="review-toggle-item">' +
       '<label class="review-toggle">' +
-        '<input type="checkbox" checked onchange="onTrackToggle(this, \'' + p + '-demand-sub\')">' +
+        '<input type="checkbox" ' + (demandChecked ? 'checked ' : '') + 'onchange="onTrackToggle(this, \'' + p + '-demand-sub\')">' +
         '<span class="review-toggle-slider"></span>' +
       '</label>' +
       '<span class="review-toggle-item-label">Track demand</span>' +
     '</div>' +
-    '<div id="' + p + '-demand-sub" class="review-tracking-sub-group">' +
+    '<div id="' + p + '-demand-sub" class="review-tracking-sub-group" style="display:' + demandSubDisplay + '">' +
       '<div class="review-form-field">' +
         '<div class="review-form-label">Demand unit</div>' +
         '<input class="review-form-input" type="text" value="' + du + '">' +

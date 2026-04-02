@@ -1,4 +1,20 @@
 /* ── Screen navigation ───────────────────────────── */
+function goToAddProvider() {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screenAddProvider').classList.add('active');
+}
+
+function goToUtilitiesFromAddProvider() {
+  document.getElementById('screenAddProvider').classList.remove('active');
+  document.getElementById('screenUtilities').classList.add('active');
+}
+
+function goToBulkUploadFromAddProvider() {
+  document.getElementById('screenAddProvider').classList.remove('active');
+  document.getElementById('screenBulkUpload').classList.add('active');
+  resetUploadState();
+}
+
 function goToBulkUpload() {
   document.getElementById('screenUtilities').classList.remove('active');
   document.getElementById('screenBulkUpload').classList.add('active');

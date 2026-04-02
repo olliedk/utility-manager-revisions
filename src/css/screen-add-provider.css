@@ -1,0 +1,228 @@
+/* ═══════════════════════════════════════════════════
+   ADD NEW PROVIDER SCREEN
+═══════════════════════════════════════════════════ */
+
+/* ── Info banner ────────────────────────────────── */
+#screenAddProvider .add-provider-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #f0f5f7;
+  padding: 12px 32px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #d8e8ed;
+}
+
+#screenAddProvider .add-provider-banner-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+#screenAddProvider .add-provider-banner-icon {
+  font-size: 16px;
+  color: #263ea1;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+#screenAddProvider .add-provider-banner-texts {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#screenAddProvider .add-provider-banner-bold {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--text-color);
+  line-height: 20px;
+}
+
+#screenAddProvider .add-provider-banner-text {
+  font-size: var(--font-body);
+  font-weight: 400;
+  color: var(--text-color);
+  line-height: 20px;
+}
+
+#screenAddProvider .add-provider-banner-btn {
+  background: #f0f5f7;
+  border: 1px solid #074555;
+  border-radius: var(--radius-s);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: #074555;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.12s;
+}
+
+#screenAddProvider .add-provider-banner-btn:hover {
+  background: #e2eef2;
+}
+
+#screenAddProvider .add-provider-banner-close {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #616161;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+#screenAddProvider .add-provider-banner-close:hover {
+  color: #38383d;
+}
+
+/* ── Content body ───────────────────────────────── */
+#screenAddProvider .add-provider-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #ffffff;
+}
+
+/* ── Fieldset card ──────────────────────────────── */
+#screenAddProvider .add-provider-fieldset {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: var(--radius-m);
+  padding: 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#screenAddProvider .add-provider-fieldset-title {
+  font-size: var(--font-l);
+  font-weight: 500;
+  color: var(--text-color);
+  line-height: 32px;
+  margin: 0 0 8px;
+}
+
+#screenAddProvider .add-provider-fieldset-desc {
+  font-size: var(--font-body);
+  font-weight: 400;
+  color: var(--text-color);
+  line-height: 20px;
+  margin: -8px 0 8px;
+  max-width: 720px;
+}
+
+/* ── Field row ──────────────────────────────────── */
+#screenAddProvider .add-provider-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#screenAddProvider .add-provider-label {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--text-color);
+  line-height: 20px;
+}
+
+#screenAddProvider .required-star {
+  color: #cb3325;
+  font-weight: 600;
+}
+
+/* ── Text input ─────────────────────────────────── */
+#screenAddProvider .add-provider-input {
+  width: 600px;
+  height: 36px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-s);
+  background: var(--input-bg);
+  padding: 0 10px;
+  font-family: inherit;
+  font-size: var(--font-body);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+#screenAddProvider .add-provider-input:focus {
+  outline: 2px solid #0d7f9b;
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+/* ── Select (fake) ──────────────────────────────── */
+#screenAddProvider .add-provider-select {
+  width: 600px;
+  height: 36px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-s);
+  background: var(--input-bg);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+#screenAddProvider .add-provider-select-placeholder {
+  font-size: var(--font-body);
+  color: #767676;
+}
+
+#screenAddProvider .add-provider-select-caret {
+  font-size: 14px;
+  color: var(--text-icon);
+}
+
+/* ── Checkbox row ───────────────────────────────── */
+#screenAddProvider .add-provider-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#screenAddProvider .add-provider-checkbox {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #616161;
+  border-radius: 3px;
+  background: #ffffff;
+  flex-shrink: 0;
+  box-shadow: inset 1px 1px 3px 0px rgba(97,97,97,0.2);
+}
+
+/* ── Footer buttons ─────────────────────────────── */
+#screenAddProvider .add-provider-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 16px;
+}
+
+#screenAddProvider .add-provider-checkbox-label {
+  font-size: var(--font-body);
+  font-weight: 400;
+  color: var(--text-color);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}

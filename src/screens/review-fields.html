@@ -47,8 +47,8 @@
         <div class="inline-alert-body inline-alert-body--info">
           <div class="inline-alert-text">
             <ul style="padding-left:18px;margin:0;line-height:20px;">
-              <li>21 new data fields have been identified from your uploaded files.</li>
-              <li>2 new data fields could not be matched to an FMX field.</li>
+              <li id="fieldsAlertTotal">21 new data fields have been identified from your uploaded files.</li>
+              <li id="fieldsAlertUnmatched">2 new data fields could not be matched to an FMX field.</li>
             </ul>
           </div>
           <button class="inline-alert-dismiss" onclick="this.closest('.inline-alert').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
@@ -112,8 +112,8 @@
     <!-- Footer: Back + Exit + Next -->
     <div class="review-footer-actions">
       <button class="btn-tertiary" onclick="goBackToReviewProviders()">Back</button>
-      <button class="btn-secondary" onclick="exitReview()">Save &amp; Exit</button>
-      <button class="btn-cta" onclick="goToReviewAccounts()">Continue</button>
+      <button class="btn-secondary" onclick="exitReview()">Exit</button>
+      <button class="btn-cta" onclick="goToReviewAccounts()">Save &amp; Continue</button>
     </div>
 
   </div><!-- /page-content -->

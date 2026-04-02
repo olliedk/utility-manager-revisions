@@ -49,6 +49,7 @@ function handleDropdownItem(action) {
   closeAll();
   hideOverlay();
   if (action === 'bulk-upload') goToBulkUpload();
+  if (action === 'add-provider') goToAddProvider();
 }
 
 /* ── Filter popover ──────────────────────────────── */

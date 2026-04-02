@@ -138,6 +138,15 @@ function renderReviewFieldsGrid() {
   // Keep _reviewFieldsProviders in sync so detail navigation uses the right count
   setReviewFieldsProviders(rows.map(function(r) { return r.label; }));
 
+  // Update summary alert counts
+  var totalFields = rows.reduce(function(sum, r) { return sum + r.fieldCount; }, 0);
+  var def = SCENARIO_DEFINITIONS[scenarioNum];
+  var unmatchedCount = def ? def.providers.reduce(function(sum, p) { return sum + (p.consolidated ? 2 : 1); }, 0) : 0;
+  var totalEl = document.getElementById('fieldsAlertTotal');
+  if (totalEl) totalEl.textContent = totalFields + ' new data field' + (totalFields !== 1 ? 's' : '') + ' have been identified from your uploaded files.';
+  var unmatchedEl = document.getElementById('fieldsAlertUnmatched');
+  if (unmatchedEl) unmatchedEl.textContent = unmatchedCount + ' new data field' + (unmatchedCount !== 1 ? 's' : '') + ' could not be matched to an FMX field.';
+
   // Build dynamic detail panels for the drill-down screen
   renderReviewFieldsDetailPanels();
 }
@@ -310,7 +319,7 @@ function _buildFieldsSection(pi, sectionKey, title, rows) {
 
     var actionsHtml;
     if (row.location === 'calc') {
-      actionsHtml = '';
+      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions"></div>';
     } else if (row.location === 'ignoring') {
       actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Include" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-check"></i></button></div>';
     } else {

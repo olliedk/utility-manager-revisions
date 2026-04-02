@@ -1,0 +1,134 @@
+<!-- ════════════════════════════════════════════════
+     SCREEN — ADD NEW PROVIDER
+════════════════════════════════════════════════ -->
+<div class="screen" id="screenAddProvider">
+
+  <!-- Content header -->
+  <header class="content-header tall">
+    <div class="content-header-row">
+      <h1 class="page-title">New Provider</h1>
+      <div class="header-actions">
+        <button class="header-icon-group" title="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-count">0</span>
+        </button>
+        <div class="avatar-wrap">
+          <div class="avatar" title="User profile">
+            <img src="src/avatar.png" alt="User avatar">
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <a href="#" onclick="goToUtilitiesFromAddProvider(); return false;">Utility Providers</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>New Provider</span>
+    </nav>
+  </header>
+
+  <!-- Info banner -->
+  <div class="add-provider-banner" id="addProviderBanner">
+    <div class="add-provider-banner-left">
+      <i class="fa-solid fa-circle-info add-provider-banner-icon"></i>
+      <div class="add-provider-banner-texts">
+        <span class="add-provider-banner-bold">Want to get set up faster?</span>
+        <span class="add-provider-banner-text">Our reworked bulk upload flow will scan your bills and automatically set up providers and accounts so you can start reporting faster.</span>
+      </div>
+    </div>
+    <button class="add-provider-banner-btn" onclick="goToBulkUploadFromAddProvider()">Bulk upload files</button>
+    <button class="add-provider-banner-close" onclick="document.getElementById('addProviderBanner').style.display='none'" title="Dismiss">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <!-- Content body -->
+  <div class="add-provider-body">
+
+    <!-- Fieldset 1: Provider -->
+    <div class="add-provider-fieldset">
+      <h2 class="add-provider-fieldset-title">Provider</h2>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Name <span class="required-star">*</span></label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Utility type <span class="required-star">*</span></label>
+        <div class="add-provider-select">
+          <span class="add-provider-select-placeholder">Select type(s)</span>
+          <i class="fa-solid fa-caret-down add-provider-select-caret"></i>
+        </div>
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Billing frequency <span class="required-star">*</span></label>
+        <div class="add-provider-select">
+          <span class="add-provider-select-placeholder">Select interval</span>
+          <i class="fa-solid fa-caret-down add-provider-select-caret"></i>
+        </div>
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-checkbox-wrap">
+          <span class="add-provider-checkbox"></span>
+          <span class="add-provider-checkbox-label">Split bills by sub-account</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Fieldset 2: Intelligent Suggestions settings -->
+    <div class="add-provider-fieldset">
+      <h2 class="add-provider-fieldset-title">Intelligent Suggestions settings</h2>
+      <p class="add-provider-fieldset-desc">Enter instructions on exactly what to look for in each field to allow the AI to make Intelligent Suggestions for your bill entry fields. Example: If your bill calls total bill amount 'Total charges', use that exact phrase in the total bill amount field instructions.</p>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Account #</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Bill cycle</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Bill start date</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Bill end date</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Total bill amount</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Late fee charge</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Tax charge</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+
+      <div class="add-provider-field">
+        <label class="add-provider-label">Other charge</label>
+        <input class="add-provider-input" type="text" />
+      </div>
+    </div>
+
+    <!-- Footer buttons -->
+    <div class="add-provider-footer">
+      <button class="btn-cta">Save</button>
+      <button class="btn-tertiary" onclick="goToUtilitiesFromAddProvider()">Back</button>
+    </div>
+
+  </div>
+
+</div>

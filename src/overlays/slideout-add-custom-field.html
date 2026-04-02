@@ -47,57 +47,63 @@
     <!-- Name -->
     <div class="review-form-field">
       <div class="review-form-label">Name <span class="review-form-label-required">*</span></div>
-      <input class="review-form-input" type="text" id="customFieldNameInput" value="Power factor">
+      <input class="review-form-input" type="text" id="customFieldNameInput" placeholder="Enter name">
     </div>
 
     <!-- Tooltip -->
     <div class="review-form-field">
-      <div class="review-form-label"><span class="review-form-label-dotted">Tooltip</span></div>
+      <div class="review-form-label">Tooltip</div>
       <input class="review-form-input" type="text" placeholder="Enter tooltip">
     </div>
 
     <!-- Type -->
     <div class="review-form-field">
-      <div class="review-form-label"><span class="review-form-label-dotted">Type</span> <span class="review-form-label-required">*</span></div>
-      <select class="review-form-select">
-        <option value="number" selected>Number</option>
+      <div class="review-form-label">Type <span class="review-form-label-required">*</span></div>
+      <select class="review-form-select" onchange="document.getElementById('customFieldTypeOptions').style.display = this.value ? 'flex' : 'none'">
+        <option value="" disabled selected>Select field type</option>
+        <option value="number">Number</option>
         <option value="text">Text</option>
         <option value="date">Date</option>
         <option value="currency">Currency</option>
       </select>
     </div>
 
-    <!-- Checkboxes -->
-    <div class="review-checkbox-row">
-      <input type="checkbox" id="cfDisallowNeg">
-      <label for="cfDisallowNeg">Disallow negative values</label>
-    </div>
-    <div class="review-checkbox-row">
-      <input type="checkbox" id="cfRequired">
-      <label for="cfRequired"><span class="review-form-label-dotted">Required</span></label>
-    </div>
-    <div class="review-checkbox-row">
-      <input type="checkbox" id="cfHideFilters">
-      <label for="cfHideFilters">Hide from filters</label>
-    </div>
-    <div class="review-checkbox-row">
-      <input type="checkbox" id="cfHideNotif">
-      <label for="cfHideNotif">Hide from notifications</label>
-    </div>
+    <!-- Options revealed after type is selected -->
+    <div id="customFieldTypeOptions" style="display:none;flex-direction:column;gap:16px;width:100%;">
 
-    <!-- Intelligent Suggestions instructions -->
-    <div class="review-form-field">
-      <div class="review-form-label">Intelligent Suggestions instructions</div>
-      <input class="review-form-input" type="text">
-    </div>
-
-    <!-- Grid Settings -->
-    <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
-      <div class="review-fields-section-heading">Grid Settings</div>
+      <!-- Checkboxes -->
       <div class="review-checkbox-row">
-        <input type="checkbox" id="cfGridHideNotif">
-        <label for="cfGridHideNotif">Hide from notifications</label>
+        <input type="checkbox" id="cfDisallowNeg">
+        <label for="cfDisallowNeg">Disallow negative values</label>
       </div>
+      <div class="review-checkbox-row">
+        <input type="checkbox" id="cfRequired">
+        <label for="cfRequired"><span class="review-form-label-dotted">Required</span></label>
+      </div>
+      <div class="review-checkbox-row">
+        <input type="checkbox" id="cfHideFilters">
+        <label for="cfHideFilters">Hide from filters</label>
+      </div>
+      <div class="review-checkbox-row">
+        <input type="checkbox" id="cfHideNotif">
+        <label for="cfHideNotif">Hide from notifications</label>
+      </div>
+
+      <!-- Intelligent Suggestions instructions -->
+      <div class="review-form-field">
+        <div class="review-form-label">Intelligent Suggestions instructions</div>
+        <input class="review-form-input" type="text">
+      </div>
+
+      <!-- Grid Settings -->
+      <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
+        <div class="review-fields-section-heading">Grid Settings</div>
+        <div class="review-checkbox-row">
+          <input type="checkbox" id="cfGridHideNotif">
+          <label for="cfGridHideNotif">Hide from notifications</label>
+        </div>
+      </div>
+
     </div>
 
   </div>

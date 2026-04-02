@@ -594,9 +594,9 @@
 .review-toggle-item { display: flex; align-items: center; gap: 16px; width: 100%; }
 .review-toggle-item .review-toggle { flex-shrink: 0; width: 36px; height: 20px; }
 .review-toggle-item .review-toggle-slider::before {
-  width: 14px; height: 14px; left: 2px; top: 2px;
+  width: 16px; height: 16px; left: 2px; top: 2px;
 }
-.review-toggle-item .review-toggle input:checked + .review-toggle-slider::before { left: 20px; }
+.review-toggle-item .review-toggle input:checked + .review-toggle-slider::before { left: 18px; }
 .review-toggle-item-label { font-size: var(--font-body); font-weight: 600; color: var(--text-color); }
 
 /* ═══════════════════════════════════════════════════
