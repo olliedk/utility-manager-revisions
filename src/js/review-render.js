@@ -392,7 +392,7 @@ function renderReviewAccountsGrid() {
         '</div>' +
         '<div class="review-grid-cell review-grid-cell--nickname"><span class="review-grid-text">' + row.nickname + '</span></div>' +
         '<div class="review-grid-cell review-grid-cell--provider">' +
-          '<span class="review-utility-type-entry"><i class="' + row.icon + '"></i><span>' + row.providerName + '</span></span>' +
+          '<span class="review-utility-type-entry">' + (row.icons || [row.icon]).map(function(ic) { return '<i class="' + ic + '"></i>'; }).join('') + '<span>' + row.providerName + '</span></span>' +
         '</div>' +
         '<div class="review-grid-cell review-grid-cell--status">' +
           '<span class="review-badge ' + badgeClass + '" id="accountRow' + row.rowNum + 'Badge">' + badgeText + '</span>' +

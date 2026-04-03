@@ -159,6 +159,7 @@ function getScenarioAccountRows(scenarioNum) {
       nickname:          p.consolidatedNickname,
       providerName:      p.name,
       icon:              p.utilities[0].icon,
+      icons:             p.utilities.map(function(u) { return u.icon; }),
       type:              'pending',
       consolidated:      true,
       consolidatedIndex: ci
@@ -179,6 +180,7 @@ function getScenarioAccountRows(scenarioNum) {
         nickname:          school.name,
         providerName:      p.name,
         icon:              p.utilities[0].icon,
+        icons:             p.utilities.map(function(u) { return u.icon; }),
         type:              isMissing ? 'missing' : 'pending',
         consolidated:      false,
         consolidatedIndex: null
