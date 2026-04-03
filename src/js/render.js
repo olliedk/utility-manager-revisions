@@ -2,17 +2,21 @@
 function renderProviders(count) {
   var container = document.getElementById('providerGridContainer');
   if (count === 0) { container.innerHTML = ''; return; }
+  var pool      = (SCENARIO_PROVIDERS[protoState.currentScenario]) || PROVIDER_POOL;
   var start     = (protoState.providersPage - 1) * protoState.pageSize;
-  var providers = PROVIDER_POOL.slice(start, start + protoState.pageSize).slice(0, count - start);
+  var providers = pool.slice(start, start + protoState.pageSize).slice(0, count - start);
   _retireProviders = providers;
   var html = '';
   providers.forEach(function(p, i) {
     var menuId      = 'dyn-menu-' + i;
     var statusClass = p.status === 'ok' ? 'status-ok' : 'status-missing';
     var statusLabel = p.status === 'ok' ? 'Up-to-date' : 'Missing bills';
+    var typeIcons   = p.icons
+      ? p.icons.map(function(ic) { return '<i class="fa-solid ' + ic + '"></i>'; }).join(' ')
+      : '<i class="fa-solid ' + p.icon + '"></i>';
     html += '<div class="provider-card">' +
       '<div class="pcard-top">' +
-        '<div class="pcard-type"><i class="fa-solid ' + p.icon + '"></i> ' + p.type + '</div>' +
+        '<div class="pcard-type">' + typeIcons + ' ' + p.type + '</div>' +
         '<div class="pcard-actions">' +
           '<span class="status-badge ' + statusClass + '">' + statusLabel + '</span>' +
           '<button class="kebab-btn" onclick="toggleCardMenu(\'' + menuId + '\', event)" title="More options"><i class="fa-solid fa-ellipsis"></i></button>' +
@@ -41,8 +45,9 @@ function renderProviders(count) {
 function renderBillsTable(count) {
   var tbody = document.getElementById('billsTbody');
   if (count === 0) { tbody.innerHTML = ''; return; }
+  var pool  = (SCENARIO_BILLS[protoState.currentScenario]) || BILLS_DATA;
   var start = (protoState.billsPage - 1) * protoState.pageSize;
-  var bills = BILLS_DATA.slice(start, start + protoState.pageSize).slice(0, count - start);
+  var bills = pool.slice(start, start + protoState.pageSize).slice(0, count - start);
   var rows = '';
   bills.forEach(function(b) {
     var statusClass = b.status === 'entered' ? 'bill-status-entered' : 'bill-status-missing';

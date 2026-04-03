@@ -22,6 +22,57 @@ var PROVIDER_POOL = [
   { name: 'Desert Wind Energy',               type: 'Electric', icon: 'fa-bolt',              status: 'ok',      period: 'Monthly',   amount: '91.60'  }
 ];
 
+// Scenario-specific bills overrides (used instead of BILLS_DATA when set)
+var SCENARIO_BILLS = {
+  2: (function() {
+    var bills = [];
+    var accounts = [
+      'Lincoln Elementary (#223-10010001)',
+      'Washington Middle (#223-10010002)',
+      'Jefferson High (#223-10010003)',
+      'District Admin (#223-10010004)',
+      'Facilities Depot (#223-10010005)',
+      'Roosevelt Elementary (#223-10010006)',
+      'Hoover Middle (#223-10010007)',
+      'Kennedy High (#223-10010008)',
+      'Franklin Elementary (#223-10010009)',
+      'Adams Middle (#223-10010010)'
+    ];
+    var months = [
+      { month: 'Feb 2026', start: 'Sun, Feb 1, 2026',  end: 'Sat, Feb 28, 2026' },
+      { month: 'Jan 2026', start: 'Wed, Jan 1, 2026',  end: 'Fri, Jan 31, 2026' }
+    ];
+    var providers = [
+      { name: 'Maritime Energy',         amounts: ['$2,140.50', '$1,980.30', '$2,310.75', '$1,755.20', '$1,630.90', '$2,045.60', '$1,890.40', '$2,200.10', '$1,720.85', '$1,965.30'] },
+      { name: 'City Municipal Services', amounts: ['$987.60',  '$843.20',  '$1,102.45', '$765.80',  '$710.30',  '$920.15',  '$834.70',  '$1,055.90', '$798.40',  '$875.60']  }
+    ];
+    months.forEach(function(m) {
+      providers.forEach(function(p, pi) {
+        accounts.forEach(function(acct, ai) {
+          bills.push({
+            provider: p.name,
+            account:  acct,
+            month:    m.month,
+            start:    m.start,
+            end:      m.end,
+            amount:   p.amounts[ai],
+            status:   (pi === 0 && ai === 4 && m.month === 'Jan 2026') ? 'missing' : 'entered'
+          });
+        });
+      });
+    });
+    return bills;
+  })()
+};
+
+// Scenario-specific provider overrides (used instead of PROVIDER_POOL when set)
+var SCENARIO_PROVIDERS = {
+  2: [
+    { name: 'Maritime Energy',        icons: ['fa-bolt', 'fa-fire-flame-simple'], type: 'Electric & Gas', status: 'ok', period: 'Monthly', amount: '74.96' },
+    { name: 'City Municipal Services', icons: ['fa-water', 'fa-faucet'],           type: 'Water & Sewer',  status: 'ok', period: 'Monthly', amount: '74.96' }
+  ]
+};
+
 var BILLS_DATA = [
   { provider: 'SW Water Authority',              account: 'Main Building (#123-44102934)',    month: 'Feb 2026', start: 'Sun, Feb 1, 2026',  end: 'Sat, Feb 28, 2026', amount: '$1,312.40', status: 'entered' },
   { provider: 'Clark Regional Wastewater Dist.', account: 'East Annex (#123-55872011)',       month: 'Feb 2026', start: 'Sun, Feb 1, 2026',  end: 'Sat, Feb 28, 2026', amount: '$743.20',   status: 'entered' },

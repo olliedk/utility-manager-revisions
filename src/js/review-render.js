@@ -74,7 +74,7 @@ function renderReviewProvidersGrid() {
 
   var infoTextEl = document.getElementById('providersInfoAlertText');
   if (infoTextEl) {
-    infoTextEl.textContent = totalCount + ' new provider' + (totalCount !== 1 ? 's were' : ' was') + ' suggested based on information found in your uploaded files.';
+    infoTextEl.textContent = totalCount + ' new provider' + (totalCount !== 1 ? 's have' : ' has') + ' been suggested as providers from your uploaded files couldn\'t be linked to existing ones.';
   }
 
   var errorAlert  = document.getElementById('providersErrorAlert');
