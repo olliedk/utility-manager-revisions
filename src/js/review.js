@@ -91,7 +91,10 @@ function saveAndNextBuilding() {
 }
 
 /* ── Review Fields — edit field slideout ─────────── */
-function openFieldEditSlideout(fmxField, billLocation) {
+var _fieldEditSourceBtn = null;
+
+function openFieldEditSlideout(fmxField, billLocation, sourceBtn) {
+  _fieldEditSourceBtn = sourceBtn || null;
   document.getElementById('fieldEditSubHeader').textContent = fmxField;
   document.getElementById('fieldEditInstructions').value = billLocation || '';
   document.getElementById('fieldEditSlideoutOverlay').classList.add('open');
@@ -101,6 +104,21 @@ function openFieldEditSlideout(fmxField, billLocation) {
 function closeFieldEditSlideout() {
   document.getElementById('fieldEditSlideoutOverlay').classList.remove('open');
   document.getElementById('fieldEditSlideout').classList.remove('open');
+  _fieldEditSourceBtn = null;
+}
+
+function saveAndNextFieldEdit() {
+  if (!_fieldEditSourceBtn) { closeFieldEditSlideout(); return; }
+  var currentRow = _fieldEditSourceBtn.closest('.review-fields-row');
+  var grid = currentRow && currentRow.closest('.review-fields-grid');
+  if (!grid) { closeFieldEditSlideout(); return; }
+  var allRows = Array.prototype.slice.call(grid.querySelectorAll('.review-fields-row'));
+  var idx = allRows.indexOf(currentRow);
+  for (var i = idx + 1; i < allRows.length; i++) {
+    var nextBtn = allRows[i].querySelector('button[title="Edit"]');
+    if (nextBtn) { nextBtn.click(); return; }
+  }
+  closeFieldEditSlideout();
 }
 
 /* ── Review Fields detail ─────────────────────────── */
@@ -540,9 +558,99 @@ var _currentAccountRow = 0;
 var _accountRowTypes = {}; // populated by renderReviewAccountsGrid()
 var _accountRowData  = {}; // populated by renderReviewAccountsGrid()
 
+function _defaultMeters(row) {
+  if (row.consolidated) return [];
+  var parts = (row.accountNum || '').split('-');
+  var meterNum = (parts[0] || 'MTR') + '-' + parts.slice(1).join('');
+  return [{ num: meterNum, name: '', building: 'main', location: '' }];
+}
+
+function _buildMeterEntryHtml(m, nickname) {
+  var bldgLabel = nickname || 'Main building';
+  var esc = function(s) { return (s || '').replace(/"/g, '&quot;'); };
+  return '<div class="review-form-row">' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>' +
+        '<input class="review-form-input" type="text" value="' + esc(m.num) + '">' +
+      '</div>' +
+      '<button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>' +
+    '</div>' +
+    '<div class="review-form-field">' +
+      '<div class="review-form-label">Meter name</div>' +
+      '<input class="review-form-input" type="text" value="' + esc(m.name) + '">' +
+    '</div>' +
+    '<div class="review-form-row">' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Building <span class="review-form-label-required">*</span></div>' +
+        '<select class="review-form-select">' +
+          '<option value="main"' + (m.building !== 'east' && m.building !== 'west' ? ' selected' : '') + '>' + bldgLabel + '</option>' +
+          '<option value="east"' + (m.building === 'east' ? ' selected' : '') + '>East Annex</option>' +
+          '<option value="west"' + (m.building === 'west' ? ' selected' : '') + '>West Annex</option>' +
+        '</select>' +
+      '</div>' +
+      '<div class="review-form-field">' +
+        '<div class="review-form-label">Location</div>' +
+        '<select class="review-form-select">' +
+          '<option value=""></option>' +
+          '<option value="first"' + (m.location === 'first' ? ' selected' : '') + '>First floor</option>' +
+          '<option value="second"' + (m.location === 'second' ? ' selected' : '') + '>Second floor</option>' +
+        '</select>' +
+      '</div>' +
+      '<button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>' +
+    '</div>';
+}
+
+function _renderMeters(containerId, meters, nickname) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  (meters || []).forEach(function(m) {
+    var entry = document.createElement('div');
+    entry.className = 'review-meter-entry';
+    entry.innerHTML = _buildMeterEntryHtml(m, nickname);
+    container.appendChild(entry);
+  });
+}
+
+function _readMetersFromContainer(containerId) {
+  var container = document.getElementById(containerId);
+  if (!container) return [];
+  var meters = [];
+  container.querySelectorAll('.review-meter-entry').forEach(function(entry) {
+    var inputs  = entry.querySelectorAll('input.review-form-input');
+    var selects = entry.querySelectorAll('select.review-form-select');
+    meters.push({
+      num:      inputs[0]  ? inputs[0].value  : '',
+      name:     inputs[1]  ? inputs[1].value  : '',
+      building: selects[0] ? selects[0].value : 'main',
+      location: selects[1] ? selects[1].value : ''
+    });
+  });
+  return meters;
+}
+
+function _saveCurrentAccountState() {
+  var row = _accountRowData[_currentAccountRow];
+  if (!row) return;
+  var type = _accountRowTypes[_currentAccountRow] || 'pending';
+  if (type === 'pending') {
+    var ti = document.getElementById('pendingBillTrackingInput');
+    if (ti) row.billTrackingStart = ti.value;
+    row.meters = _readMetersFromContainer('pendingMetersContainer');
+  } else {
+    var ti = document.getElementById('missingBillTrackingInput');
+    if (ti) row.billTrackingStart = ti.value;
+    row.meters = _readMetersFromContainer('missingMetersContainer');
+  }
+}
+
 function openAccountSlideout(type, rowNum) {
   _currentAccountRow = rowNum;
   var row = _accountRowData[rowNum] || {};
+
+  // Initialise per-row state on first open
+  if (row.meters === undefined)           row.meters           = _defaultMeters(row);
+  if (row.billTrackingStart === undefined) row.billTrackingStart = type === 'pending' ? 'January 2025' : '';
 
   // Populate account # and nickname
   var numInputId  = type === 'pending' ? 'pendingAccountNumInput'      : 'missingAccountNumInput';
@@ -551,6 +659,15 @@ function openAccountSlideout(type, rowNum) {
   var nickInput = document.getElementById(nickInputId);
   if (numInput)  numInput.value  = row.accountNum || '';
   if (nickInput) nickInput.value = row.nickname   || '';
+
+  // Bill tracking start
+  var trackId = type === 'pending' ? 'pendingBillTrackingInput' : 'missingBillTrackingInput';
+  var trackInput = document.getElementById(trackId);
+  if (trackInput) trackInput.value = row.billTrackingStart;
+
+  // Meters
+  var containerId = type === 'pending' ? 'pendingMetersContainer' : 'missingMetersContainer';
+  _renderMeters(containerId, row.meters, row.nickname);
 
   document.getElementById('accountSlideoutOverlay').classList.add('open');
   var saveNextId = type === 'pending' ? 'accountPendingSaveNext' : 'accountMissingSaveNext';
@@ -604,6 +721,7 @@ function _validateMissingAccount() {
 
 function saveAccount(type) {
   if (type === 'missing' && !_validateMissingAccount()) return;
+  _saveCurrentAccountState();
   _markAccountRowReviewed(_currentAccountRow);
   closeAccountSlideout();
 }
@@ -611,6 +729,7 @@ function saveAccount(type) {
 function saveAndNextAccount() {
   var type = _accountRowTypes[_currentAccountRow] || 'pending';
   if (type === 'missing' && !_validateMissingAccount()) return;
+  _saveCurrentAccountState();
   _markAccountRowReviewed(_currentAccountRow);
   var nextRow = _nextUnreviewedAccountRow(_currentAccountRow);
   _slideoutTransitionNext(
@@ -713,40 +832,10 @@ function removeMeterEntry(btn) {
 
 function addMeterEntry(containerId) {
   var container = document.getElementById(containerId);
+  var row = _accountRowData[_currentAccountRow] || {};
   var entry = document.createElement('div');
   entry.className = 'review-meter-entry';
-  entry.innerHTML =
-    '<div class="review-form-row">' +
-      '<div class="review-form-field">' +
-        '<div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>' +
-        '<input class="review-form-input" type="text" value="">' +
-      '</div>' +
-      '<button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>' +
-    '</div>' +
-    '<div class="review-form-field">' +
-      '<div class="review-form-label">Meter name</div>' +
-      '<input class="review-form-input" type="text" value="">' +
-    '</div>' +
-    '<div class="review-form-row">' +
-      '<div class="review-form-field">' +
-        '<div class="review-form-label">Building <span class="review-form-label-required">*</span></div>' +
-        '<select class="review-form-select">' +
-          '<option value="">Select building</option>' +
-          '<option value="main">Main building</option>' +
-          '<option value="east">East Annex</option>' +
-          '<option value="west">West Annex</option>' +
-        '</select>' +
-      '</div>' +
-      '<div class="review-form-field">' +
-        '<div class="review-form-label">Location</div>' +
-        '<select class="review-form-select">' +
-          '<option value=""></option>' +
-          '<option value="first">First floor</option>' +
-          '<option value="second">Second floor</option>' +
-        '</select>' +
-      '</div>' +
-      '<button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>' +
-    '</div>';
+  entry.innerHTML = _buildMeterEntryHtml({ num: '', name: '', building: 'main', location: '' }, row.nickname);
   container.appendChild(entry);
 }
 
@@ -777,3 +866,79 @@ function toggleFieldRowIgnore(btn) {
       '<i class="fa-solid fa-circle-xmark"></i></button>';
   }
 }
+
+/* ── Bill tracking start — month/year datepicker ── */
+var _billPickerInput = null;
+var _billPickerYear  = new Date().getFullYear();
+var _MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var _MONTHS_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function openBillDatepicker(inputEl) {
+  _billPickerInput = inputEl;
+  var parsed = _parseBillMonth(inputEl.value.trim());
+  _billPickerYear = parsed ? parsed.year : new Date().getFullYear();
+  _renderBillDatepicker(parsed ? parsed.month : -1);
+  var picker = document.getElementById('billDatepicker');
+  picker.classList.add('open');
+  var rect = inputEl.closest('.review-form-input-wrap').getBoundingClientRect();
+  picker.style.top  = (rect.bottom + 4) + 'px';
+  picker.style.left = rect.left + 'px';
+}
+
+function closeBillDatepicker() {
+  var picker = document.getElementById('billDatepicker');
+  if (picker) picker.classList.remove('open');
+  _billPickerInput = null;
+}
+
+function _parseBillMonth(val) {
+  for (var i = 0; i < _MONTHS_FULL.length; i++) {
+    if (val.indexOf(_MONTHS_FULL[i]) === 0) {
+      var year = parseInt(val.slice(_MONTHS_FULL[i].length).trim(), 10);
+      if (!isNaN(year)) return { month: i, year: year };
+    }
+  }
+  return null;
+}
+
+function _renderBillDatepicker(activeMonth) {
+  document.getElementById('billPickerYear').textContent = _billPickerYear;
+  document.querySelectorAll('.bill-month-btn').forEach(function(btn) {
+    btn.classList.toggle('active', parseInt(btn.dataset.month, 10) === activeMonth);
+  });
+}
+
+function billPickerPrevYear() {
+  _billPickerYear--;
+  var active = document.querySelector('.bill-month-btn.active');
+  _renderBillDatepicker(active ? parseInt(active.dataset.month, 10) : -1);
+}
+
+function billPickerNextYear() {
+  _billPickerYear++;
+  var active = document.querySelector('.bill-month-btn.active');
+  _renderBillDatepicker(active ? parseInt(active.dataset.month, 10) : -1);
+}
+
+function selectBillMonth(monthIdx) {
+  if (!_billPickerInput) return;
+  _billPickerInput.value = _MONTHS_FULL[monthIdx] + ' ' + _billPickerYear;
+  if (_billPickerInput.id === 'missingBillTrackingInput') {
+    onBillTrackingStartChange(_billPickerInput);
+  }
+  closeBillDatepicker();
+}
+
+function billPickerToday() {
+  var now = new Date();
+  _billPickerYear = now.getFullYear();
+  selectBillMonth(now.getMonth());
+}
+
+document.addEventListener('click', function(e) {
+  var picker = document.getElementById('billDatepicker');
+  if (!picker || !picker.classList.contains('open')) return;
+  if (picker.contains(e.target)) return;
+  if (_billPickerInput && (_billPickerInput.contains(e.target) || _billPickerInput.nextElementSibling && _billPickerInput.nextElementSibling.contains(e.target))) return;
+  closeBillDatepicker();
+});

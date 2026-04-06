@@ -247,7 +247,7 @@ function renderReviewFieldsDetailPanels() {
       { fmx: 'Total bill amount',        location: 'mapped',    billLoc: 'Total Amount Due', example: ex.amt     },
       { fmx: 'Total consumption charge', location: 'calc',      billLoc: '',                 example: '\u2014'   },
       { fmx: 'Late fee charge',          location: 'mapped',    billLoc: 'Late Fee',         example: '$0.00'    },
-      { fmx: 'Tax charge',               location: 'ignoring',  billLoc: 'Tax',              example: ex.tax     },
+      { fmx: 'Tax charge',               location: 'mapped',    billLoc: 'Tax',              example: ex.tax     },
       { fmx: 'Other charge',             location: 'unmatched', billLoc: '',                 example: '\u2014'   }
     ]);
 
@@ -269,7 +269,7 @@ function renderReviewFieldsDetailPanels() {
         { fmx: 'Total bill amount',        location: 'mapped',    billLoc: 'Total Amount Due', example: ex.amt     },
         { fmx: 'Total consumption charge', location: 'calc',      billLoc: '',                 example: '\u2014'   },
         { fmx: 'Late fee charge',          location: 'mapped',    billLoc: 'Late Fee',         example: '$0.00'    },
-        { fmx: 'Tax charge',               location: 'ignoring',  billLoc: 'Tax',              example: ex.tax     },
+        { fmx: 'Tax charge',               location: 'mapped',    billLoc: 'Tax',              example: ex.tax     },
         { fmx: 'Other charge',             location: 'unmatched', billLoc: '',                 example: '\u2014'   }
       ]);
     }
@@ -325,7 +325,7 @@ function _buildFieldsSection(pi, sectionKey, title, rows) {
     } else {
       var fmxEsc  = (row.fmx    || '').replace(/'/g, "\\'");
       var locEsc  = (row.billLoc || '').replace(/'/g, "\\'");
-      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Edit" onclick="openFieldEditSlideout(\'' + fmxEsc + '\',\'' + locEsc + '\')"><i class="fa-regular fa-pen-to-square"></i></button><button class="review-fields-row-action-btn" title="Ignore" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-xmark"></i></button></div>';
+      actionsHtml = '<div class="review-fields-cell review-fields-col--row-actions" style="display:flex;gap:4px;"><button class="review-fields-row-action-btn" title="Edit" onclick="openFieldEditSlideout(\'' + fmxEsc + '\',\'' + locEsc + '\',this)"><i class="fa-regular fa-pen-to-square"></i></button><button class="review-fields-row-action-btn" title="Ignore" onclick="toggleFieldRowIgnore(this)"><i class="fa-solid fa-circle-xmark"></i></button></div>';
     }
 
     var ignoredAttr = row.location === 'ignoring' ? ' data-saved-location=\'<span class="review-fields-location-mapped">' + row.billLoc + '</span>\'' : '';

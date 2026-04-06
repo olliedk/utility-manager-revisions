@@ -39,8 +39,8 @@
     <div class="review-form-field">
       <div class="review-form-label">Bill tracking start <span class="review-form-label-required">*</span></div>
       <div class="review-form-input-wrap">
-        <input type="text" value="January 2025">
-        <div class="review-form-input-addon"><i class="fa-regular fa-calendar-days"></i></div>
+        <input type="text" id="pendingBillTrackingInput" value="January 2025" readonly onclick="openBillDatepicker(this)">
+        <div class="review-form-input-addon" style="cursor:pointer;" onclick="openBillDatepicker(this.previousElementSibling)"><i class="fa-regular fa-calendar-days"></i></div>
       </div>
     </div>
 
@@ -50,77 +50,7 @@
     <!-- Meters section -->
     <h2 class="review-track-heading">Meters</h2>
 
-    <div id="pendingMetersContainer" class="review-meter-list">
-
-      <!-- Meter 1 -->
-      <div class="review-meter-entry">
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
-            <input class="review-form-input" type="text" value="A-00192945">
-          </div>
-          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="review-form-field">
-          <div class="review-form-label">Meter name</div>
-          <input class="review-form-input" type="text" value="">
-        </div>
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
-            <select class="review-form-select">
-              <option value="main" selected>Main building</option>
-              <option value="east">East Annex</option>
-              <option value="west">West Annex</option>
-            </select>
-          </div>
-          <div class="review-form-field">
-            <div class="review-form-label">Location</div>
-            <select class="review-form-select">
-              <option value=""></option>
-              <option value="first">First floor</option>
-              <option value="second">Second floor</option>
-            </select>
-          </div>
-          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
-        </div>
-      </div>
-
-      <!-- Meter 2 -->
-      <div class="review-meter-entry">
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
-            <input class="review-form-input" type="text" value="A-00192840">
-          </div>
-          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="review-form-field">
-          <div class="review-form-label">Meter name</div>
-          <input class="review-form-input" type="text" value="">
-        </div>
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
-            <select class="review-form-select">
-              <option value="main" selected>Main building</option>
-              <option value="east">East Annex</option>
-              <option value="west">West Annex</option>
-            </select>
-          </div>
-          <div class="review-form-field">
-            <div class="review-form-label">Location</div>
-            <select class="review-form-select">
-              <option value=""></option>
-              <option value="first">First floor</option>
-              <option value="second">Second floor</option>
-            </select>
-          </div>
-          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
-        </div>
-      </div>
-
-    </div><!-- /pendingMetersContainer -->
+    <div id="pendingMetersContainer" class="review-meter-list"></div><!-- /pendingMetersContainer -->
 
     <!-- Add meter -->
     <button class="btn-secondary" onclick="addMeterEntry('pendingMetersContainer')">Add meter</button>
@@ -184,8 +114,8 @@
     <div class="review-form-field" id="missingBillTrackingField">
       <div class="review-form-label review-form-label--error">Bill tracking start <span class="review-form-label-required">*</span></div>
       <div class="review-form-input-wrap review-form-input-wrap--error">
-        <input type="text" id="missingBillTrackingInput" placeholder="" oninput="onBillTrackingStartChange(this)">
-        <div class="review-form-input-addon review-form-input-addon--error"><i class="fa-regular fa-calendar-days"></i></div>
+        <input type="text" id="missingBillTrackingInput" placeholder="" readonly onclick="openBillDatepicker(this)" oninput="onBillTrackingStartChange(this)">
+        <div class="review-form-input-addon review-form-input-addon--error" style="cursor:pointer;" onclick="openBillDatepicker(this.previousElementSibling)"><i class="fa-regular fa-calendar-days"></i></div>
       </div>
       <div class="review-form-error-msg" id="missingBillTrackingError">
         <i class="fa-solid fa-circle-exclamation"></i>
@@ -199,43 +129,7 @@
     <!-- Meters section -->
     <h2 class="review-track-heading">Meters</h2>
 
-    <div id="missingMetersContainer" class="review-meter-list">
-
-      <!-- Meter 1 -->
-      <div class="review-meter-entry">
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Meter # <span class="review-form-label-required">*</span></div>
-            <input class="review-form-input" type="text" value="A-00174319">
-          </div>
-          <button class="review-form-icon-btn" title="Remove meter" onclick="removeMeterEntry(this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="review-form-field">
-          <div class="review-form-label">Meter name</div>
-          <input class="review-form-input" type="text" value="">
-        </div>
-        <div class="review-form-row">
-          <div class="review-form-field">
-            <div class="review-form-label">Building <span class="review-form-label-required">*</span></div>
-            <select class="review-form-select">
-              <option value="main" selected>Main building</option>
-              <option value="east">East Annex</option>
-              <option value="west">West Annex</option>
-            </select>
-          </div>
-          <div class="review-form-field">
-            <div class="review-form-label">Location</div>
-            <select class="review-form-select">
-              <option value=""></option>
-              <option value="first">First floor</option>
-              <option value="second">Second floor</option>
-            </select>
-          </div>
-          <button class="review-form-icon-btn" title="Add location"><i class="fa-solid fa-plus"></i></button>
-        </div>
-      </div>
-
-    </div><!-- /missingMetersContainer -->
+    <div id="missingMetersContainer" class="review-meter-list"></div><!-- /missingMetersContainer -->
 
     <!-- Add meter -->
     <button class="btn-secondary" onclick="addMeterEntry('missingMetersContainer')">Add meter</button>
@@ -245,5 +139,31 @@
     <button class="btn-cta" onclick="saveAccount('missing')">Save</button>
     <button class="btn-secondary" id="accountMissingSaveNext" onclick="saveAndNextAccount()">Save &amp; Next</button>
     <button class="btn-tertiary" onclick="closeAccountSlideout()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Bill tracking start — month/year datepicker ── -->
+<div class="bill-datepicker" id="billDatepicker">
+  <div class="bill-datepicker-header">
+    <button class="bill-datepicker-nav" onclick="billPickerPrevYear()"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="bill-datepicker-year" id="billPickerYear">2025</div>
+    <button class="bill-datepicker-nav" onclick="billPickerNextYear()"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+  <div class="bill-datepicker-months">
+    <button class="bill-month-btn" data-month="0"  onclick="selectBillMonth(0)">Jan</button>
+    <button class="bill-month-btn" data-month="1"  onclick="selectBillMonth(1)">Feb</button>
+    <button class="bill-month-btn" data-month="2"  onclick="selectBillMonth(2)">Mar</button>
+    <button class="bill-month-btn" data-month="3"  onclick="selectBillMonth(3)">Apr</button>
+    <button class="bill-month-btn" data-month="4"  onclick="selectBillMonth(4)">May</button>
+    <button class="bill-month-btn" data-month="5"  onclick="selectBillMonth(5)">Jun</button>
+    <button class="bill-month-btn" data-month="6"  onclick="selectBillMonth(6)">Jul</button>
+    <button class="bill-month-btn" data-month="7"  onclick="selectBillMonth(7)">Aug</button>
+    <button class="bill-month-btn" data-month="8"  onclick="selectBillMonth(8)">Sep</button>
+    <button class="bill-month-btn" data-month="9"  onclick="selectBillMonth(9)">Oct</button>
+    <button class="bill-month-btn" data-month="10" onclick="selectBillMonth(10)">Nov</button>
+    <button class="bill-month-btn" data-month="11" onclick="selectBillMonth(11)">Dec</button>
+  </div>
+  <div class="bill-datepicker-footer">
+    <button class="bill-datepicker-today" onclick="billPickerToday()">Today</button>
   </div>
 </div>

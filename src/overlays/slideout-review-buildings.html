@@ -127,7 +127,7 @@
       <div class="review-form-label">Area</div>
       <div class="review-form-input-wrap">
         <input type="text">
-        <div class="review-form-input-addon"><i class="fa-solid fa-ruler"></i></div>
+        <div class="review-form-input-addon review-form-input-addon--text">sq ft</div>
       </div>
     </div>
 
@@ -150,6 +150,156 @@
     <div class="review-form-field">
       <div class="review-form-label">State</div>
       <input class="review-form-input" type="text" value="ME">
+    </div>
+
+    <!-- Zip Code -->
+    <div class="review-form-field">
+      <div class="review-form-label">Zip Code</div>
+      <input class="review-form-input" type="text" value="04843">
+    </div>
+
+    <!-- Attachments -->
+    <div class="review-form-row">
+      <div class="review-form-field">
+        <div class="review-form-label">Attachments</div>
+        <input class="review-form-input review-form-input--disabled" type="text" disabled>
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-paperclip"></i></button>
+    </div>
+
+    <!-- Entrances -->
+    <div class="review-form-row">
+      <div class="review-form-field">
+        <div class="review-form-label">Entrances</div>
+        <input class="review-form-input" type="text">
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-plus"></i></button>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- ── Operating Hours Settings ─────────────────── -->
+    <h2 class="review-track-heading">Operating Hours Settings</h2>
+
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">Note: Operating hours configured for the building will override any operating hours configured for the organization.</div>
+      </div>
+    </div>
+
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgSun"><label for="newBldgSun">Sunday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgMon"><label for="newBldgMon">Monday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgTue"><label for="newBldgTue">Tuesday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgWed"><label for="newBldgWed">Wednesday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgThu"><label for="newBldgThu">Thursday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgFri"><label for="newBldgFri">Friday</label></div>
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgSat"><label for="newBldgSat">Saturday</label></div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- ── Capital Project Request Settings ────────── -->
+    <h2 class="review-track-heading">Capital Project Request Settings</h2>
+
+    <div class="review-checkbox-row"><input type="checkbox" id="newBldgFinalize"><label for="newBldgFinalize">Requires finalization</label></div>
+
+    <!-- Email footer -->
+    <div class="review-form-field">
+      <div class="review-form-label">Email footer</div>
+      <textarea class="review-form-textarea" rows="4"></textarea>
+    </div>
+
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">Note: An approval process configured for the building will override any approval process configured for the organization.</div>
+      </div>
+    </div>
+
+    <!-- Approval order -->
+    <div class="review-form-row">
+      <div class="review-form-field">
+        <div class="review-form-label">Approval order</div>
+        <select class="review-form-select">
+          <option value="1">1.</option>
+          <option value="2">2.</option>
+          <option value="3">3.</option>
+        </select>
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-plus"></i></button>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <!-- ── Schedule Request Settings ───────────────── -->
+    <h2 class="review-track-heading">Schedule Request Settings</h2>
+
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">Note: An approval process configured for the building will override any approval process configured for the organization.</div>
+      </div>
+    </div>
+
+    <!-- Standard approval order -->
+    <div class="review-form-row">
+      <div class="review-form-field">
+        <div class="review-form-label">Standard approval order</div>
+        <select class="review-form-select">
+          <option value="1">1.</option>
+          <option value="2">2.</option>
+          <option value="3">3.</option>
+        </select>
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-plus"></i></button>
+    </div>
+
+    <!-- After hours approval order -->
+    <div class="review-form-row">
+      <div class="review-form-field">
+        <div class="review-form-label">After hours approval order</div>
+        <select class="review-form-select">
+          <option value="1">1.</option>
+          <option value="2">2.</option>
+          <option value="3">3.</option>
+        </select>
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-plus"></i></button>
+    </div>
+
+    <!-- Divider -->
+    <div class="review-form-divider"></div>
+
+    <div class="inline-alert">
+      <div class="inline-alert-tag inline-alert-tag--info">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="inline-alert-body inline-alert-body--info">
+        <div class="inline-alert-text">Note: Scheduling periods configured for the building will override any periods configured for the organization.</div>
+      </div>
+    </div>
+
+    <!-- Scheduling periods -->
+    <div class="review-form-row" style="align-items:flex-end;">
+      <div class="review-form-field" style="flex:1;">
+        <div class="review-form-label">Scheduling periods</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input class="review-form-input" type="text" style="flex:1;">
+          <input class="review-form-input" type="text" style="flex:1;">
+          <span style="font-size:var(--font-body);color:var(--text-color);flex-shrink:0;">to</span>
+          <input class="review-form-input" type="text" style="flex:1;">
+        </div>
+      </div>
+      <button class="review-form-icon-btn"><i class="fa-solid fa-plus"></i></button>
     </div>
 
   </div>

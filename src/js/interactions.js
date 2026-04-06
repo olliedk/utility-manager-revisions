@@ -267,9 +267,11 @@ document.addEventListener('keydown', function(e) {
   closeSlideout();
   closeReviewSlideout();
   closeProviderSlideout();
+  closeAccountSlideout();
   closeFieldEditSlideout();
   closeAddCustomFieldSlideout();
   closeFieldDropdown();
+  closeBillDatepicker();
   closeMapAddressModal();
   closeIgnoreAddressModal();
   closeMapNameModal();
