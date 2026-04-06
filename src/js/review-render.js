@@ -356,19 +356,20 @@ function renderReviewAccountsGrid() {
   var start = (page - 1) * pageSize;
   var pageRows = allRows.slice(start, start + pageSize);
 
-  // Rebuild row maps from full row list
+  // Rebuild type map; preserve any per-row state already in _accountRowData
   _accountRowTypes = {};
-  _accountRowData  = {};
   allRows.forEach(function(r) {
     _accountRowTypes[r.rowNum] = r.type;
-    _accountRowData[r.rowNum]  = r;
+    if (!_accountRowData[r.rowNum]) _accountRowData[r.rowNum] = r;
   });
 
   var html = '';
   pageRows.forEach(function(row, i) {
-    var stripe = i % 2 === 0 ? 'review-grid-row--white' : 'review-grid-row--striped';
-    var badgeClass = row.type === 'missing' ? 'review-badge--missing-data' : 'review-badge--pending';
-    var badgeText  = row.type === 'missing' ? 'Missing data' : 'Pending review';
+    var rowData    = _accountRowData[row.rowNum] || row;
+    var reviewed   = !!rowData.reviewed;
+    var stripe     = i % 2 === 0 ? 'review-grid-row--white' : 'review-grid-row--striped';
+    var badgeClass = reviewed ? 'review-badge--reviewed' : (row.type === 'missing' ? 'review-badge--missing-data' : 'review-badge--pending');
+    var badgeText  = reviewed ? 'Reviewed'              : (row.type === 'missing' ? 'Missing data'              : 'Pending review');
 
     var acctAction, reviewAction;
     if (row.consolidated) {
@@ -379,7 +380,7 @@ function renderReviewAccountsGrid() {
       reviewAction = 'onclick="openAccountSlideout(\'' + row.type + '\',' + row.rowNum + ')"';
     }
 
-    var acctMissingClass = row.type === 'missing' ? ' review-grid-row--missing' : '';
+    var acctMissingClass = (row.type === 'missing' && !reviewed) ? ' review-grid-row--missing' : '';
     html +=
       '<div class="review-grid-row ' + stripe + acctMissingClass + '">' +
         '<div class="review-grid-accent"></div>' +

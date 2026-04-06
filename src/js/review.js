@@ -665,6 +665,21 @@ function openAccountSlideout(type, rowNum) {
   var trackInput = document.getElementById(trackId);
   if (trackInput) trackInput.value = row.billTrackingStart;
 
+  // Sync missing-row error state to this row's data (each row is independent)
+  if (type === 'missing') {
+    var hasValue = !!(row.billTrackingStart && row.billTrackingStart.trim());
+    var field = document.getElementById('missingBillTrackingField');
+    if (field) {
+      field.querySelector('.review-form-label').classList.toggle('review-form-label--error', !hasValue);
+      var wrap = field.querySelector('.review-form-input-wrap');
+      wrap.classList.toggle('review-form-input-wrap--error', !hasValue);
+      var addon = wrap.querySelector('.review-form-input-addon');
+      if (addon) addon.classList.toggle('review-form-input-addon--error', !hasValue);
+      document.getElementById('missingBillTrackingError').style.display = hasValue ? 'none' : 'flex';
+    }
+    document.getElementById('accountMissingErrorAlert').style.display = hasValue ? 'none' : 'flex';
+  }
+
   // Meters
   var containerId = type === 'pending' ? 'pendingMetersContainer' : 'missingMetersContainer';
   _renderMeters(containerId, row.meters, row.nickname);
@@ -696,6 +711,7 @@ function closeAccountSlideout() {
 }
 
 function _markAccountRowReviewed(rowNum) {
+  if (_accountRowData[rowNum]) _accountRowData[rowNum].reviewed = true;
   var badge = document.getElementById('accountRow' + rowNum + 'Badge');
   if (badge) {
     badge.className = 'review-badge review-badge--reviewed';
