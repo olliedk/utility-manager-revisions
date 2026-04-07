@@ -157,6 +157,8 @@ function goToReviewFieldsDetail(providerIndex) {
   if (saveNext) saveNext.style.display = (providerIndex + 1 < _reviewFieldsProviders.length) ? '' : 'none';
   document.getElementById('screenReviewFields').classList.remove('active');
   document.getElementById('screenReviewFieldsDetail').classList.add('active');
+  var pageContent = document.getElementById('screenReviewFieldsDetail').querySelector('.page-content');
+  if (pageContent) pageContent.scrollTop = 0;
 }
 
 function goBackToReviewFieldsSummary() {
