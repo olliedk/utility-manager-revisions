@@ -1,0 +1,21 @@
+<!-- ══════════════════════════════════════════════════
+     CONFIRM CONTINUE (Review buildings) MODAL
+     Shown when "Save & Continue" is clicked while one or
+     more buildings are still in "Pending review" status.
+══════════════════════════════════════════════════ -->
+<div class="review-modal-overlay" id="confirmReviewBuildingsOverlay" onclick="handleModalOverlayClick(event, 'confirmReviewBuildingsOverlay')">
+  <div class="review-modal">
+    <div class="review-modal-header">
+      <span class="review-modal-title">Are you sure you want to continue?</span>
+      <button class="review-modal-close" onclick="closeConfirmReviewBuildingsModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="review-modal-body">
+      <p class="review-modal-desc">You have <span id="confirmReviewBuildingsCount">0</span> <span id="confirmReviewBuildingsNoun">buildings</span> pending review.</p>
+      <p class="review-modal-desc" style="margin-top:12px;">If you continue, they will be considered as reviewed. Buildings marked as &ldquo;New&rdquo; will be created for you.</p>
+    </div>
+    <div class="review-modal-footer">
+      <button class="btn-cta" onclick="confirmContinueBuildings()">Save &amp; Continue</button>
+      <button class="btn-tertiary" onclick="closeConfirmReviewBuildingsModal()">Cancel</button>
+    </div>
+  </div>
+</div>

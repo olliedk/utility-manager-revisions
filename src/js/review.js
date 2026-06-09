@@ -51,6 +51,28 @@ function handleModalOverlayClick(event, overlayId) {
   }
 }
 
+/* ── Confirm Save & Continue (Review buildings) ──── */
+function attemptSaveContinueBuildings() {
+  var pending = 0;
+  [1, 2].forEach(function(n) {
+    var b = document.getElementById('buildingRow' + n + 'Badge');
+    if (b && !b.classList.contains('review-badge--reviewed')) pending++;
+  });
+  if (pending === 0) { goToReviewProviders(); return; }
+  document.getElementById('confirmReviewBuildingsCount').textContent = pending;
+  document.getElementById('confirmReviewBuildingsNoun').textContent  = pending === 1 ? 'building' : 'buildings';
+  document.getElementById('confirmReviewBuildingsOverlay').classList.add('open');
+}
+
+function closeConfirmReviewBuildingsModal() {
+  document.getElementById('confirmReviewBuildingsOverlay').classList.remove('open');
+}
+
+function confirmContinueBuildings() {
+  closeConfirmReviewBuildingsModal();
+  goToReviewProviders();
+}
+
 /* ── Review Buildings slideouts ─────────────────── */
 function openReviewSlideout(type) {
   document.getElementById('reviewSlideoutOverlay').classList.add('open');
