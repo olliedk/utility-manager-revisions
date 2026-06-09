@@ -1,4 +1,10 @@
 /* ── Submit bills ────────────────────────────────── */
+var SCENARIO_STATS = {
+  1: { providers: 4, accounts: 40, bills: 40 },
+  2: { providers: 2, accounts: 20, bills: 20 },
+  3: { providers: 4, accounts: 22, bills: 4  }
+};
+
 function submitBills() {
   if (!protoState.currentScenario) protoState.currentScenario = 1;
   var scenario = protoState.currentScenario;
@@ -6,10 +12,12 @@ function submitBills() {
     ? (SCENARIO_FILES_ROUND2[scenario] || SCENARIO_FILES_ROUND2[1]).length
     : (SCENARIO_FILES[scenario] || SCENARIO_FILES[1]).length;
   var banner = document.getElementById('uploadAlert');
-  banner.classList.remove('alert-banner--review');
-  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-check alert-banner-icon';
-  document.getElementById('uploadAlertTitle').textContent = fileCount + ' file' + (fileCount !== 1 ? 's have' : ' has') + ' been successfully uploaded';
-  document.getElementById('uploadAlertSub').textContent = 'They are being processed and you will receive an email when processing is complete.';
+  banner.classList.add('alert-banner--review');
+  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-info alert-banner-icon';
+  document.getElementById('uploadAlertTitle').textContent = '';
+  document.getElementById('uploadAlertSub').textContent =
+    fileCount + ' bill' + (fileCount !== 1 ? 's are' : ' is') +
+    ' being processed. This can take several minutes. You’ll receive an email when processing is complete.';
   document.getElementById('uploadAlertEnd').innerHTML =
     '<button class="alert-banner-action" onclick="completeProcessing()" title="Simulate processing complete">Complete processing</button>' +
     '<button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>';
@@ -39,17 +47,20 @@ function completeProcessing() {
       '<button class="alert-banner-action" onclick="switchView(\'bills\'); dismissAlert()">Review bills</button>' +
       '<button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>';
   } else {
-    // First upload: providers/accounts need review
-    var scenarioMessages = {
-      1: '4 files successfully processed: 2 buildings, 4 providers, and 40 accounts are awaiting review before 40 new bills can be added.',
-      2: '2 files successfully processed: 2 buildings, 2 providers, and 20 accounts are awaiting review before 20 new bills can be added.',
-      3: '4 files successfully processed: 2 buildings, 4 providers, and 4 accounts are awaiting review before 4 new bills can be added.'
-    };
+    // First upload: bills processed — start review of new providers/accounts
+    var fileCount = (SCENARIO_FILES[scenario] || SCENARIO_FILES[1]).length;
+    var stats    = SCENARIO_STATS[scenario] || SCENARIO_STATS[1];
     document.getElementById('uploadAlert').classList.add('alert-banner--review');
-    document.getElementById('uploadAlertIcon').className = 'fa-solid fa-clipboard-check alert-banner-icon';
-    document.getElementById('uploadAlertTitle').textContent = 'Action required';
-    document.getElementById('uploadAlertSub').textContent = scenarioMessages[scenario];
-    document.getElementById('uploadAlertEnd').innerHTML = '<button class="alert-banner-review-btn" onclick="goToReviewBuildings()">Review</button>';
+    document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-info alert-banner-icon';
+    document.getElementById('uploadAlertTitle').textContent =
+      fileCount + ' bill' + (fileCount !== 1 ? 's' : '') + ' successfully processed';
+    document.getElementById('uploadAlertSub').textContent =
+      stats.providers + ' provider' + (stats.providers !== 1 ? 's' : '') + ', ' +
+      stats.accounts  + ' account'  + (stats.accounts  !== 1 ? 's' : '') + ', and ' +
+      stats.bills     + ' bill'     + (stats.bills     !== 1 ? 's were' : ' was') +
+      ' added. They are ready for review and reporting.';
+    document.getElementById('uploadAlertEnd').innerHTML =
+      '<button class="alert-banner-action" onclick="goToReviewBuildings()">Start review</button>';
   }
 }
 

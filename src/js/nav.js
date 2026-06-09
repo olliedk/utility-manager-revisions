@@ -42,13 +42,22 @@ function exitReview() {
   document.getElementById('screenReviewSubAccounts').classList.remove('active');
   document.getElementById('screenReviewComplete').classList.remove('active');
   document.getElementById('screenUtilities').classList.add('active');
-  // Restore review-required banner
+  // Restore processed banner so user can resume review
+  var scenario = protoState.currentScenario || 1;
+  var fileCount = (SCENARIO_FILES[scenario] || SCENARIO_FILES[1]).length;
+  var stats    = SCENARIO_STATS[scenario] || SCENARIO_STATS[1];
   var banner = document.getElementById('uploadAlert');
   banner.classList.add('visible', 'alert-banner--review');
-  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-clipboard-check alert-banner-icon';
-  document.getElementById('uploadAlertTitle').textContent = 'Action required';
-  document.getElementById('uploadAlertSub').textContent = '1 building, 2 providers, and 2 accounts require review before 24 new bills can be added.';
-  document.getElementById('uploadAlertEnd').innerHTML = '<button class="alert-banner-review-btn" onclick="goToReviewBuildings()">Review</button>';
+  document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-info alert-banner-icon';
+  document.getElementById('uploadAlertTitle').textContent =
+    fileCount + ' bill' + (fileCount !== 1 ? 's' : '') + ' successfully processed';
+  document.getElementById('uploadAlertSub').textContent =
+    stats.providers + ' provider' + (stats.providers !== 1 ? 's' : '') + ', ' +
+    stats.accounts  + ' account'  + (stats.accounts  !== 1 ? 's' : '') + ', and ' +
+    stats.bills     + ' bill'     + (stats.bills     !== 1 ? 's were' : ' was') +
+    ' added. They are ready for review and reporting.';
+  document.getElementById('uploadAlertEnd').innerHTML =
+    '<button class="alert-banner-action" onclick="goToReviewBuildings()">Start review</button>';
 }
 
 /* ── Review Providers screen ─────────────────────── */
