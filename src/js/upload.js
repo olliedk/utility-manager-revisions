@@ -47,9 +47,15 @@ function completeProcessing() {
       '<button class="alert-banner-action" onclick="switchView(\'bills\'); dismissAlert()">Review bills</button>' +
       '<button class="alert-banner-dismiss" onclick="dismissAlert()" title="Dismiss"><i class="fa-solid fa-xmark"></i></button>';
   } else {
-    // First upload: bills processed — start review of new providers/accounts
+    // First upload: providers/accounts/bills added immediately; review is optional.
     var fileCount = (SCENARIO_FILES[scenario] || SCENARIO_FILES[1]).length;
     var stats    = SCENARIO_STATS[scenario] || SCENARIO_STATS[1];
+    protoState.providerCount = stats.providers;
+    protoState.billCount     = stats.bills;
+    protoState.providersPage = 1;
+    protoState.billsPage     = 1;
+    protoState.firstUploadDone = true;
+    renderUtilities();
     document.getElementById('uploadAlert').classList.add('alert-banner--review');
     document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-info alert-banner-icon';
     document.getElementById('uploadAlertTitle').textContent =
