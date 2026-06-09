@@ -137,6 +137,7 @@ function doneReviewComplete() {
   protoState.billsPage     = 1;
 
   protoState.firstUploadDone = true;
+  protoState.pendingReviewProviders = [];
   document.getElementById('screenReviewComplete').classList.remove('active');
   document.getElementById('screenUtilities').classList.add('active');
   document.getElementById('uploadAlert').classList.remove('visible', 'alert-banner--review');

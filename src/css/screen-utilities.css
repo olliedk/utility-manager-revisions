@@ -63,6 +63,20 @@
 
 .kebab-btn:hover { background: #f0f0f0; }
 
+/* Pending-review state: small notification dot in the top-right of the kebab */
+.kebab-btn--pending { position: relative; }
+.kebab-btn--pending::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background: #f5a623;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
 .pcard-name {
   font-size: var(--font-l);
   font-weight: 500;
@@ -150,6 +164,16 @@
 
 .pcard-menu-item.destructive { color: #ce4b12; }
 .pcard-menu-item.destructive i { color: #ce4b12; }
+
+/* Pending-review variant: indicator dot pushed to the far right */
+.pcard-menu-item--review .pcard-menu-dot {
+  width: 8px;
+  height: 8px;
+  background: #f5a623;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
 /* ═══════════════════════════════════════════════════
    RECORDS PER PAGE

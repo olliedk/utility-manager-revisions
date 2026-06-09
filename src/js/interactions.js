@@ -105,6 +105,14 @@ function closeCardMenus() {
   hideOverlay();
 }
 
+function markProviderReviewed(absoluteIdx, event) {
+  if (event) event.stopPropagation();
+  var i = protoState.pendingReviewProviders.indexOf(absoluteIdx);
+  if (i !== -1) protoState.pendingReviewProviders.splice(i, 1);
+  closeCardMenus();
+  renderUtilities();
+}
+
 /* ── Slideout (Customize bill export) ────────────── */
 function openSlideout() {
   closeExport();

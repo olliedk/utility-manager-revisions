@@ -9,20 +9,25 @@ function renderProviders(count) {
   var html = '';
   providers.forEach(function(p, i) {
     var menuId      = 'dyn-menu-' + i;
+    var absoluteIdx = start + i;
+    var isPending   = protoState.pendingReviewProviders.indexOf(absoluteIdx) !== -1;
     var statusClass = p.status === 'ok' ? 'status-ok' : 'status-missing';
     var statusLabel = p.status === 'ok' ? 'Up-to-date' : 'Missing bills';
     var typeIcons   = p.icons
       ? p.icons.map(function(ic) { return '<i class="fa-solid ' + ic + '"></i>'; }).join(' ')
       : '<i class="fa-solid ' + p.icon + '"></i>';
+    var editOrReview = isPending
+      ? '<div class="pcard-menu-item pcard-menu-item--review" onclick="markProviderReviewed(' + absoluteIdx + ', event)"><i class="fa-solid fa-clipboard-check"></i> Review<span class="pcard-menu-dot"></span></div>'
+      : '<div class="pcard-menu-item" onclick="closeCardMenus()"><i class="fa-regular fa-pen-to-square"></i> Edit</div>';
     html += '<div class="provider-card">' +
       '<div class="pcard-top">' +
         '<div class="pcard-type">' + typeIcons + ' ' + p.type + '</div>' +
         '<div class="pcard-actions">' +
           '<span class="status-badge ' + statusClass + '">' + statusLabel + '</span>' +
-          '<button class="kebab-btn" onclick="toggleCardMenu(\'' + menuId + '\', event)" title="More options"><i class="fa-solid fa-ellipsis"></i></button>' +
+          '<button class="kebab-btn' + (isPending ? ' kebab-btn--pending' : '') + '" onclick="toggleCardMenu(\'' + menuId + '\', event)" title="More options"><i class="fa-solid fa-ellipsis"></i></button>' +
           '<div class="pcard-menu" id="' + menuId + '">' +
             '<div class="pcard-menu-item" onclick="closeCardMenus()"><i class="fa-solid fa-circle-info"></i> View</div>' +
-            '<div class="pcard-menu-item" onclick="closeCardMenus()"><i class="fa-regular fa-pen-to-square"></i> Edit</div>' +
+            editOrReview +
             '<div class="pcard-menu-item" onclick="closeCardMenus()"><i class="fa-solid fa-list-ol"></i> Edit custom fields</div>' +
             '<div class="pcard-menu-item" onclick="openRetireSlideout(' + i + ', event)"><i class="fa-regular fa-hand"></i> Retire</div>' +
             '<div class="pcard-menu-item destructive" onclick="closeCardMenus()"><i class="fa-solid fa-trash"></i> Delete</div>' +

@@ -55,6 +55,8 @@ function completeProcessing() {
     protoState.providersPage = 1;
     protoState.billsPage     = 1;
     protoState.firstUploadDone = true;
+    protoState.pendingReviewProviders = [];
+    for (var pi = 0; pi < stats.providers; pi++) protoState.pendingReviewProviders.push(pi);
     renderUtilities();
     document.getElementById('uploadAlert').classList.add('alert-banner--review');
     document.getElementById('uploadAlertIcon').className = 'fa-solid fa-circle-info alert-banner-icon';

@@ -5,7 +5,8 @@ var protoState = {
   firstUploadDone:          false, // true after doneReviewComplete() — enables second-upload mode
   activeConsolidatedAccount: 0,    // index into scenario's consolidated providers
   reviewAccountsPage:        1,    // current page for the review-accounts grid
-  reviewAccountsPageSize:    20    // rows per page for the review-accounts grid
+  reviewAccountsPageSize:    20,   // rows per page for the review-accounts grid
+  pendingReviewProviders:    []    // absolute indices of providers added via bulk upload awaiting review
 };
 
 var _retireProviders = [];
