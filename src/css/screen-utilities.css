@@ -314,6 +314,7 @@
 
 .bill-status-entered  { background: #ccedd1; color: #38383d; }
 .bill-status-missing  { background: #fde8d8; color: #ce4b12; }
+.bill-status-pending  { background: #fde68a; color: #38383d; }
 
 .bills-actions-col {
   position: sticky;

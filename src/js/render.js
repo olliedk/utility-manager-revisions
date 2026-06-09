@@ -55,8 +55,18 @@ function renderBillsTable(count) {
   var bills = pool.slice(start, start + protoState.pageSize).slice(0, count - start);
   var rows = '';
   bills.forEach(function(b) {
-    var statusClass = b.status === 'entered' ? 'bill-status-entered' : 'bill-status-missing';
-    var statusLabel = b.status === 'entered' ? 'Entered' : 'Missing';
+    var effectiveStatus = (protoState.billsAwaitingReview && b.status === 'entered') ? 'pending' : b.status;
+    var statusClass, statusLabel;
+    if (effectiveStatus === 'pending') {
+      statusClass = 'bill-status-pending';
+      statusLabel = 'Pending review';
+    } else if (effectiveStatus === 'entered') {
+      statusClass = 'bill-status-entered';
+      statusLabel = 'Entered';
+    } else {
+      statusClass = 'bill-status-missing';
+      statusLabel = 'Missing';
+    }
     rows +=
       '<tr>' +
         '<td><span class="bill-link">' + b.month + '</span></td>' +
