@@ -253,7 +253,7 @@
   border-radius: var(--radius-pill); font-size: var(--font-s);
   font-weight: 600; color: var(--text-color); line-height: 20px; white-space: nowrap;
 }
-.review-badge--pending { background: #fec9b8; }
+.review-badge--pending { background: #fde68a; }
 .review-badge--new     { background: #d9eded; }
 .review-badge--missing-data { background: #fe8e91; }
 .review-badge--reviewed { background: #d6f0da; color: #0a7b20; }
